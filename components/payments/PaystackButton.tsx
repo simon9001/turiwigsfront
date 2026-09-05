@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { paymentsApi } from '@/api/payments.api';
+import { rememberPaymentContext } from '@/utils/payment-context';
 import { Button } from '@/components/ui/Button';
 import toast from 'react-hot-toast';
 
@@ -29,7 +30,9 @@ export function PaystackButton({
       const { authorizationUrl, reference } = data.data;
 
       if (authorizationUrl) {
-        // Redirect to Paystack hosted page
+        // Redirect to Paystack hosted page. Stash what this payment is for
+        // first — the navigation clears every bit of in-memory state.
+        rememberPaymentContext({ bookingId, reference });
         window.location.href = authorizationUrl;
       } else {
         // Already pending — verify

@@ -9,6 +9,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/Button';
 import { PageSpinner } from '@/components/ui/Spinner';
 import type { Product } from '@/types';
+import toast from 'react-hot-toast';
 
 export default function WishlistPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -20,6 +21,7 @@ export default function WishlistPage() {
         const items = data.data as Array<{ products: Product }>;
         setProducts(items.map((i) => i.products).filter(Boolean));
       })
+      .catch(() => toast.error('Could not load your saved items'))
       .finally(() => setLoading(false));
   }, []);
 

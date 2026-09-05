@@ -29,7 +29,7 @@ export function MiniBarChart({ bars, height = 64, showValues = false, maxValue }
               className="w-full rounded-t-sm transition-all duration-500"
               style={{
                 height: `${pct}%`,
-                background: b.color ?? '#c9a227',
+                background: b.color ?? '#8b8881',
                 opacity: 0.82,
                 minHeight: '3px',
               }}

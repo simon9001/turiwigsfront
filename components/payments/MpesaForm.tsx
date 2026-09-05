@@ -33,9 +33,9 @@ export function MpesaForm({ amount, loading, error, onSubmit }: MpesaFormProps) 
       {/* How it works */}
       <div className="rounded-xl border border-green-100 bg-green-50 px-4 py-3 space-y-1.5 text-sm text-green-800">
         <p className="font-medium">How it works:</p>
-        <p>1. Click the button below — you'll be taken to Paystack's secure page</p>
+        <p>1. Click the button below — you&rsquo;ll be taken to Paystack&rsquo;s secure page</p>
         <p>2. Enter your M-Pesa number and confirm the STK push on your phone</p>
-        <p>3. You'll be redirected back here once payment is confirmed</p>
+        <p>3. You&rsquo;ll be redirected back here once payment is confirmed</p>
       </div>
 
       {error && (

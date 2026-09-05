@@ -146,15 +146,15 @@ export default function TermsPage() {
 
       {/* Scoped hover style — no JS needed */}
       <style>{`
-        .toc-link { color: rgba(10,46,31,0.5); transition: color 150ms; }
-        .toc-link:hover { color: #0a2e1f; }
+        .toc-link { color: rgba(23,22,20,0.5); transition: color 150ms; }
+        .toc-link:hover { color: #171614; }
       `}</style>
 
       {/* Hero */}
-      <section className="py-16 sm:py-20" style={{ background: '#0a2e1f' }}>
+      <section className="py-16 sm:py-20" style={{ background: '#171614' }}>
         <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
           <p className="text-[11px] font-semibold uppercase tracking-[0.35em] mb-4"
-            style={{ color: '#c9a227' }}>
+            style={{ color: 'rgba(255,255,255,0.72)' }}>
             Legal
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
@@ -173,7 +173,7 @@ export default function TermsPage() {
         <aside className="hidden lg:block">
           <div className="sticky top-24">
             <p className="text-[10px] font-bold uppercase tracking-widest mb-4"
-              style={{ color: '#c9a227' }}>
+              style={{ color: '#8b8881' }}>
               Contents
             </p>
             <nav className="flex flex-col gap-2">
@@ -189,30 +189,30 @@ export default function TermsPage() {
         {/* Body */}
         <article className="min-w-0">
           <div className="rounded-2xl p-5 mb-10 text-sm leading-relaxed"
-            style={{ background: 'rgba(201,162,39,0.08)', border: '1px solid rgba(201,162,39,0.25)', color: 'rgba(10,46,31,0.7)' }}>
+            style={{ background: 'rgba(23,22,20,0.08)', border: '1px solid rgba(23,22,20,0.25)', color: 'rgba(23,22,20,0.7)' }}>
             Please read these Terms carefully before using our website or services. By proceeding, you confirm that you have read, understood and agree to be bound by these Terms, which comply with the applicable laws of Kenya.
           </div>
 
           {SECTIONS.map((s) => (
             <section key={s.id} id={s.id} className="mb-10 scroll-mt-28">
-              <h2 className="text-lg font-bold mb-3" style={{ color: '#0a2e1f' }}>
+              <h2 className="text-lg font-bold mb-3" style={{ color: '#171614' }}>
                 {s.title}
               </h2>
-              <div className="h-0.5 w-10 mb-4 rounded-full" style={{ background: '#c9a227' }} />
+              <div className="h-0.5 w-10 mb-4 rounded-full" style={{ background: '#171614' }} />
               <div className="text-sm leading-[1.85] whitespace-pre-line"
-                style={{ color: 'rgba(10,46,31,0.65)' }}>
+                style={{ color: 'rgba(23,22,20,0.65)' }}>
                 {s.body}
               </div>
             </section>
           ))}
 
           <div className="mt-14 pt-8 border-t flex items-center justify-between"
-            style={{ borderColor: 'rgba(201,162,39,0.2)' }}>
-            <p className="text-xs" style={{ color: 'rgba(10,46,31,0.35)' }}>
+            style={{ borderColor: 'rgba(23,22,20,0.2)' }}>
+            <p className="text-xs" style={{ color: 'rgba(23,22,20,0.35)' }}>
               © {new Date().getFullYear()} Tiuri Nails &amp; Wigs Parlour. All rights reserved.
             </p>
             <Link href="/" className="text-xs font-semibold uppercase tracking-widest transition-opacity hover:opacity-70"
-              style={{ color: '#c9a227' }}>
+              style={{ color: '#8b8881' }}>
               Back to Home
             </Link>
           </div>

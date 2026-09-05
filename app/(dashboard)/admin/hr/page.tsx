@@ -9,9 +9,7 @@ import toast from 'react-hot-toast';
 import { useRealtimeRefresh } from '@/hooks/useRealtimeRefresh';
 
 const GREEN = '#10b981'; const RED = '#ef4444'; const ORANGE = '#f97316';
-const BLUE = '#3b82f6'; const GOLD = '#c9a227';
-
-type Leave = { id: string; staff_id: string; leave_type: string; start_date: string; end_date: string; reason: string | null; status: string; profiles?: { name: string }[] | null };
+const BLUE = '#3b82f6'; type Leave = { id: string; staff_id: string; leave_type: string; start_date: string; end_date: string; reason: string | null; status: string; profiles?: { name: string }[] | null };
 type Attendance = { id: string; staff_id: string; record_date: string; clock_in: string | null; clock_out: string | null; profiles?: { name: string }[] | null };
 type Shift = { id: string; staff_id: string; shift_date: string; start_time: string | null; end_time: string | null; is_day_off: boolean; profiles?: { name: string }[] | null };
 
@@ -22,19 +20,19 @@ export default function AdminHRPage() {
   const [shifts, setShifts]     = useState<Shift[]>([]);
   const [loading, setLoading]   = useState(true);
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(() => {
     const today = new Date().toISOString().split('T')[0];
     const weekAgo = new Date(Date.now() - 7 * 864e5).toISOString().split('T')[0];
-    const [l, a, s] = await Promise.allSettled([
+    return Promise.allSettled([
       hrAdminApi.listLeaves({ status: 'pending' }),
       hrAdminApi.listAttendance({ startDate: weekAgo, endDate: today }),
       hrAdminApi.listShifts({ startDate: today }),
-    ]);
-    if (l.status === 'fulfilled') setLeaves((l.value.data.data ?? []) as Leave[]);
-    if (a.status === 'fulfilled') setAtt((a.value.data.data ?? []) as Attendance[]);
-    if (s.status === 'fulfilled') setShifts((s.value.data.data ?? []) as Shift[]);
-    setLoading(false);
+    ]).then(([l, a, s]) => {
+      if (l.status === 'fulfilled') setLeaves((l.value.data.data ?? []) as Leave[]);
+      if (a.status === 'fulfilled') setAtt((a.value.data.data ?? []) as Attendance[]);
+      if (s.status === 'fulfilled') setShifts((s.value.data.data ?? []) as Shift[]);
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -103,7 +101,7 @@ export default function AdminHRPage() {
                           style={{ background: `${BLUE}18`, color: BLUE }}>{l.leave_type}</span>
                       </div>
                       <p className="text-xs text-neutral-500">{formatDate(l.start_date)} → {formatDate(l.end_date)}</p>
-                      {l.reason && <p className="text-xs text-neutral-400 italic">"{l.reason}"</p>}
+                      {l.reason && <p className="text-xs text-neutral-400 italic">&ldquo;{l.reason}&rdquo;</p>}
                     </div>
                     <div className="flex gap-2 flex-shrink-0">
                       <button onClick={() => handleLeaveDecision(l.id, true)}
@@ -134,7 +132,7 @@ export default function AdminHRPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
-                <tr style={{ background: '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
+                <tr style={{ background: '#f4f4f2', borderBottom: '1px solid #e9e8e4' }}>
                   {['Staff', 'Date', 'Clock In', 'Clock Out', 'Hours'].map((h) => (
                     <th key={h} className="px-4 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-neutral-400">{h}</th>
                   ))}
@@ -180,7 +178,7 @@ export default function AdminHRPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr style={{ background: '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
+                  <tr style={{ background: '#f4f4f2', borderBottom: '1px solid #e9e8e4' }}>
                     {['Staff', 'Date', 'Start', 'End', 'Type'].map((h) => (
                       <th key={h} className="px-4 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-neutral-400">{h}</th>
                     ))}

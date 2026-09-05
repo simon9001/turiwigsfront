@@ -43,13 +43,13 @@ export function StoriesBar() {
         >
           <div
             className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center"
-            style={{ background: '#0a2e1f', border: '2px solid #c9a227' }}
+            style={{ background: '#171614', border: '2px solid #8b8881' }}
           >
-            <Plus className="h-6 w-6" style={{ color: '#c9a227' }} />
+            <Plus className="h-6 w-6" style={{ color: '#ffffff' }} />
           </div>
           <span
             className="text-center truncate max-w-[56px] sm:max-w-[64px] leading-tight"
-            style={{ fontSize: '10px', color: '#143d2a' }}
+            style={{ fontSize: '10px', color: '#55534e' }}
           >
             New
           </span>
@@ -67,8 +67,8 @@ export function StoriesBar() {
               className="rounded-full p-[2px]"
               style={{
                 background: story.read
-                  ? '#d1d5db'
-                  : `linear-gradient(135deg, ${story.color}, #f0d878)`,
+                  ? '#c9c6bf'
+                  : `#171614`,
                 padding: '2px',
               }}
             >
@@ -94,7 +94,7 @@ export function StoriesBar() {
 
             <span
               className="text-center truncate max-w-[56px] sm:max-w-[64px] leading-tight"
-              style={{ fontSize: '10px', color: '#143d2a' }}
+              style={{ fontSize: '10px', color: '#55534e' }}
             >
               {story.label}
             </span>

@@ -1,35 +1,33 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { UserCircle, Save, Loader2 } from 'lucide-react';
+import { Save, Loader2 } from 'lucide-react';
 import { staffDashboardApi } from '@/api/staff-dashboard.api';
 import type { OwnStaffProfile } from '@/api/staff-dashboard.api';
 import { formatDate } from '@/utils/formatters';
 import toast from 'react-hot-toast';
 
-const GOLD = '#c9a227'; const GREEN = '#10b981'; const DARK = '#0a2e1f';
-
-export default function StaffProfilePage() {
+const GOLD = '#8b8881'; export default function StaffProfilePage() {
   const [profile, setProfile] = useState<OwnStaffProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving]   = useState(false);
   const [form, setForm] = useState({ mpesaNumber: '', bankName: '', bankAccount: '', emergencyContactName: '', emergencyContactPhone: '' });
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await staffDashboardApi.getOwnProfile();
-      const p = res.data.data;
-      setProfile(p);
-      setForm({
-        mpesaNumber:          p.staffProfile?.mpesa_number ?? '',
-        bankName:             p.staffProfile?.bank_name ?? '',
-        bankAccount:          p.staffProfile?.bank_account ?? '',
-        emergencyContactName: p.staffProfile?.emergency_contact_name ?? '',
-        emergencyContactPhone: p.staffProfile?.emergency_contact_phone ?? '',
-      });
-    } catch { /* profile fetch failed */ }
-    setLoading(false);
+  const load = useCallback(() => {
+    return staffDashboardApi.getOwnProfile()
+      .then((res) => {
+        const p = res.data.data;
+        setProfile(p);
+        setForm({
+          mpesaNumber:          p.staffProfile?.mpesa_number ?? '',
+          bankName:             p.staffProfile?.bank_name ?? '',
+          bankAccount:          p.staffProfile?.bank_account ?? '',
+          emergencyContactName: p.staffProfile?.emergency_contact_name ?? '',
+          emergencyContactPhone: p.staffProfile?.emergency_contact_phone ?? '',
+        });
+      })
+      .catch(() => { /* profile fetch failed */ })
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -64,7 +62,7 @@ export default function StaffProfilePage() {
       </div>
 
       {/* Identity card */}
-      <div className="rounded-2xl p-5 flex items-center gap-4" style={{ background: `linear-gradient(135deg, ${DARK} 0%, #143d2a 100%)` }}>
+      <div className="rounded-2xl p-5 flex items-center gap-4" style={{ background: `#171614` }}>
         <div className="h-14 w-14 rounded-2xl flex items-center justify-center text-xl font-bold flex-shrink-0"
           style={{ background: `${GOLD}28`, color: GOLD }}>
           {profile?.name?.[0]?.toUpperCase() ?? '?'}

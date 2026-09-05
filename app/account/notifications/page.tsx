@@ -8,13 +8,15 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { PageSpinner } from '@/components/ui/Spinner';
 import { cn } from '@/utils/cn';
 import type { Notification } from '@/types';
+import toast from 'react-hot-toast';
 
 export default function NotificationsPage() {
   const [items, setItems] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    notificationsApi.list().then(({ data }) => setItems(data.data)).finally(() => setLoading(false));
+    notificationsApi.list().then(({ data }) => setItems(data.data)).catch(() => toast.error('Could not load your notifications'))
+                                                                   .finally(() => setLoading(false));
   }, []);
 
   const markRead = async (id: string) => {

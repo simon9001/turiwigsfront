@@ -10,13 +10,13 @@ import type { BlogPost } from '@/types';
 
 function SkeletonCard() {
   return (
-    <div className="animate-pulse rounded-2xl border overflow-hidden" style={{ borderColor: '#e0d0b0', background: '#fff' }}>
-      <div className="w-full aspect-[16/9]" style={{ background: '#e8dfc8' }} />
+    <div className="animate-pulse rounded-2xl border overflow-hidden" style={{ borderColor: '#dedcd7', background: '#fff' }}>
+      <div className="w-full aspect-[16/9]" style={{ background: '#dedcd7' }} />
       <div className="p-5">
-        <div className="h-5 w-3/4 rounded-lg mb-3" style={{ background: '#e8dfc8' }} />
-        <div className="h-3 w-full rounded mb-2" style={{ background: '#f0e8d0' }} />
-        <div className="h-3 w-4/5 rounded mb-4" style={{ background: '#f0e8d0' }} />
-        <div className="h-3 w-24 rounded" style={{ background: '#f0e8d0' }} />
+        <div className="h-5 w-3/4 rounded-lg mb-3" style={{ background: '#dedcd7' }} />
+        <div className="h-3 w-full rounded mb-2" style={{ background: '#e9e8e4' }} />
+        <div className="h-3 w-4/5 rounded mb-4" style={{ background: '#e9e8e4' }} />
+        <div className="h-3 w-24 rounded" style={{ background: '#e9e8e4' }} />
       </div>
     </div>
   );
@@ -34,18 +34,18 @@ export default function BlogPage() {
   }, []);
 
   return (
-    <div style={{ background: '#faf6ed', minHeight: '100vh' }}>
+    <div style={{ background: '#f4f4f2', minHeight: '100vh' }}>
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28">
 
         {/* Header */}
         <div className="mb-12">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.35em] mb-3" style={{ color: '#c9a227' }}>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.35em] mb-3" style={{ color: '#8b8881' }}>
             Tips & Inspiration
           </p>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight" style={{ color: '#0a2e1f' }}>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight" style={{ color: '#171614' }}>
             The Tiuri Blog
           </h1>
-          <p className="mt-3 text-sm max-w-lg leading-relaxed" style={{ color: '#6b7280' }}>
+          <p className="mt-3 text-sm max-w-lg leading-relaxed" style={{ color: '#6e6b65' }}>
             Wig care tips, styling ideas, and news from Tiuri Nails & Wigs.
           </p>
         </div>
@@ -57,9 +57,9 @@ export default function BlogPage() {
           </div>
         ) : !posts.length ? (
           <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed py-24 text-center"
-            style={{ borderColor: '#e0d0b0' }}>
-            <p className="text-lg font-semibold mb-2" style={{ color: '#0a2e1f' }}>Coming soon</p>
-            <p className="text-sm" style={{ color: '#9a8060' }}>
+            style={{ borderColor: '#dedcd7' }}>
+            <p className="text-lg font-semibold mb-2" style={{ color: '#171614' }}>Coming soon</p>
+            <p className="text-sm" style={{ color: '#8b8881' }}>
               We&apos;re working on some great content. Check back soon!
             </p>
           </div>
@@ -70,7 +70,7 @@ export default function BlogPage() {
                 key={post.id}
                 href={`/blog/${post.slug}`}
                 className="group flex flex-col rounded-2xl border overflow-hidden transition-all hover:shadow-lg"
-                style={{ borderColor: '#e0d0b0', background: '#fff' }}
+                style={{ borderColor: '#dedcd7', background: '#fff' }}
               >
                 {/* Cover */}
                 <div className="relative w-full aspect-[16/9] overflow-hidden">
@@ -84,7 +84,7 @@ export default function BlogPage() {
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center"
-                      style={{ background: 'linear-gradient(135deg, #0a2e1f, #1e5038)' }}>
+                      style={{ background: '#171614' }}>
                       <span className="text-5xl font-black opacity-10 text-white">T</span>
                     </div>
                   )}
@@ -92,18 +92,18 @@ export default function BlogPage() {
 
                 {/* Content */}
                 <div className="flex flex-col flex-1 p-5">
-                  <h2 className="text-base font-semibold leading-snug" style={{ color: '#0a2e1f' }}>
+                  <h2 className="text-base font-semibold leading-snug" style={{ color: '#171614' }}>
                     {post.title}
                   </h2>
 
                   {post.excerpt && (
-                    <p className="mt-2 text-sm leading-relaxed flex-1 line-clamp-2" style={{ color: '#6b7280' }}>
+                    <p className="mt-2 text-sm leading-relaxed flex-1 line-clamp-2" style={{ color: '#6e6b65' }}>
                       {post.excerpt}
                     </p>
                   )}
 
-                  <div className="mt-4 flex items-center justify-between border-t pt-4" style={{ borderColor: '#f0e8d0' }}>
-                    <div className="flex items-center gap-3 text-xs" style={{ color: '#9a8060' }}>
+                  <div className="mt-4 flex items-center justify-between border-t pt-4" style={{ borderColor: '#e9e8e4' }}>
+                    <div className="flex items-center gap-3 text-xs" style={{ color: '#8b8881' }}>
                       {post.author?.name && (
                         <span className="flex items-center gap-1">
                           <User className="h-3 w-3" /> {post.author.name}
@@ -114,7 +114,7 @@ export default function BlogPage() {
                         {formatDate(post.published_at ?? post.created_at)}
                       </span>
                     </div>
-                    <ArrowRight className="h-4 w-4 flex-shrink-0" style={{ color: '#c9a227' }} />
+                    <ArrowRight className="h-4 w-4 flex-shrink-0" style={{ color: '#8b8881' }} />
                   </div>
                 </div>
               </Link>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { Search, Trash2, Package, Plus, Pencil } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -20,28 +20,42 @@ export default function AdminProductsPage() {
   const [search, setSearch] = useState('');
   const [deleting, setDeleting] = useState<string | null>(null);
   const [editingStock, setEditingStock] = useState<{ id: string; stock: number } | null>(null);
-  const [modal, setModal] = useState<{ open: boolean; product?: Product }>({ open: false });
+  const [modal, setModal] = useState<{ open: boolean; product?: Product; nonce: number }>({ open: false, nonce: 0 });
   const limit = 15;
+  // `search` is what is typed; `query` is what has been submitted.
+  const [query, setQuery] = useState('');
 
-  const fetchProducts = (p = page) => {
-    setLoading(true);
-    adminApi.listProducts({ page: p, limit, search: search || undefined })
-      .then(({ data }) => { setProducts(data.data); setTotal(data.meta.total); })
-      .finally(() => setLoading(false));
-  };
+  // Rapid paging can leave two requests in flight; only the newest one is
+  // allowed to write its results.
+  const reqId = useRef(0);
 
-  useEffect(() => { fetchProducts(1); setPage(1); }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { fetchProducts(page); }, [page]); // eslint-disable-line react-hooks/exhaustive-deps
+  const fetchProducts = useCallback(() => {
+    const id = ++reqId.current;
+    return adminApi.listProducts({ page, limit, search: query || undefined })
+      .then(({ data }) => {
+        if (id !== reqId.current) return;   // superseded
+        setProducts(data.data);
+        setTotal(data.meta.total);
+      })
+      .catch(() => { if (id === reqId.current) toast.error('Could not load products'); })
+      .finally(() => { if (id === reqId.current) setLoading(false); });
+  }, [page, query]);
+
+  useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    fetchProducts(1);
+    // Nothing to fetch if the term and the page are both unchanged — without
+    // this the spinner would be switched on with no request to switch it off.
+    if (search === query && page === 1) return;
+    setQuery(search);
     setPage(1);
+    setLoading(true);
   };
 
-  const openCreate = () => setModal({ open: true, product: undefined });
-  const openEdit = (product: Product) => setModal({ open: true, product });
-  const closeModal = () => setModal({ open: false });
+  const openCreate = () => setModal((m) => ({ open: true, product: undefined, nonce: m.nonce + 1 }));
+  const openEdit = (product: Product) => setModal((m) => ({ open: true, product, nonce: m.nonce + 1 }));
+  const closeModal = () => setModal((m) => ({ ...m, open: false }));
 
   const handleSaved = (saved: Product) => {
     setProducts((prev) => {
@@ -101,7 +115,7 @@ export default function AdminProductsPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search products…"
-              className="w-full rounded-xl border border-neutral-200 bg-white py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/30"
+              className="w-full rounded-xl border border-neutral-200 bg-white py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-ink/25"
             />
           </div>
           <Button type="submit" variant="secondary" size="sm">Search</Button>
@@ -156,7 +170,7 @@ export default function AdminProductsPage() {
                                 type="number" min={0}
                                 value={editingStock.stock}
                                 onChange={(e) => setEditingStock({ id: product.id, stock: Number(e.target.value) })}
-                                className="w-16 rounded-lg border border-neutral-200 px-2 py-1 text-sm text-center focus:outline-none focus:ring-2 focus:ring-gold/30"
+                                className="w-16 rounded-lg border border-neutral-200 px-2 py-1 text-sm text-center focus:outline-none focus:ring-2 focus:ring-ink/25"
                               />
                               <button onClick={handleStockSave} className="text-xs text-green-600 font-medium hover:underline">Save</button>
                               <button onClick={() => setEditingStock(null)} className="text-xs text-neutral-400 hover:underline">×</button>
@@ -202,9 +216,9 @@ export default function AdminProductsPage() {
 
             {totalPages > 1 && (
               <div className="flex items-center justify-center gap-3 pt-2">
-                <Button variant="secondary" size="sm" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>Previous</Button>
+                <Button variant="secondary" size="sm" disabled={page === 1} onClick={() => { setLoading(true); setPage((p) => p - 1); }}>Previous</Button>
                 <span className="text-sm text-neutral-400">Page {page} of {totalPages}</span>
-                <Button variant="secondary" size="sm" disabled={page === totalPages} onClick={() => setPage((p) => p + 1)}>Next</Button>
+                <Button variant="secondary" size="sm" disabled={page === totalPages} onClick={() => { setLoading(true); setPage((p) => p + 1); }}>Next</Button>
               </div>
             )}
           </>
@@ -212,6 +226,7 @@ export default function AdminProductsPage() {
       </div>
 
       <ProductFormModal
+        key={modal.nonce}
         open={modal.open}
         onClose={closeModal}
         product={modal.product}

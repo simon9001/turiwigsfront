@@ -9,9 +9,7 @@ import { ProgressRow } from '@/components/dashboard/charts/ProgressRow';
 import { formatPrice, formatDate } from '@/utils/formatters';
 import { cn } from '@/utils/cn';
 
-const GREEN = '#10b981'; const GOLD = '#c9a227'; const ORANGE = '#f97316'; const BLUE = '#3b82f6';
-
-type Earning = { id: string; service_amount: number; commission_pct: number; commission_amount: number; status: string; created_at: string; service_bookings?: { booking_number: string; scheduled_date: string; services?: { name: string } | null }[] | null };
+const GREEN = '#10b981'; const GOLD = '#8b8881'; const ORANGE = '#f97316'; type Earning = { id: string; service_amount: number; commission_pct: number; commission_amount: number; status: string; created_at: string; service_bookings?: { booking_number: string; scheduled_date: string; services?: { name: string } | null }[] | null };
 
 export default function StaffCommissionsPage() {
   const [summary, setSummary]     = useState<CommissionSummaryOwn | null>(null);
@@ -19,16 +17,16 @@ export default function StaffCommissionsPage() {
   const [loading, setLoading]     = useState(true);
   const [statusFilter, setStatus] = useState<'all' | 'pending' | 'paid'>('all');
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(() => {
     const params = statusFilter !== 'all' ? { status: statusFilter } : {};
-    const [s, e] = await Promise.allSettled([
+    return Promise.allSettled([
       staffDashboardApi.getCommissionSummary(),
       staffDashboardApi.getOwnCommissions(params),
-    ]);
-    if (s.status === 'fulfilled') setSummary(s.value.data.data);
-    if (e.status === 'fulfilled') setEarnings((e.value.data.data ?? []) as Earning[]);
-    setLoading(false);
+    ]).then(([s, e]) => {
+      if (s.status === 'fulfilled') setSummary(s.value.data.data);
+      if (e.status === 'fulfilled') setEarnings((e.value.data.data ?? []) as Earning[]);
+      setLoading(false);
+    });
   }, [statusFilter]);
 
   useEffect(() => { load(); }, [load]);
@@ -92,7 +90,7 @@ export default function StaffCommissionsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr style={{ background: '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
+              <tr style={{ background: '#f4f4f2', borderBottom: '1px solid #e9e8e4' }}>
                 {['Booking', 'Service', 'Date', 'Service Amt', 'Rate', 'Commission', 'Status'].map((h) => (
                   <th key={h} className="px-4 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-neutral-400">{h}</th>
                 ))}

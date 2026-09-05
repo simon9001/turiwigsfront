@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { paymentsApi, type ChargeResult, type CardDetails, type CheckoutData } from '@/api/payments.api';
+import { rememberPaymentContext } from '@/utils/payment-context';
 import toast from 'react-hot-toast';
 
 export type CheckoutStep =
@@ -132,7 +133,9 @@ export function useCheckout(
       const { authorizationUrl, reference } = data.data;
 
       if (authorizationUrl) {
-        // Redirect to Paystack's hosted page — handles M-Pesa STK push natively
+        // Redirect to Paystack's hosted page — handles M-Pesa STK push natively.
+        // Stash the context first; the navigation clears in-memory state.
+        rememberPaymentContext({ bookingId: opts.bookingId, reference });
         window.location.href = authorizationUrl;
         return;
       }

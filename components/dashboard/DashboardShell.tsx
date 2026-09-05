@@ -25,52 +25,42 @@ interface DashboardShellProps {
 
 export { LayoutDashboard, ShoppingBag, BookOpen, Package, Users };
 
-// ─── Skeuomorphic design tokens ────────────────────────────────────────────────
+// ─── Shell tokens ─────────────────────────────────────────────────────────────
+// The sidebar is a dark surface, so everything drawn on it is a white tint.
+// The main pane is light, so its tints are ink.
 
-const SIDEBAR_BG = [
-  'repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px)',
-  'repeating-linear-gradient(90deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 60px)',
-  'linear-gradient(175deg, #0d2a16 0%, #071910 30%, #0b2515 60%, #07190f 100%)',
-].join(', ');
+const SIDEBAR_BG = 'linear-gradient(175deg, #1f1d1a 0%, #171614 55%, #121110 100%)';
 
 const ACTIVE_NAV: React.CSSProperties = {
-  background: 'linear-gradient(135deg, rgba(201,162,39,0.2) 0%, rgba(201,162,39,0.07) 100%)',
-  boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.32), inset 0 1px 3px rgba(0,0,0,0.22), 0 1px 0 rgba(201,162,39,0.1)',
-  borderLeft: '3px solid rgba(201,162,39,0.72)',
-  color: '#e8c84a',
+  background: 'rgba(255,255,255,0.10)',
+  borderLeft: '3px solid #ffffff',
+  color: '#ffffff',
 };
 
 const INACTIVE_NAV: React.CSSProperties = {
-  color: 'rgba(255,255,255,0.45)',
+  color: 'rgba(255,255,255,0.55)',
   borderLeft: '3px solid transparent',
 };
 
 const COLLAPSE_BTN: React.CSSProperties = {
-  background: 'linear-gradient(145deg, #e4c444 0%, #c9a227 50%, #a88318 100%)',
-  boxShadow: '0 3px 8px rgba(0,0,0,0.38), 0 1px 3px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.22)',
-  border: '1px solid rgba(0,0,0,0.18)',
-  color: '#0a2e1f',
+  background: '#ffffff',
+  border: '1px solid var(--line-2)',
+  color: '#171614',
 };
 
 const HEADER_STYLE: React.CSSProperties = {
-  background: 'linear-gradient(180deg, #ffffff 0%, #faf6ec 100%)',
-  boxShadow: '0 2px 10px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04), inset 0 -1px 0 rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,1)',
-  borderBottom: 'none',
+  background: '#ffffff',
+  borderBottom: '1px solid var(--line)',
 };
 
 const MAIN_BG: React.CSSProperties = {
-  background: [
-    'radial-gradient(ellipse at 12% 12%, rgba(201,162,39,0.07) 0%, transparent 55%)',
-    'radial-gradient(ellipse at 88% 88%, rgba(10,46,31,0.06) 0%, transparent 55%)',
-    '#f3ede0',
-  ].join(', '),
+  background: '#f4f4f2',
 };
 
 const AVATAR_STYLE: React.CSSProperties = {
-  background: 'linear-gradient(145deg, rgba(201,162,39,0.3) 0%, rgba(201,162,39,0.12) 100%)',
-  boxShadow: '0 2px 6px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.3)',
-  border: '1.5px solid rgba(201,162,39,0.42)',
-  color: '#0a2e1f',
+  background: 'rgba(255,255,255,0.12)',
+  border: '1px solid rgba(255,255,255,0.22)',
+  color: '#ffffff',
 };
 
 // ─── Component ─────────────────────────────────────────────────────────────────
@@ -92,36 +82,38 @@ export function DashboardShell({ children, navItems, role }: DashboardShellProps
     router.push('/auth/login');
   };
 
-  const SidebarContent = () => (
+  // A plain element, not a component defined during render — declaring a
+  // component inside the parent gives it a new identity every render, which
+  // remounts the whole sidebar and drops its state.
+  const sidebar = (
     <div className="flex h-full flex-col"
-      style={{ boxShadow: 'inset -4px 0 16px rgba(0,0,0,0.3)', borderRight: '1px solid rgba(0,0,0,0.55)' }}>
+      style={{ borderRight: '1px solid rgba(255,255,255,0.10)' }}>
 
       {/* Brand bar */}
       <div
         className={cn('flex h-16 flex-shrink-0 items-center gap-3 px-4 flex-shrink-0')}
         style={{
-          background: 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%)',
-          borderBottom: '1px solid rgba(201,162,39,0.22)',
+          borderBottom: '1px solid rgba(255,255,255,0.10)',
           boxShadow: '0 1px 0 rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)',
         }}
       >
         <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl"
           style={{
-            background: 'linear-gradient(135deg, rgba(201,162,39,0.38) 0%, rgba(201,162,39,0.15) 100%)',
+            background: 'rgba(255,255,255,0.10)',
             boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.22), 0 2px 5px rgba(0,0,0,0.32)',
-            border: '1px solid rgba(201,162,39,0.28)',
+            border: '1px solid rgba(255,255,255,0.18)',
           }}>
           <ShieldCheck className="h-4 w-4"
-            style={{ color: '#e8c84a', filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' }} />
+            style={{ color: '#ffffff' }} />
         </div>
         {!collapsed && (
           <div className="min-w-0 leading-none">
             <p className="text-sm font-bold tracking-wide"
-              style={{ color: '#f0f0f0', textShadow: '0 1px 3px rgba(0,0,0,0.6)' }}>
+              style={{ color: '#ffffff' }}>
               Tiuri
             </p>
             <p className="text-[10px] uppercase tracking-widest mt-0.5"
-              style={{ color: 'rgba(201,162,39,0.58)', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+              style={{ color: 'rgba(255,255,255,0.55)' }}>
               {role === 'admin' ? 'Admin Panel' : 'Staff Panel'}
             </p>
           </div>
@@ -143,8 +135,7 @@ export function DashboardShell({ children, navItems, role }: DashboardShellProps
               )}
               style={active ? ACTIVE_NAV : INACTIVE_NAV}
             >
-              <item.icon className="h-4 w-4 flex-shrink-0"
-                style={active ? { filter: 'drop-shadow(0 0 5px rgba(201,162,39,0.65))' } : {}} />
+              <item.icon className="h-4 w-4 flex-shrink-0" />
               {!collapsed && (
                 <span className="truncate"
                   style={active ? { textShadow: '0 1px 2px rgba(0,0,0,0.35)' } : {}}>
@@ -161,7 +152,7 @@ export function DashboardShell({ children, navItems, role }: DashboardShellProps
         style={{
           borderTop: '1px solid rgba(255,255,255,0.06)',
           boxShadow: 'inset 0 1px 0 rgba(0,0,0,0.35)',
-          background: 'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, transparent 100%)',
+          
         }}>
         {!collapsed && user && (
           <div className="px-3 py-2.5 rounded-xl mb-1"
@@ -171,7 +162,7 @@ export function DashboardShell({ children, navItems, role }: DashboardShellProps
               border: '1px solid rgba(255,255,255,0.06)',
             }}>
             <p className="truncate text-sm font-semibold"
-              style={{ color: 'rgba(255,255,255,0.82)', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+              style={{ color: 'rgba(255,255,255,0.85)' }}>
               {user.name || user.email}
             </p>
             <p className="truncate text-[10px] mt-0.5" style={{ color: 'rgba(255,255,255,0.28)' }}>
@@ -215,7 +206,7 @@ export function DashboardShell({ children, navItems, role }: DashboardShellProps
         )}
         style={{ background: SIDEBAR_BG }}
       >
-        <SidebarContent />
+        {sidebar}
 
         {/* Collapse toggle — polished coin */}
         <button
@@ -237,7 +228,7 @@ export function DashboardShell({ children, navItems, role }: DashboardShellProps
             onClick={() => setMobileOpen(false)} />
           <aside className="absolute left-0 top-0 h-full w-64 flex flex-col"
             style={{ background: SIDEBAR_BG }}>
-            <SidebarContent />
+            {sidebar}
           </aside>
         </div>
       )}
@@ -253,7 +244,7 @@ export function DashboardShell({ children, navItems, role }: DashboardShellProps
           <button
             onClick={() => setMobileOpen(true)}
             className="md:hidden rounded-xl p-2 transition-all active:scale-95"
-            style={{ color: '#6b7280' }}
+            style={{ color: '#6e6b65' }}
             onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.06)'; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
             aria-label="Open menu"
@@ -263,7 +254,7 @@ export function DashboardShell({ children, navItems, role }: DashboardShellProps
 
           {/* Page breadcrumb */}
           <span className="hidden md:block text-sm font-semibold"
-            style={{ color: '#374151', textShadow: '0 1px 0 rgba(255,255,255,0.8)' }}>
+            style={{ color: '#3f3d39', textShadow: '0 1px 0 rgba(255,255,255,0.8)' }}>
             {navItems.find((n) => isActive(n))?.label ?? 'Dashboard'}
           </span>
 
@@ -272,10 +263,10 @@ export function DashboardShell({ children, navItems, role }: DashboardShellProps
               <>
                 <div className="hidden sm:block text-right leading-none">
                   <p className="text-sm font-semibold"
-                    style={{ color: '#1f2937', textShadow: '0 1px 0 rgba(255,255,255,0.9)' }}>
+                    style={{ color: '#2e2c28', textShadow: '0 1px 0 rgba(255,255,255,0.9)' }}>
                     {user.name || user.email}
                   </p>
-                  <p className="text-[10px] capitalize mt-0.5" style={{ color: '#9ca3af' }}>
+                  <p className="text-[10px] capitalize mt-0.5" style={{ color: '#8b8881' }}>
                     {user.role}
                   </p>
                 </div>

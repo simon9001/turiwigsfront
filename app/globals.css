@@ -1,144 +1,225 @@
 @import "tailwindcss";
 
-/* ─── Design tokens ──────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   Tiuri — neutral gallery system
+   The palette is greyscale on purpose: every unit of colour on this site
+   comes from a photograph. Greys are warm-neutral (a hair of yellow) because
+   cool greys make skin tones and hair read grey and lifeless.
+   Colour is reserved for status, so it always means something.
+   ═══════════════════════════════════════════════════════════════════════════ */
 :root {
-  --background: #faf6ed;
-  --foreground: #1a1208;
+  /* Surfaces */
+  --paper:   #ffffff;   /* cards, panels                      */
+  --sand:    #f4f4f2;   /* page ground                        */
+  --mist:    #e9e8e4;   /* skeletons, insets, image placeholder*/
+  --line:    #dedcd7;   /* hairlines                          */
+  --line-2:  #c9c6bf;   /* hairline, emphasised               */
 
-  /* Salon palette */
-  --salon-dark:  #0a2e1f;
-  --salon-mid:   #143d2a;
-  --salon-light: #1e5038;
+  /* Text */
+  --ink:     #171614;   /* headings, primary buttons          */
+  --slate:   #55534e;   /* body copy                          */
+  --mute:    #8b8881;   /* meta, captions, disabled           */
 
-  /* Gold palette */
-  --gold:        #c9a227;
-  --gold-light:  #e8c84a;
-  --gold-dark:   #8b6914;
-  --gold-shine:  #f0d878;
+  /* Functional only — never decoration */
+  --ok:      #2f6f4f;   /* available today / in stock         */
+  --alert:   #a3352b;   /* on sale / low stock                */
 
-  /* Cream palette */
-  --cream:       #faf6ed;
-  --cream-dark:  #f0e6cd;
-  --cream-mid:   #e8d8b8;
+  --background: var(--sand);
+  --foreground: var(--ink);
 
-  /* Skeuomorphic shadows */
-  --shadow-raised:
-    0 1px 0 rgba(255,255,255,0.8) inset,
-    0 8px 24px rgba(0,0,0,0.12),
-    0 2px 6px rgba(0,0,0,0.08);
 
-  --shadow-card:
-    0 1px 0 rgba(255,255,255,0.9) inset,
-    0 4px 16px rgba(0,0,0,0.10),
-    0 1px 4px rgba(0,0,0,0.08),
-    0 0 0 1px rgba(201,162,39,0.08);
-
-  --shadow-gold-btn:
-    0 1px 0 rgba(255,255,255,0.45) inset,
-    0 -1px 0 rgba(0,0,0,0.25) inset,
-    0 4px 12px rgba(139,105,20,0.45),
-    0 1px 3px rgba(0,0,0,0.25);
-
-  --shadow-inset:
-    inset 0 2px 5px rgba(0,0,0,0.18),
-    inset 0 1px 2px rgba(0,0,0,0.12);
+  /* Elevation — used sparingly; structure comes from hairlines, not shadow */
+  --lift-1: 0 1px 2px rgba(23,22,20,0.05);
+  --lift-2: 0 6px 24px -8px rgba(23,22,20,0.16);
 }
 
-/* ─── Tailwind v4 custom colors ──────────────────────────────────────────── */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans:    var(--font-geist-sans);
+  --font-display: var(--font-fraunces);
 
-  --color-salon-dark:  var(--salon-dark);
-  --color-salon-mid:   var(--salon-mid);
-  --color-salon-light: var(--salon-light);
-  --color-gold:        var(--gold);
-  --color-gold-light:  var(--gold-light);
-  --color-gold-dark:   var(--gold-dark);
-  --color-gold-shine:  var(--gold-shine);
-  --color-cream:       var(--cream);
-  --color-cream-dark:  var(--cream-dark);
-  --color-cream-mid:   var(--cream-mid);
+  --color-paper:  var(--paper);
+  --color-sand:   var(--sand);
+  --color-mist:   var(--mist);
+  --color-line:   var(--line);
+  --color-line-2: var(--line-2);
+  --color-ink:    var(--ink);
+  --color-slate:  var(--slate);
+  --color-mute:   var(--mute);
+  --color-ok:     var(--ok);
+  --color-alert:  var(--alert);
+
 }
 
 /* ─── Base ───────────────────────────────────────────────────────────────── */
-body {
-  background: var(--cream);
-  color: var(--foreground);
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ─── Metallic gold button ───────────────────────────────────────────────── */
-.btn-gold {
-  background: linear-gradient(180deg,
-    var(--gold-shine) 0%,
-    var(--gold)       35%,
-    #a07818           65%,
-    var(--gold)       100%
-  );
-  border: 1px solid var(--gold-dark);
-  box-shadow: var(--shadow-gold-btn);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
-  color: #1a0e00;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  transition: filter 0.15s, transform 0.1s, box-shadow 0.1s;
-}
-.btn-gold:hover  { filter: brightness(1.08); }
-.btn-gold:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 6px rgba(139,105,20,0.35), inset 0 1px 3px rgba(0,0,0,0.25);
-}
-
-/* ─── Skeuomorphic card ──────────────────────────────────────────────────── */
-.card-sku {
-  background: #ffffff;
-  border: 1px solid rgba(201,162,39,0.18);
-  box-shadow: var(--shadow-card);
-  border-radius: 1rem;
-}
-.card-sku:hover {
-  border-color: rgba(201,162,39,0.45);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.9) inset,
-    0 8px 32px rgba(0,0,0,0.14),
-    0 2px 6px rgba(0,0,0,0.10),
-    0 0 0 1px rgba(201,162,39,0.25);
-}
-
-/* ─── Recessed input ─────────────────────────────────────────────────────── */
-.input-sku {
-  background: var(--cream);
-  border: 1px solid var(--cream-mid);
-  box-shadow: var(--shadow-inset);
-}
-.input-sku:focus {
-  background: #ffffff;
-  border-color: var(--gold);
-  box-shadow:
-    inset 0 2px 4px rgba(0,0,0,0.1),
-    0 0 0 3px rgba(201,162,39,0.18);
-  outline: none;
-}
-
-/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-
-/* ─── Gold divider ───────────────────────────────────────────────────────── */
-.gold-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: 0.5;
-}
-
-/* ─── Glass panel ────────────────────────────────────────────────────────── */
-.glass-dark {
-  background: rgba(10,46,31,0.85);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  border: 1px solid rgba(201,162,39,0.2);
-}
-
 html { scroll-behavior: smooth; }
+
+/* These belong in the base layer. Unlayered rules outrank every Tailwind
+   utility, so an unlayered `h1 { color }` would silently beat `text-white`
+   and blank out headings sitting on dark panels. */
+@layer base {
+  body {
+    background: var(--sand);
+    color: var(--slate);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 { color: var(--ink); }
+
+  /* Visible keyboard focus, everywhere, in one place. */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* ─── Display type ───────────────────────────────────────────────────────── */
+  .display {
+    font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
+    font-variation-settings: "SOFT" 40, "WONK" 1, "opsz" 40;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    line-height: 1.05;
+    color: var(--ink);
+  }
+  .display-sm {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-variation-settings: "SOFT" 30, "WONK" 0, "opsz" 18;
+    font-weight: 500;
+    letter-spacing: -0.008em;
+    color: var(--ink);
+  }
+
+  /* Body measure: keep prose under ~68 characters. */
+  .measure { max-width: 34em; }
+
+  /* ─── Buttons ────────────────────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0.875rem 1.5rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease,
+                border-color 0.15s ease, opacity 0.15s ease;
+  }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .btn-primary { background: var(--ink); color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: #33302b; }
+
+  .btn-outline {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--line-2);
+  }
+  .btn-outline:hover:not(:disabled) { border-color: var(--ink); background: var(--sand); }
+
+  .btn-ghost { background: transparent; color: var(--ink); }
+  .btn-ghost:hover:not(:disabled) { background: var(--mist); }
+
+  .btn-sm { padding: 0.625rem 1.125rem; font-size: 0.8125rem; }
+
+  /* Solid primary used by the booking flow, which sizes its own buttons. */
+  .btn-ink {
+    background: var(--ink);
+    color: #fff;
+    border: 1px solid var(--ink);
+    font-weight: 600;
+    transition: background-color 0.15s ease;
+  }
+  .btn-ink:hover { background: #33302b; }
+
+  /* ─── Surfaces ───────────────────────────────────────────────────────────── */
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .card-hover { transition: border-color 0.18s ease; }
+  .card-hover:hover { border-color: var(--line-2); }
+
+  /* Photographs read as prints on a wall: near-square corners, hairline edge. */
+  .print {
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--mist);
+    box-shadow: inset 0 0 0 1px rgba(23,22,20,0.07);
+  }
+
+  .card-sku { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; }
+  .card-sku:hover { border-color: var(--line-2); }
+
+  /* ─── Inputs ─────────────────────────────────────────────────────────────── */
+  .input-sku,
+  .field {
+    background: var(--paper);
+    border: 1px solid var(--line-2);
+    border-radius: 8px;
+    color: var(--ink);
+  }
+  .input-sku:focus,
+  .field:focus {
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(23,22,20,0.08);
+    outline: none;
+  }
+
+  .glass-dark {
+    background: rgba(23,22,20,0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .rule { height: 1px; background: var(--line); }
+
+  /* ─── Utilities ──────────────────────────────────────────────────────────── */
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  .rail {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 1rem;
+  }
+  .rail > * { scroll-snap-align: start; flex: 0 0 auto; }
+}
+
+/* ─── Motion ─────────────────────────────────────────────────────────────── */
+/* Two orchestrated moments on the whole site: the hero tiles cross-fading
+   and the photo ribbon. Both stop entirely when motion is not wanted. */
+@keyframes tile-fade { from { opacity: 0; } to { opacity: 1; } }
+.tile-fade { animation: tile-fade 900ms ease both; }
+
+@keyframes ribbon { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+.ribbon-track {
+  display: flex;
+  width: max-content;
+  animation: ribbon 70s linear infinite;
+}
+.ribbon:hover .ribbon-track,
+.ribbon:focus-within .ribbon-track { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ribbon-track { animation: none; }
+  .tile-fade { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

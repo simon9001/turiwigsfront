@@ -15,9 +15,9 @@ const OTP_LENGTH = 6;
 
 export function OtpStep({ onSubmit, loading, error, displayText }: OtpStepProps) {
   const [otp, setOtp] = useState(Array(OTP_LENGTH).fill(''));
-  const inputs = Array.from({ length: OTP_LENGTH }, () => useRef<HTMLInputElement>(null));
+  const inputs = useRef<(HTMLInputElement | null)[]>([]);
 
-  useEffect(() => { inputs[0].current?.focus(); }, []);
+  useEffect(() => { inputs.current[0]?.focus(); }, []);
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;
@@ -27,18 +27,18 @@ export function OtpStep({ onSubmit, loading, error, displayText }: OtpStepProps)
       const next = [...otp];
       digits.forEach((d, i) => { if (index + i < OTP_LENGTH) next[index + i] = d; });
       setOtp(next);
-      inputs[Math.min(index + digits.length, OTP_LENGTH - 1)].current?.focus();
+      inputs.current[Math.min(index + digits.length, OTP_LENGTH - 1)]?.focus();
       return;
     }
     const next = [...otp];
     next[index] = value;
     setOtp(next);
-    if (value && index < OTP_LENGTH - 1) inputs[index + 1].current?.focus();
+    if (value && index < OTP_LENGTH - 1) inputs.current[index + 1]?.focus();
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      inputs[index - 1].current?.focus();
+      inputs.current[index - 1]?.focus();
     }
   };
 
@@ -64,7 +64,7 @@ export function OtpStep({ onSubmit, loading, error, displayText }: OtpStepProps)
         {otp.map((digit, i) => (
           <input
             key={i}
-            ref={inputs[i]}
+            ref={(el) => { inputs.current[i] = el; }}
             type="text"
             inputMode="numeric"
             maxLength={6}

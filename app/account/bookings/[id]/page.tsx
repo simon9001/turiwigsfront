@@ -24,7 +24,8 @@ export default function BookingDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    bookingsApi.get(id).then(({ data }) => setBooking(data.data)).finally(() => setLoading(false));
+    bookingsApi.get(id).then(({ data }) => setBooking(data.data)).catch(() => toast.error('Could not load this booking'))
+                                                                 .finally(() => setLoading(false));
   }, [id]);
 
   const handleCancel = async () => {

@@ -47,8 +47,8 @@ const TABS: Tab[] = [
 ];
 
 // ─── Style tokens ─────────────────────────────────────────────────────────────
-const GOLD  = '#c9a227';
-const DARK  = '#0a2e1f';
+const GOLD  = '#8b8881';
+const DARK  = '#171614';
 const GREEN = '#10b981';
 const RED   = '#ef4444';
 
@@ -126,7 +126,7 @@ function UploadForm({ section, hasMetadata, nextSortOrder, onSuccess, onError }:
   return (
     <div
       style={{
-        background: 'linear-gradient(160deg,#ffffff,#faf7f1)',
+        background: 'linear-gradient(160deg,#ffffff,#f4f4f2)',
         border: '1px solid rgba(0,0,0,0.07)',
         borderRadius: 16,
         boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
@@ -149,7 +149,7 @@ function UploadForm({ section, hasMetadata, nextSortOrder, onSuccess, onError }:
         style={{
           border: `2px dashed ${preview ? GOLD : 'rgba(0,0,0,0.15)'}`,
           borderRadius: 12,
-          background: preview ? 'transparent' : 'rgba(201,162,39,0.03)',
+          background: preview ? 'transparent' : 'rgba(23,22,20,0.03)',
           cursor: 'pointer',
           minHeight: 160,
           display: 'flex',
@@ -244,7 +244,7 @@ function UploadForm({ section, hasMetadata, nextSortOrder, onSuccess, onError }:
           padding: '12px',
           borderRadius: 10,
           background: file && !uploading
-            ? `linear-gradient(135deg,#f0d878 0%,${GOLD} 100%)`
+            ? `#171614`
             : 'rgba(0,0,0,0.06)',
           border: 'none',
           cursor: file && !uploading ? 'pointer' : 'not-allowed',
@@ -319,7 +319,7 @@ function ImageCard({ img, hasMetadata, onDelete, onToggleActive, onSave }: Image
     <div
       style={{
         background: img.is_active
-          ? 'linear-gradient(160deg,#ffffff,#faf7f1)'
+          ? 'linear-gradient(160deg,#ffffff,#f4f4f2)'
           : 'rgba(0,0,0,0.04)',
         border: `1px solid ${img.is_active ? 'rgba(0,0,0,0.07)' : 'rgba(0,0,0,0.12)'}`,
         borderRadius: 14,
@@ -418,7 +418,7 @@ function ImageCard({ img, hasMetadata, onDelete, onToggleActive, onSave }: Image
               disabled={saving}
               style={{
                 flex: 1, padding: '6px 10px', borderRadius: 8, border: 'none',
-                background: `linear-gradient(135deg,#f0d878,${GOLD})`, cursor: 'pointer',
+                background: `#171614`, cursor: 'pointer',
                 fontSize: 11, fontWeight: 700, letterSpacing: '0.08em',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
               }}
@@ -490,7 +490,6 @@ export default function HomepageImagesPage() {
 
   // Fetch all sections in one shot
   useEffect(() => {
-    setLoading(true);
     homepageImagesApi.listAdmin()
       .then(({ data }) => {
         setImageMap((data.data ?? {}) as Partial<Record<HomepageSection, HomepageImage[]>>);
@@ -565,7 +564,7 @@ export default function HomepageImagesPage() {
     : 0;
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#f8f5f0 0%,#faf7f2 100%)', padding: '2rem' }}>
+    <div style={{ minHeight: '100vh', background: '#f4f4f2', padding: '2rem' }}>
 
       {/* ── Toast notifications ─────────────────────────────────────────── */}
       <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none">
@@ -573,7 +572,7 @@ export default function HomepageImagesPage() {
           <div
             key={t.id}
             style={{
-              background: t.type === 'success' ? '#0a2e1f' : '#7f1d1d',
+              background: t.type === 'success' ? '#171614' : '#7f1d1d',
               color: '#fff',
               borderRadius: 10,
               padding: '10px 16px',
@@ -600,7 +599,7 @@ export default function HomepageImagesPage() {
           <LayoutDashboard size={22} color={GOLD} />
           <h1 className="text-2xl font-bold" style={{ color: DARK }}>Homepage Images</h1>
         </div>
-        <p className="text-sm" style={{ color: 'rgba(10,46,31,0.55)' }}>
+        <p className="text-sm" style={{ color: 'rgba(23,22,20,0.55)' }}>
           Manage the images shown in the Hero carousel, Nails &amp; Wigs galleries, and the Book CTA collage.
           Images are stored in Cloudinary and served live to the website.
         </p>
@@ -624,10 +623,10 @@ export default function HomepageImagesPage() {
                 letterSpacing: '0.03em',
                 transition: 'all 0.2s',
                 background: activeTab === tab.id
-                  ? `linear-gradient(135deg,#f0d878,${GOLD})`
+                  ? `#171614`
                   : 'transparent',
                 color: activeTab === tab.id ? '#000' : 'rgba(0,0,0,0.5)',
-                boxShadow: activeTab === tab.id ? '0 2px 8px rgba(201,162,39,0.3)' : 'none',
+                boxShadow: activeTab === tab.id ? '0 2px 8px rgba(23,22,20,0.3)' : 'none',
               }}
             >
               {tab.label}
@@ -648,7 +647,7 @@ export default function HomepageImagesPage() {
       </div>
 
       {/* ── Tab description ─────────────────────────────────────────────── */}
-      <p className="text-sm mb-6 max-w-2xl" style={{ color: 'rgba(10,46,31,0.55)' }}>
+      <p className="text-sm mb-6 max-w-2xl" style={{ color: 'rgba(23,22,20,0.55)' }}>
         {currentTab.description}
       </p>
 
@@ -678,7 +677,7 @@ export default function HomepageImagesPage() {
                 style={{
                   minHeight: 280,
                   border: '2px dashed rgba(0,0,0,0.1)',
-                  background: 'rgba(201,162,39,0.02)',
+                  background: 'rgba(23,22,20,0.02)',
                 }}
               >
                 <ImagePlus size={40} color="rgba(0,0,0,0.15)" />

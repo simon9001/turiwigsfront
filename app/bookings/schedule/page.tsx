@@ -42,10 +42,6 @@ export default function SchedulePage() {
   // Fetch slots when date changes
   useEffect(() => {
     if (!selectedDate || !wizard.service) return;
-    setLoadingSlots(true);
-    setSlots([]);
-    setSelectedTime(null);
-    setSelectedSlotId(null);
     servicesApi
       .getSlots(wizard.service.id, selectedDate)
       .then(({ data }) => setSlots(data.data))
@@ -76,7 +72,15 @@ export default function SchedulePage() {
     const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     if (d < todayStart) return; // past
     if (d.getDay() === 0) return; // Sunday
-    setSelectedDate(toIsoDate(year, month, day));
+    const iso = toIsoDate(year, month, day);
+    if (iso === selectedDate) return; // already showing this day's slots
+    // Reset the previous day's selection here, with the click that caused
+    // it, rather than in the effect that fetches the new slots.
+    setLoadingSlots(true);
+    setSlots([]);
+    setSelectedTime(null);
+    setSelectedSlotId(null);
+    setSelectedDate(iso);
   }
 
   function handleContinue() {
@@ -95,18 +99,18 @@ export default function SchedulePage() {
   for (let d = 1; d <= daysInMonth; d++) calendarCells.push({ day: d });
 
   return (
-    <div className="min-h-screen" style={{ background: '#faf6ed' }}>
+    <div className="min-h-screen" style={{ background: '#f4f4f2' }}>
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center gap-3 mb-2">
           <Link
             href="/bookings/technician"
             className="w-9 h-9 flex items-center justify-center rounded-full"
-            style={{ background: '#fff', border: '1px solid #e0d8c8' }}
+            style={{ background: '#fff', border: '1px solid #dedcd7' }}
           >
-            <ArrowLeft className="h-4 w-4" style={{ color: '#143d2a' }} />
+            <ArrowLeft className="h-4 w-4" style={{ color: '#55534e' }} />
           </Link>
-          <h1 className="text-xl font-bold" style={{ color: '#0a2e1f' }}>
+          <h1 className="text-xl font-bold" style={{ color: '#171614' }}>
             Pick a Date & Time
           </h1>
         </div>
@@ -130,10 +134,10 @@ export default function SchedulePage() {
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-sm truncate" style={{ color: '#0a2e1f' }}>
+              <p className="font-semibold text-sm truncate" style={{ color: '#171614' }}>
                 {wizard.service?.name ?? 'Service'}
               </p>
-              <p className="text-xs" style={{ color: '#7a8694' }}>
+              <p className="text-xs" style={{ color: '#8b8881' }}>
                 with{' '}
                 {wizard.technician ? wizard.technician.name : 'Any Available Technician'}
               </p>
@@ -148,19 +152,19 @@ export default function SchedulePage() {
             <button
               onClick={prevMonth}
               className="w-8 h-8 flex items-center justify-center rounded-full"
-              style={{ background: '#faf6ed', border: '1px solid #e0d8c8' }}
+              style={{ background: '#f4f4f2', border: '1px solid #dedcd7' }}
             >
-              <ChevronLeft className="h-4 w-4" style={{ color: '#143d2a' }} />
+              <ChevronLeft className="h-4 w-4" style={{ color: '#55534e' }} />
             </button>
-            <span className="font-semibold text-base" style={{ color: '#0a2e1f' }}>
+            <span className="font-semibold text-base" style={{ color: '#171614' }}>
               {MONTHS[viewMonth]} {viewYear}
             </span>
             <button
               onClick={nextMonth}
               className="w-8 h-8 flex items-center justify-center rounded-full"
-              style={{ background: '#faf6ed', border: '1px solid #e0d8c8' }}
+              style={{ background: '#f4f4f2', border: '1px solid #dedcd7' }}
             >
-              <ChevronRight className="h-4 w-4" style={{ color: '#143d2a' }} />
+              <ChevronRight className="h-4 w-4" style={{ color: '#55534e' }} />
             </button>
           </div>
 
@@ -170,7 +174,7 @@ export default function SchedulePage() {
               <div
                 key={d}
                 className="text-center text-xs font-semibold py-1"
-                style={{ color: '#9a8060' }}
+                style={{ color: '#8b8881' }}
               >
                 {d}
               </div>
@@ -208,13 +212,13 @@ export default function SchedulePage() {
                     height: '36px',
                     cursor: isDisabled ? 'not-allowed' : 'pointer',
                     background: isSelected
-                      ? '#0a2e1f'
+                      ? '#171614'
                       : 'transparent',
                     color: isSelected
                       ? '#fff'
                       : isDisabled
-                      ? '#d1d5db'
-                      : '#0a2e1f',
+                      ? '#c9c6bf'
+                      : '#171614',
                     fontWeight: isToday || isSelected ? 600 : 400,
                     fontSize: '13px',
                   }}
@@ -223,7 +227,7 @@ export default function SchedulePage() {
                   {isToday && !isSelected && (
                     <span
                       className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
-                      style={{ background: '#c9a227' }}
+                      style={{ background: '#171614' }}
                     />
                   )}
                 </button>
@@ -235,7 +239,7 @@ export default function SchedulePage() {
         {/* Time slots */}
         {selectedDate && (
           <div className="mb-6">
-            <h3 className="font-semibold text-sm mb-3" style={{ color: '#0a2e1f' }}>
+            <h3 className="font-semibold text-sm mb-3" style={{ color: '#171614' }}>
               Available Times
             </h3>
 
@@ -245,14 +249,14 @@ export default function SchedulePage() {
                   <div
                     key={i}
                     className="h-10 rounded-xl animate-pulse"
-                    style={{ background: '#e0d8c8' }}
+                    style={{ background: '#dedcd7' }}
                   />
                 ))}
               </div>
             )}
 
             {!loadingSlots && slots.length === 0 && (
-              <p className="text-sm text-center py-4" style={{ color: '#7a8694' }}>
+              <p className="text-sm text-center py-4" style={{ color: '#8b8881' }}>
                 No slots available for this date.
               </p>
             )}
@@ -277,21 +281,21 @@ export default function SchedulePage() {
                       style={
                         isBooked
                           ? {
-                              background: '#f3f4f6',
-                              color: '#9ca3af',
+                              background: '#e9e8e4',
+                              color: '#55534e',
                               cursor: 'not-allowed',
-                              border: '1px solid #e5e7eb',
+                              border: '1px solid #dedcd7',
                             }
                           : isSelected
                           ? {
-                              background: '#0a2e1f',
+                              background: '#171614',
                               color: '#fff',
-                              border: '1px solid #0a2e1f',
+                              border: '1px solid #171614',
                             }
                           : {
                               background: '#fff',
-                              color: '#0a2e1f',
-                              border: '1px solid #e0d8c8',
+                              color: '#171614',
+                              border: '1px solid #dedcd7',
                             }
                       }
                     >
@@ -308,7 +312,7 @@ export default function SchedulePage() {
         <button
           onClick={handleContinue}
           disabled={!selectedDate || !selectedTime}
-          className="btn-gold w-full rounded-xl font-semibold text-base disabled:opacity-40 disabled:cursor-not-allowed"
+          className="btn-ink w-full rounded-xl font-semibold text-base disabled:opacity-40 disabled:cursor-not-allowed"
           style={{ height: '52px' }}
         >
           Continue

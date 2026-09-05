@@ -1,14 +1,13 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Package, AlertTriangle, Plus, ArrowDown, ArrowUp } from 'lucide-react';
+import { AlertTriangle, ArrowDown, ArrowUp } from 'lucide-react';
 import { useRealtimeRefresh } from '@/hooks/useRealtimeRefresh';
 import { inventoryApi } from '@/api/erp.api';
 import { formatPrice } from '@/utils/formatters';
-import { cn } from '@/utils/cn';
 import toast from 'react-hot-toast';
 
-const GOLD = '#c9a227'; const RED = '#ef4444'; const ORANGE = '#f97316'; const GREEN = '#10b981';
+const GOLD = '#8b8881'; const RED = '#ef4444'; const ORANGE = '#f97316'; const GREEN = '#10b981';
 
 type Item = {
   id: string; name: string; unit: string; sku?: string;
@@ -26,14 +25,13 @@ export default function AdminInventoryPage() {
   const [txnQty, setTxnQty]     = useState('');
   const [txnNotes, setTxnNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [tab, setTab]           = useState<'all' | 'alerts'>('all');
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    const [i, a] = await Promise.allSettled([inventoryApi.listItems(), inventoryApi.getLowStock()]);
-    if (i.status === 'fulfilled') setItems((i.value.data.data ?? []) as Item[]);
-    if (a.status === 'fulfilled') setAlerts(a.value.data.data as { lowStock: Item[]; outOfStock: Item[] });
-    setLoading(false);
+  const load = useCallback(() => {
+    return Promise.allSettled([inventoryApi.listItems(), inventoryApi.getLowStock()]).then(([i, a]) => {
+      if (i.status === 'fulfilled') setItems((i.value.data.data ?? []) as Item[]);
+      if (a.status === 'fulfilled') setAlerts(a.value.data.data as { lowStock: Item[]; outOfStock: Item[] });
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -115,7 +113,7 @@ export default function AdminInventoryPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr style={{ background: '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
+              <tr style={{ background: '#f4f4f2', borderBottom: '1px solid #e9e8e4' }}>
                 {['Item', 'Category', 'Stock', 'Unit', 'Cost', 'Status', 'Actions'].map((h) => (
                   <th key={h} className="px-4 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-neutral-400">{h}</th>
                 ))}

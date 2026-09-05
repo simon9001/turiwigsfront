@@ -3,22 +3,12 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Play, CheckCircle } from 'lucide-react';
-import { Badge } from '@/components/ui/Badge';
 import { adminApi } from '@/api/admin.api';
 import type { Booking, BookingStatus } from '@/types';
 
 const BOOKING_STATUS_OPTIONS: BookingStatus[] = [
   'pending', 'confirmed', 'in_progress', 'completed', 'cancelled', 'no_show',
 ];
-
-const statusVariant: Record<BookingStatus, 'default' | 'info' | 'success' | 'warning' | 'danger'> = {
-  pending: 'warning',
-  confirmed: 'info',
-  in_progress: 'info',
-  completed: 'success',
-  cancelled: 'danger',
-  no_show: 'default',
-};
 
 interface BookingsTableProps {
   bookings: Booking[];
@@ -117,7 +107,7 @@ export function BookingsTable({ bookings, onBookingUpdated }: BookingsTableProps
                   <button
                     onClick={() => handleStart(booking.id)}
                     className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold text-white transition-opacity hover:opacity-80"
-                    style={{ background: '#1e5038' }}
+                    style={{ background: '#2e2c28' }}
                     title="Mark as in progress"
                   >
                     <Play className="h-3 w-3" /> Start
@@ -127,7 +117,7 @@ export function BookingsTable({ bookings, onBookingUpdated }: BookingsTableProps
                   <button
                     onClick={() => handleComplete(booking.id)}
                     className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold text-white transition-opacity hover:opacity-80"
-                    style={{ background: '#c9a227' }}
+                    style={{ background: '#171614' }}
                     title="Mark as completed and free the slot"
                   >
                     <CheckCircle className="h-3 w-3" /> Done

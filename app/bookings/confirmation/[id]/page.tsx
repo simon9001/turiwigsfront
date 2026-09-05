@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { MapPin, CalendarPlus, ListOrdered, CheckCircle2, Navigation } from 'lucide-react';
+import { CalendarPlus, ListOrdered, CheckCircle2, Navigation } from 'lucide-react';
 
 const PARLOUR_ADDRESS = 'Tiuri Nails & Wigs Parlour, Jewel Complex, Room 220, 2nd Floor TRM Drive, Nairobi';
 const MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Tiuri+Nails+%26+Wigs+Parlour,+Jewel+Complex,+Room+220,+2nd+Floor+TRM+Dr,+Nairobi';
@@ -62,14 +62,14 @@ export default function ConfirmationPage() {
         <div
           className="px-6 pt-10 pb-8 text-center relative overflow-hidden"
           style={{
-            background: 'linear-gradient(135deg, #0a2e1f 0%, #1e5038 100%)',
+            background: '#171614',
           }}
         >
           {/* Decorative glow */}
           <div
             className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full opacity-10 pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, #f0d878 0%, transparent 70%)',
+              background: 'radial-gradient(circle, #ffffff 0%, transparent 70%)',
               top: '-40px',
             }}
           />
@@ -79,11 +79,11 @@ export default function ConfirmationPage() {
             <div
               className="w-20 h-20 rounded-full flex items-center justify-center"
               style={{
-                background: 'linear-gradient(135deg, #c9a227, #f0d878)',
+                background: '#171614',
                 animation: 'bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
               }}
             >
-              <CheckCircle2 className="h-10 w-10" style={{ color: '#1a0e00' }} />
+              <CheckCircle2 className="h-10 w-10" style={{ color: '#ffffff' }} />
             </div>
           </div>
 
@@ -99,7 +99,7 @@ export default function ConfirmationPage() {
             className="relative z-10 mt-4 inline-flex items-center gap-2 rounded-xl px-4 py-2"
             style={{
               background: 'rgba(255,255,255,0.12)',
-              border: '1px solid rgba(201,162,39,0.35)',
+              border: '1px solid rgba(23,22,20,0.35)',
             }}
           >
             <span className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>
@@ -107,7 +107,7 @@ export default function ConfirmationPage() {
             </span>
             <span
               className="font-bold text-base tracking-widest"
-              style={{ color: '#f0d878' }}
+              style={{ color: '#ffffff' }}
             >
               {booking?.booking_number ?? wizard.createdBookingNumber ?? '—'}
             </span>
@@ -118,43 +118,43 @@ export default function ConfirmationPage() {
         <div className="px-6 py-6 space-y-4">
           {/* Service info */}
           <div className="card-sku p-4">
-            <h3 className="font-semibold text-sm mb-3" style={{ color: '#9a8060' }}>
+            <h3 className="font-semibold text-sm mb-3" style={{ color: '#8b8881' }}>
               Appointment Details
             </h3>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span style={{ color: '#7a8694' }}>Service</span>
-                <span className="font-semibold" style={{ color: '#0a2e1f' }}>
+                <span style={{ color: '#8b8881' }}>Service</span>
+                <span className="font-semibold" style={{ color: '#171614' }}>
                   {serviceName}
                 </span>
               </div>
               {booking?.scheduled_date && (
                 <div className="flex justify-between text-sm">
-                  <span style={{ color: '#7a8694' }}>Date</span>
-                  <span className="font-medium" style={{ color: '#0a2e1f' }}>
+                  <span style={{ color: '#8b8881' }}>Date</span>
+                  <span className="font-medium" style={{ color: '#171614' }}>
                     {formatDate(booking.scheduled_date)}
                   </span>
                 </div>
               )}
               {booking?.scheduled_time && (
                 <div className="flex justify-between text-sm">
-                  <span style={{ color: '#7a8694' }}>Time</span>
-                  <span className="font-medium" style={{ color: '#0a2e1f' }}>
+                  <span style={{ color: '#8b8881' }}>Time</span>
+                  <span className="font-medium" style={{ color: '#171614' }}>
                     {booking.scheduled_time}
                   </span>
                 </div>
               )}
               {wizard.technician && (
                 <div className="flex justify-between text-sm">
-                  <span style={{ color: '#7a8694' }}>Technician</span>
-                  <span className="font-medium" style={{ color: '#0a2e1f' }}>
+                  <span style={{ color: '#8b8881' }}>Technician</span>
+                  <span className="font-medium" style={{ color: '#171614' }}>
                     {wizard.technician.name}
                   </span>
                 </div>
               )}
               <div className="flex justify-between text-sm">
-                <span style={{ color: '#7a8694' }}>Location</span>
-                <span className="font-medium text-right" style={{ color: '#0a2e1f', maxWidth: '200px' }}>
+                <span style={{ color: '#8b8881' }}>Location</span>
+                <span className="font-medium text-right" style={{ color: '#171614', maxWidth: '200px' }}>
                   {PARLOUR_ADDRESS}
                 </span>
               </div>
@@ -163,26 +163,26 @@ export default function ConfirmationPage() {
 
           {/* Price breakdown */}
           <div className="card-sku p-4">
-            <h3 className="font-semibold text-sm mb-3" style={{ color: '#9a8060' }}>
+            <h3 className="font-semibold text-sm mb-3" style={{ color: '#8b8881' }}>
               Payment Summary
             </h3>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span style={{ color: '#7a8694' }}>Service Price</span>
-                <span className="font-medium" style={{ color: '#0a2e1f' }}>
+                <span style={{ color: '#8b8881' }}>Service Price</span>
+                <span className="font-medium" style={{ color: '#171614' }}>
                   {formatPrice(servicePrice)}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span style={{ color: '#7a8694' }}>Deposit Paid (30%)</span>
-                <span className="font-semibold" style={{ color: '#143d2a' }}>
+                <span style={{ color: '#8b8881' }}>Deposit Paid (30%)</span>
+                <span className="font-semibold" style={{ color: '#55534e' }}>
                   {formatPrice(depositAmount)}
                 </span>
               </div>
-              <div className="gold-divider my-1" />
+              <div className="rule my-1" />
               <div className="flex justify-between text-sm">
-                <span style={{ color: '#7a8694' }}>Balance Due at Appointment</span>
-                <span className="font-semibold" style={{ color: '#c9a227' }}>
+                <span style={{ color: '#8b8881' }}>Balance Due at Appointment</span>
+                <span className="font-semibold" style={{ color: '#8b8881' }}>
                   {formatPrice(remaining)}
                 </span>
               </div>
@@ -193,9 +193,9 @@ export default function ConfirmationPage() {
           <div className="flex flex-col items-center gap-2 py-2">
             <div
               className="w-[120px] h-[120px] rounded-xl flex flex-col items-center justify-center"
-              style={{ background: '#0a2e1f' }}
+              style={{ background: '#171614' }}
             >
-              <span className="text-lg font-bold" style={{ color: '#f0d878' }}>
+              <span className="text-lg font-bold" style={{ color: '#ffffff' }}>
                 QR
               </span>
               <span
@@ -205,7 +205,7 @@ export default function ConfirmationPage() {
                 {booking?.booking_number ?? wizard.createdBookingNumber ?? '—'}
               </span>
             </div>
-            <p className="text-xs" style={{ color: '#9a8060' }}>
+            <p className="text-xs" style={{ color: '#8b8881' }}>
               Show at salon for check-in
             </p>
           </div>
@@ -231,8 +231,8 @@ export default function ConfirmationPage() {
                 className="flex items-center justify-center gap-2 rounded-xl h-11 text-sm font-semibold"
                 style={{
                   background: '#fff',
-                  border: '1px solid #e0d8c8',
-                  color: '#143d2a',
+                  border: '1px solid #dedcd7',
+                  color: '#55534e',
                   boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
                 }}
               >
@@ -247,8 +247,8 @@ export default function ConfirmationPage() {
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 rounded-xl h-11 text-sm font-semibold"
               style={{
-                background: 'linear-gradient(135deg,#f0d878,#c9a227)',
-                color: '#0a2e1f',
+                background: '#171614',
+                color: '#ffffff',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
               }}
             >
@@ -261,8 +261,8 @@ export default function ConfirmationPage() {
             href="/account/bookings"
             className="flex items-center justify-center gap-2 w-full rounded-xl h-11 text-sm font-semibold"
             style={{
-              background: 'linear-gradient(135deg, #0a2e1f, #1e5038)',
-              color: '#f0d878',
+              background: '#171614',
+              color: '#ffffff',
             }}
           >
             <ListOrdered className="h-4 w-4" />

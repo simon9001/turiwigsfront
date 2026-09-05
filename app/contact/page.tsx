@@ -4,10 +4,9 @@ import { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import client from '@/api/client';
-import type { Metadata } from 'next';
 
-// Note: metadata export doesn't work in 'use client' components — move to a layout if needed
-// export const metadata: Metadata = { title: 'Contact Us | Tiuri Nails & Wigs Parlour' };
+// This page is a client component, so it cannot export metadata.
+// To give it a title, add a Contact-specific layout.tsx that exports one.
 
 const CONTACT_INFO = [
   {
@@ -44,9 +43,9 @@ const SUBJECTS = [
 
 const fieldStyle = {
   background: '#fff',
-  border: '1px solid #e0d0b0',
+  border: '1px solid #dedcd7',
   boxShadow: 'inset 0 2px 5px rgba(0,0,0,0.07)',
-  color: '#1a1a1a',
+  color: '#171614',
   outline: 'none',
   width: '100%',
   borderRadius: 12,
@@ -83,13 +82,13 @@ export default function ContactPage() {
   };
 
   return (
-    <div style={{ background: '#faf6ed', minHeight: '100vh' }}>
+    <div style={{ background: '#f4f4f2', minHeight: '100vh' }}>
 
       {/* Header */}
       <div className="py-16 sm:py-20 text-center"
-        style={{ background: 'linear-gradient(135deg, #0a2e1f 0%, #1e5038 100%)' }}>
+        style={{ background: '#171614' }}>
         <p className="text-[11px] font-semibold uppercase tracking-[0.4em] mb-3"
-          style={{ color: '#c9a227' }}>
+          style={{ color: 'rgba(255,255,255,0.72)' }}>
           Reach Out
         </p>
         <h1 className="text-3xl sm:text-5xl font-bold text-white">Get in Touch</h1>
@@ -105,10 +104,10 @@ export default function ContactPage() {
           {/* ── Contact info ────────────────────────────────────────── */}
           <div className="lg:col-span-2 space-y-6">
             <div>
-              <h2 className="text-xl font-bold mb-1" style={{ color: '#0a2e1f' }}>
+              <h2 className="text-xl font-bold mb-1" style={{ color: '#171614' }}>
                 Tiuri Nails &amp; Wigs Parlour
               </h2>
-              <p className="text-sm leading-relaxed" style={{ color: '#6b7280' }}>
+              <p className="text-sm leading-relaxed" style={{ color: '#6e6b65' }}>
                 Nairobi&apos;s premier destination for premium human hair wigs and professional nail services.
               </p>
             </div>
@@ -116,14 +115,14 @@ export default function ContactPage() {
             {CONTACT_INFO.map(({ icon: Icon, label, lines }) => (
               <div key={label} className="flex items-start gap-4">
                 <div className="flex-shrink-0 rounded-xl p-3 mt-0.5"
-                  style={{ background: 'rgba(201,162,39,0.12)' }}>
-                  <Icon className="h-4 w-4" style={{ color: '#c9a227' }} />
+                  style={{ background: 'rgba(23,22,20,0.12)' }}>
+                  <Icon className="h-4 w-4" style={{ color: '#8b8881' }} />
                 </div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider mb-1"
-                    style={{ color: '#9a8060' }}>{label}</p>
+                    style={{ color: '#8b8881' }}>{label}</p>
                   {lines.map((l) => (
-                    <p key={l} className="text-sm" style={{ color: '#0a2e1f' }}>{l}</p>
+                    <p key={l} className="text-sm" style={{ color: '#171614' }}>{l}</p>
                   ))}
                 </div>
               </div>
@@ -132,7 +131,7 @@ export default function ContactPage() {
             {/* Social */}
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider mb-3"
-                style={{ color: '#9a8060' }}>Follow Us</p>
+                style={{ color: '#8b8881' }}>Follow Us</p>
               <div className="flex gap-3">
                 {[
                   { label: 'TikTok', href: 'https://www.tiktok.com/@tiurinails' },
@@ -140,8 +139,8 @@ export default function ContactPage() {
                   { label: 'Facebook', href: 'https://www.facebook.com/tiurinails' },
                 ].map(({ label, href }) => (
                   <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                    className="rounded-lg px-3 py-1.5 text-xs font-semibold border transition-colors hover:border-gold/50"
-                    style={{ borderColor: '#e0d0b0', color: '#0a2e1f' }}>
+                    className="rounded-lg px-3 py-1.5 text-xs font-semibold border transition-colors hover:border-ink"
+                    style={{ borderColor: '#dedcd7', color: '#171614' }}>
                     {label}
                   </a>
                 ))}
@@ -153,36 +152,36 @@ export default function ContactPage() {
           <div className="lg:col-span-3">
             {sent ? (
               <div className="flex flex-col items-center justify-center text-center rounded-2xl border p-16 gap-5"
-                style={{ borderColor: '#e0d0b0', background: '#fff' }}>
+                style={{ borderColor: '#dedcd7', background: '#fff' }}>
                 <div className="rounded-full p-5" style={{ background: 'rgba(34,197,94,0.1)' }}>
                   <CheckCircle className="h-10 w-10 text-emerald-500" />
                 </div>
-                <h3 className="text-xl font-bold" style={{ color: '#0a2e1f' }}>Message Sent!</h3>
-                <p className="text-sm leading-relaxed max-w-sm" style={{ color: '#6b7280' }}>
+                <h3 className="text-xl font-bold" style={{ color: '#171614' }}>Message Sent!</h3>
+                <p className="text-sm leading-relaxed max-w-sm" style={{ color: '#6e6b65' }}>
                   Thank you for reaching out. We&apos;ll get back to you within 24 hours.
                 </p>
                 <button
                   onClick={() => { setSent(false); setForm({ name: '', email: '', phone: '', subject: SUBJECTS[0], message: '' }); }}
                   className="mt-2 text-sm font-semibold underline underline-offset-2"
-                  style={{ color: '#c9a227' }}>
+                  style={{ color: '#8b8881' }}>
                   Send another message
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit}
                 className="rounded-2xl border p-6 sm:p-8 space-y-5"
-                style={{ borderColor: '#e0d0b0', background: '#fff' }}>
+                style={{ borderColor: '#dedcd7', background: '#fff' }}>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium" style={{ color: '#143d2a' }}>
+                    <label className="text-sm font-medium" style={{ color: '#55534e' }}>
                       Full Name <span style={{ color: '#ef4444' }}>*</span>
                     </label>
                     <input value={form.name} onChange={(e) => set('name', e.target.value)}
                       placeholder="Jane Wanjiku" required style={fieldStyle} />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium" style={{ color: '#143d2a' }}>
+                    <label className="text-sm font-medium" style={{ color: '#55534e' }}>
                       Email <span style={{ color: '#ef4444' }}>*</span>
                     </label>
                     <input type="email" value={form.email} onChange={(e) => set('email', e.target.value)}
@@ -192,14 +191,14 @@ export default function ContactPage() {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium" style={{ color: '#143d2a' }}>
+                    <label className="text-sm font-medium" style={{ color: '#55534e' }}>
                       Phone <span className="font-normal text-neutral-400">(optional)</span>
                     </label>
                     <input value={form.phone} onChange={(e) => set('phone', e.target.value)}
                       placeholder="+254 7XX XXX XXX" style={fieldStyle} />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium" style={{ color: '#143d2a' }}>Subject</label>
+                    <label className="text-sm font-medium" style={{ color: '#55534e' }}>Subject</label>
                     <select value={form.subject} onChange={(e) => set('subject', e.target.value)}
                       style={{ ...fieldStyle, appearance: 'none', cursor: 'pointer' }}>
                       {SUBJECTS.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -208,7 +207,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium" style={{ color: '#143d2a' }}>
+                  <label className="text-sm font-medium" style={{ color: '#55534e' }}>
                     Message <span style={{ color: '#ef4444' }}>*</span>
                   </label>
                   <textarea value={form.message} onChange={(e) => set('message', e.target.value)}
@@ -218,13 +217,13 @@ export default function ContactPage() {
 
                 <button type="submit" disabled={sending}
                   className="w-full inline-flex items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold transition-opacity hover:opacity-90 disabled:opacity-60"
-                  style={{ background: 'linear-gradient(135deg, #1e5038 0%, #0a2e1f 100%)', color: '#f0d878', border: '1px solid rgba(201,162,39,0.4)' }}>
+                  style={{ background: '#171614', color: '#ffffff', border: '1px solid rgba(23,22,20,0.4)' }}>
                   {sending
-                    ? <><span className="h-4 w-4 animate-spin rounded-full border-2 border-gold/30 border-t-gold" /> Sending…</>
+                    ? <><span className="h-4 w-4 animate-spin rounded-full border-2 border-line-2 border-t-ink" /> Sending…</>
                     : <><Send className="h-4 w-4" /> Send Message</>}
                 </button>
 
-                <p className="text-center text-xs" style={{ color: '#9a8060' }}>
+                <p className="text-center text-xs" style={{ color: '#8b8881' }}>
                   We typically reply within 24 hours.
                 </p>
               </form>

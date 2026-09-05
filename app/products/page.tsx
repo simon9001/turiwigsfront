@@ -2,13 +2,13 @@
 
 import { Suspense, useEffect, useState, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { SlidersHorizontal, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { productsApi, type ProductFilters } from '@/api/products.api';
 import { ProductGrid } from '@/components/products/ProductGrid';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { Spinner } from '@/components/ui/Spinner';
 import type { Product } from '@/types';
+import toast from 'react-hot-toast';
 
 function ProductsContent() {
   const searchParams = useSearchParams();
@@ -30,15 +30,14 @@ function ProductsContent() {
     order: (searchParams.get('order') as ProductFilters['order']) ?? undefined,
   };
 
-  const fetchProducts = useCallback(async () => {
-    setLoading(true);
-    try {
-      const { data } = await productsApi.list(filters);
-      setProducts(data.data);
-      setTotal(data.meta.total);
-    } finally {
-      setLoading(false);
-    }
+  const fetchProducts = useCallback(() => {
+    return productsApi.list(filters)
+      .then(({ data }) => {
+        setProducts(data.data);
+        setTotal(data.meta.total);
+      })
+      .catch(() => toast.error('Could not load products'))
+      .finally(() => setLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, page]);
 
@@ -47,7 +46,11 @@ function ProductsContent() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams(searchParams.toString());
-    search ? params.set('search', search) : params.delete('search');
+    if (search) {
+      params.set('search', search);
+    } else {
+      params.delete('search');
+    }
     params.delete('page');
     router.push(`/products?${params.toString()}`);
   };

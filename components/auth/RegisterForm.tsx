@@ -79,9 +79,9 @@ export function RegisterForm() {
             onClick={() => setShowPwd((v) => !v)}
             aria-label={showPwd ? 'Hide password' : 'Show password'}
             className="flex items-center justify-center transition-colors"
-            style={{ color: '#9a8060' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#0a2e1f'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#9a8060'; }}
+            style={{ color: '#8b8881' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#171614'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#8b8881'; }}
           >
             {showPwd ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
@@ -103,9 +103,9 @@ export function RegisterForm() {
             onClick={() => setShowConfirm((v) => !v)}
             aria-label={showConfirm ? 'Hide password' : 'Show password'}
             className="flex items-center justify-center transition-colors"
-            style={{ color: '#9a8060' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#0a2e1f'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#9a8060'; }}
+            style={{ color: '#8b8881' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#171614'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#8b8881'; }}
           >
             {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
@@ -127,29 +127,29 @@ export function RegisterForm() {
           <div
             className="h-5 w-5 rounded flex items-center justify-center transition-all"
             style={{
-              background: agreed ? '#c9a227' : '#ffffff',
+              background: agreed ? '#8b8881' : '#ffffff',
               border: agreed
-                ? '1.5px solid #8b6914'
+                ? '1.5px solid #171614'
                 : showTermsError
                   ? '1.5px solid rgb(220,38,38)'
-                  : '1.5px solid #d1d5db',
-              boxShadow: agreed ? '0 1px 4px rgba(201,162,39,0.4)' : 'inset 0 1px 3px rgba(0,0,0,0.1)',
+                  : '1.5px solid #c9c6bf',
+              boxShadow: agreed ? '0 1px 4px rgba(23,22,20,0.4)' : 'inset 0 1px 3px rgba(0,0,0,0.1)',
             }}
           >
             {agreed && (
               <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                <path d="M1 3.5L3.8 6.5L9 1" stroke="#1a0e00" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M1 3.5L3.8 6.5L9 1" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             )}
           </div>
         </div>
-        <span className="text-sm leading-snug" style={{ color: '#374151' }}>
+        <span className="text-sm leading-snug" style={{ color: '#3f3d39' }}>
           I have read and agree to the{' '}
           <Link
             href="/terms"
             target="_blank"
             className="font-semibold underline underline-offset-2 transition-opacity hover:opacity-70"
-            style={{ color: '#0a2e1f' }}
+            style={{ color: '#171614' }}
           >
             Terms &amp; Conditions
           </Link>
@@ -162,14 +162,7 @@ export function RegisterForm() {
 
       {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>}
 
-      <Button type="submit" fullWidth size="lg" loading={loading} disabled={!agreed} variant="secondary"
-        style={{
-          background: agreed ? 'linear-gradient(180deg,#1e5038 0%,#0a2e1f 100%)' : undefined,
-          border: '1px solid rgba(10,46,31,0.6)',
-          color: agreed ? '#ffffff' : '#6b7280',
-          boxShadow: agreed ? '0 1px 0 rgba(255,255,255,0.08) inset,0 4px 12px rgba(10,46,31,0.35)' : undefined,
-        }}
-      >
+      <Button type="submit" fullWidth size="lg" loading={loading} disabled={!agreed}>
         Create Account
       </Button>
 

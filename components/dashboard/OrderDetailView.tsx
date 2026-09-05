@@ -3,12 +3,12 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { ArrowLeft, RefreshCcw, Package, PackageCheck, Truck, CheckCircle2, Clock } from 'lucide-react';
+import { ArrowLeft, RefreshCcw, PackageCheck, Truck, CheckCircle2, Clock } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { PageSpinner } from '@/components/ui/Spinner';
 import { adminApi } from '@/api/admin.api';
-import { formatPrice, formatDate, formatDateTime } from '@/utils/formatters';
+import { formatPrice, formatDateTime } from '@/utils/formatters';
 import type { Order, OrderStatus, PaymentStatus } from '@/types';
 
 // ─── Status helpers ───────────────────────────────────────────────────────────
@@ -105,7 +105,7 @@ export function OrderDetailView({ orderId, backHref, canManagePayments }: OrderD
   if (!order) return (
     <div className="text-center py-16">
       <p className="text-neutral-400">Order not found.</p>
-      <Link href={backHref} className="mt-4 inline-block text-sm text-gold hover:underline">← Back</Link>
+      <Link href={backHref} className="mt-4 inline-block text-sm text-ink hover:underline">← Back</Link>
     </div>
   );
 
@@ -222,7 +222,7 @@ export function OrderDetailView({ orderId, backHref, canManagePayments }: OrderD
                 <div
                   className="absolute left-0 top-4 h-0.5 z-0 transition-all duration-500"
                   style={{
-                    background: 'linear-gradient(90deg,#c9a227,#f0d878)',
+                    background: '#171614',
                     width: `${(deliveryIndex(order.order_status) / (DELIVERY_STAGES.length - 1)) * 100}%`,
                   }}
                 />
@@ -235,14 +235,14 @@ export function OrderDetailView({ orderId, backHref, canManagePayments }: OrderD
                         className="h-8 w-8 rounded-full flex items-center justify-center transition-all"
                         style={
                           done || current
-                            ? { background: 'linear-gradient(135deg,#c9a227,#f0d878)', boxShadow: current ? '0 0 0 3px rgba(201,162,39,0.25)' : 'none' }
-                            : { background: '#f3f4f6', border: '1px solid #e5e7eb' }
+                            ? { background: '#171614', boxShadow: current ? '0 0 0 3px rgba(23,22,20,0.25)' : 'none' }
+                            : { background: '#e9e8e4', border: '1px solid #dedcd7' }
                         }
                       >
-                        <stage.icon className="h-3.5 w-3.5" style={{ color: done || current ? '#0a2e1f' : '#9ca3af' }} />
+                        <stage.icon className="h-3.5 w-3.5" style={{ color: done || current ? '#171614' : '#8b8881' }} />
                       </div>
                       <span className="text-[9px] font-semibold text-center leading-tight"
-                        style={{ color: done || current ? '#0a2e1f' : '#9ca3af' }}>
+                        style={{ color: done || current ? '#171614' : '#8b8881' }}>
                         {stage.label}
                       </span>
                     </div>
@@ -262,8 +262,8 @@ export function OrderDetailView({ orderId, backHref, canManagePayments }: OrderD
                     disabled={busy}
                     className="flex items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-semibold transition-all disabled:opacity-50"
                     style={isNext
-                      ? { background: 'linear-gradient(135deg,#0a2e1f,#1e5038)', color: '#f0d878' }
-                      : { background: '#f9fafb', border: '1px solid #e5e7eb', color: '#6b7280' }
+                      ? { background: '#171614', color: '#ffffff' }
+                      : { background: '#f4f4f2', border: '1px solid #dedcd7', color: '#6e6b65' }
                     }
                   >
                     <stage.icon className="h-3 w-3" />
@@ -287,7 +287,7 @@ export function OrderDetailView({ orderId, backHref, canManagePayments }: OrderD
 
           {/* Payment section */}
           <section className="rounded-2xl border bg-white shadow-sm p-5 space-y-3"
-            style={{ borderColor: canManagePayments ? 'rgba(201,162,39,0.25)' : undefined }}>
+            style={{ borderColor: canManagePayments ? 'rgba(23,22,20,0.25)' : undefined }}>
             <h2 className="text-sm font-semibold text-neutral-800">Payment</h2>
 
             {canManagePayments ? (
@@ -296,7 +296,7 @@ export function OrderDetailView({ orderId, backHref, canManagePayments }: OrderD
                   value={order.payment_status}
                   onChange={(e) => handlePaymentStatus(e.target.value as Exclude<PaymentStatus, 'failed'>)}
                   disabled={busy}
-                  className="w-full rounded-xl border border-neutral-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/30 bg-white"
+                  className="w-full rounded-xl border border-neutral-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ink/25 bg-white"
                 >
                   {PAYMENT_STATUS_OPTIONS.map((s) => (
                     <option key={s} value={s}>{s}</option>

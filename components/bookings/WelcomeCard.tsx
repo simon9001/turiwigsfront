@@ -19,14 +19,14 @@ export function WelcomeCard() {
     <div
       className="rounded-2xl p-6 relative overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, #0a2e1f 0%, #1e5038 100%)',
+        background: '#171614',
       }}
     >
       {/* Decorative shimmer */}
       <div
         className="absolute top-0 right-0 w-48 h-48 rounded-full opacity-10"
         style={{
-          background: 'radial-gradient(circle, #f0d878 0%, transparent 70%)',
+          background: 'radial-gradient(circle, #ffffff 0%, transparent 70%)',
           transform: 'translate(30%, -30%)',
         }}
       />
@@ -49,12 +49,12 @@ export function WelcomeCard() {
           <div
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5"
             style={{
-              background: 'linear-gradient(135deg, #c9a227, #f0d878)',
-              boxShadow: '0 2px 8px rgba(201,162,39,0.4)',
+              background: '#171614',
+              boxShadow: '0 2px 8px rgba(23,22,20,0.4)',
             }}
           >
-            <Star className="h-3.5 w-3.5" style={{ color: '#1a0e00', fill: '#1a0e00' }} />
-            <span className="text-xs font-bold" style={{ color: '#1a0e00' }}>
+            <Star className="h-3.5 w-3.5" style={{ color: '#ffffff', fill: '#ffffff' }} />
+            <span className="text-xs font-bold" style={{ color: '#ffffff' }}>
               Gold Member
             </span>
           </div>
@@ -64,11 +64,11 @@ export function WelcomeCard() {
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5"
             style={{
               background: 'rgba(255,255,255,0.12)',
-              border: '1px solid rgba(201,162,39,0.35)',
+              border: '1px solid rgba(23,22,20,0.35)',
             }}
           >
-            <Sparkles className="h-3.5 w-3.5" style={{ color: '#f0d878' }} />
-            <span className="text-xs font-semibold" style={{ color: '#f0d878' }}>
+            <Sparkles className="h-3.5 w-3.5" style={{ color: '#ffffff' }} />
+            <span className="text-xs font-semibold" style={{ color: '#ffffff' }}>
               120 pts
             </span>
           </div>
@@ -77,7 +77,7 @@ export function WelcomeCard() {
         {/* Book now button */}
         <Link
           href="/bookings/services"
-          className="btn-gold inline-flex items-center justify-center rounded-xl px-5 font-semibold text-sm"
+          className="btn-ink inline-flex items-center justify-center rounded-xl px-5 font-semibold text-sm"
           style={{ height: '40px' }}
         >
           Book Now

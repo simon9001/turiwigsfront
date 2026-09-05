@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { TrendingUp, Calendar, Users, DollarSign } from 'lucide-react';
+import { TrendingUp, Calendar, DollarSign } from 'lucide-react';
 import { useRealtimeRefresh } from '@/hooks/useRealtimeRefresh';
 import { analyticsApi } from '@/api/analytics.api';
 import type { RevenueData, PLData, StaffPerformanceItem, BookingAnalytics } from '@/api/analytics.api';
@@ -12,7 +12,7 @@ import { ProgressRow } from '@/components/dashboard/charts/ProgressRow';
 import { formatPrice } from '@/utils/formatters';
 import { cn } from '@/utils/cn';
 
-const GOLD = '#c9a227'; const GREEN = '#10b981'; const RED = '#ef4444';
+const GOLD = '#8b8881'; const GREEN = '#10b981'; const RED = '#ef4444';
 const BLUE = '#3b82f6'; const ORANGE = '#f97316'; const PURPLE = '#8b5cf6';
 
 function Card({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) {
@@ -32,22 +32,20 @@ export default function AdminAnalyticsPage() {
   const [pl, setPL] = useState<PLData | null>(null);
   const [staff, setStaff] = useState<StaffPerformanceItem[]>([]);
   const [bookings, setBookings] = useState<BookingAnalytics | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(() => {
     const bPeriod = period === '1y' ? '90d' : (period as '7d' | '30d' | '90d');
-    const [r, p, s, b] = await Promise.allSettled([
+    return Promise.allSettled([
       analyticsApi.getRevenue(period),
       analyticsApi.getPL(period === '7d' ? '1m' : period === '30d' ? '3m' : '6m'),
       analyticsApi.getStaffPerformance(),
       analyticsApi.getBookings(bPeriod),
-    ]);
-    if (r.status === 'fulfilled') setRevenue(r.value.data.data);
-    if (p.status === 'fulfilled') setPL(p.value.data.data);
-    if (s.status === 'fulfilled') setStaff(s.value.data.data as StaffPerformanceItem[]);
-    if (b.status === 'fulfilled') setBookings(b.value.data.data);
-    setLoading(false);
+    ]).then(([r, p, s, b]) => {
+      if (r.status === 'fulfilled') setRevenue(r.value.data.data);
+      if (p.status === 'fulfilled') setPL(p.value.data.data);
+      if (s.status === 'fulfilled') setStaff(s.value.data.data as StaffPerformanceItem[]);
+      if (b.status === 'fulfilled') setBookings(b.value.data.data);
+    });
   }, [period]);
 
   useEffect(() => { load(); }, [load]);
@@ -73,7 +71,7 @@ export default function AdminAnalyticsPage() {
     { label: 'Confirmed',  value: bStatus.confirmed  ?? 0, color: BLUE   },
     { label: 'Pending',    value: bStatus.pending    ?? 0, color: ORANGE },
     { label: 'Cancelled',  value: bStatus.cancelled  ?? 0, color: RED    },
-    { label: 'No-show',    value: bStatus.no_show    ?? 0, color: '#d1d5db' },
+    { label: 'No-show',    value: bStatus.no_show    ?? 0, color: '#c9c6bf' },
   ].filter((s) => s.value > 0);
 
   return (
@@ -181,7 +179,7 @@ export default function AdminAnalyticsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
-                <tr style={{ background: '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
+                <tr style={{ background: '#f4f4f2', borderBottom: '1px solid #e9e8e4' }}>
                   {['Staff', 'Completed', 'No-shows', 'Revenue', 'Pending Comm.', 'Rate'].map((h) => (
                     <th key={h} className="px-4 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-neutral-400">{h}</th>
                   ))}

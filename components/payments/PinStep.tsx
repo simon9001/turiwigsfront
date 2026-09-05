@@ -13,21 +13,21 @@ interface PinStepProps {
 
 export function PinStep({ onSubmit, loading, error, displayText }: PinStepProps) {
   const [pin, setPin] = useState(['', '', '', '']);
-  const inputs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
+  const inputs = useRef<(HTMLInputElement | null)[]>([]);
 
-  useEffect(() => { inputs[0].current?.focus(); }, []);
+  useEffect(() => { inputs.current[0]?.focus(); }, []);
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;
     const next = [...pin];
     next[index] = value.slice(-1);
     setPin(next);
-    if (value && index < 3) inputs[index + 1].current?.focus();
+    if (value && index < 3) inputs.current[index + 1]?.focus();
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
     if (e.key === 'Backspace' && !pin[index] && index > 0) {
-      inputs[index - 1].current?.focus();
+      inputs.current[index - 1]?.focus();
     }
   };
 
@@ -53,7 +53,7 @@ export function PinStep({ onSubmit, loading, error, displayText }: PinStepProps)
         {pin.map((digit, i) => (
           <input
             key={i}
-            ref={inputs[i]}
+            ref={(el) => { inputs.current[i] = el; }}
             type="password"
             inputMode="numeric"
             maxLength={1}

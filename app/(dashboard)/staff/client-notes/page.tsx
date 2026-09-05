@@ -5,12 +5,9 @@ import { MessageSquare, Plus, Flag } from 'lucide-react';
 import { useRealtimeRefresh } from '@/hooks/useRealtimeRefresh';
 import { clientNotesApi } from '@/api/erp.api';
 import { formatDate } from '@/utils/formatters';
-import { cn } from '@/utils/cn';
 import toast from 'react-hot-toast';
 
-const GOLD = '#c9a227'; const RED = '#ef4444'; const ORANGE = '#f97316';
-
-type Note = { id: string; client_id: string; note: string; is_flagged: boolean; created_at: string; profiles?: { name: string }[] | null };
+const GOLD = '#8b8881'; const RED = '#ef4444'; type Note = { id: string; client_id: string; note: string; is_flagged: boolean; created_at: string; profiles?: { name: string }[] | null };
 
 export default function StaffClientNotesPage() {
   const [notes, setNotes]       = useState<Note[]>([]);
@@ -20,13 +17,11 @@ export default function StaffClientNotesPage() {
   const [flaggedOnly, setFlagged] = useState(false);
   const [form, setForm] = useState({ clientId: '', note: '', isFlagged: false, bookingId: '' });
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await clientNotesApi.listAll({ flaggedOnly: flaggedOnly ? 'true' : undefined });
-      setNotes((res.data.data ?? []) as Note[]);
-    } catch { /* no notes */ }
-    setLoading(false);
+  const load = useCallback(() => {
+    return clientNotesApi.listAll({ flaggedOnly: flaggedOnly ? 'true' : undefined })
+      .then((res) => setNotes((res.data.data ?? []) as Note[]))
+      .catch(() => { /* no notes */ })
+      .finally(() => setLoading(false));
   }, [flaggedOnly]);
 
   useEffect(() => { load(); }, [load]);
@@ -96,7 +91,7 @@ export default function StaffClientNotesPage() {
           const clientName = Array.isArray(n.profiles) ? n.profiles[0]?.name : null;
           return (
             <div key={n.id} className="bg-white rounded-2xl border shadow-sm p-4"
-              style={n.is_flagged ? { borderColor: `${RED}40`, background: `${RED}04` } : { borderColor: '#f0f0f0' }}>
+              style={n.is_flagged ? { borderColor: `${RED}40`, background: `${RED}04` } : { borderColor: '#e9e8e4' }}>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1.5">

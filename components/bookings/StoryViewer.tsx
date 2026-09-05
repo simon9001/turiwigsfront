@@ -29,9 +29,8 @@ export function StoryViewer({ stories, initialIndex, onClose }: StoryViewerProps
   const [storyIndex, setStoryIndex] = useState(initialIndex);
   const [slideIndex, setSlideIndex] = useState(0);
   const [progress, setProgress] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const animRef = useRef<number | null>(null);
-  const startTimeRef = useRef<number>(Date.now());
+  const startTimeRef = useRef<number>(0);
   const touchStartX = useRef<number | null>(null);
 
   const currentStory = stories[storyIndex];
@@ -66,7 +65,6 @@ export function StoryViewer({ stories, initialIndex, onClose }: StoryViewerProps
   // Progress animation
   useEffect(() => {
     startTimeRef.current = Date.now();
-    setProgress(0);
 
     function tick() {
       const elapsed = Date.now() - startTimeRef.current;
@@ -83,7 +81,6 @@ export function StoryViewer({ stories, initialIndex, onClose }: StoryViewerProps
 
     return () => {
       if (animRef.current !== null) cancelAnimationFrame(animRef.current);
-      if (timerRef.current !== null) clearTimeout(timerRef.current);
     };
   }, [storyIndex, slideIndex, goNextSlide]);
 
@@ -182,7 +179,7 @@ export function StoryViewer({ stories, initialIndex, onClose }: StoryViewerProps
           <div
             className="rounded-full p-[1.5px]"
             style={{
-              background: `linear-gradient(135deg, ${currentStory.color}, #f0d878)`,
+              background: `#171614`,
             }}
           >
             <div className="rounded-full" style={{ background: '#000', padding: '1.5px' }}>

@@ -14,6 +14,10 @@ function PaymentFailedContent() {
   useEffect(() => {
     const savedBookingId = sessionStorage.getItem('pg_booking_id');
     if (savedBookingId) {
+      // sessionStorage is browser-only, so this has to be read after mount.
+      // Seeding it with a lazy initialiser instead would make the server and
+      // client first render disagree and produce a hydration mismatch.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsBooking(true);
       // Clean up
       sessionStorage.removeItem('pg_booking_id');
@@ -43,7 +47,7 @@ function PaymentFailedContent() {
               <Link href="/services">
                 <Button
                   fullWidth
-                  style={{ background: '#0a2e1f', color: '#fff', border: 'none' }}
+                  style={{ background: '#171614', color: '#fff', border: 'none' }}
                 >
                   Try Booking Again
                 </Button>

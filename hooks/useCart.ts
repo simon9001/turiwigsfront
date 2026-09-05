@@ -12,16 +12,25 @@ import {
   selectCartTotal,
 } from '@/store/slices/cart.slice';
 
+/**
+ * Loads the cart once for the whole app. Called from LayoutShell — putting it
+ * in useCart meant every component that wanted `count` or `addItem` fired its
+ * own request (three of them on the cart page alone).
+ */
+export function useCartSync(enabled = true) {
+  const dispatch = useAppDispatch();
+  const token = useAppSelector((s) => s.auth.token);
+
+  useEffect(() => {
+    if (enabled && token) dispatch(fetchCartThunk());
+  }, [enabled, token, dispatch]);
+}
+
 export function useCart() {
   const dispatch = useAppDispatch();
   const { cart, open, loading } = useAppSelector((s) => s.cart);
-  const token = useAppSelector((s) => s.auth.token);
   const count = useAppSelector(selectCartCount);
   const total = useAppSelector(selectCartTotal);
-
-  useEffect(() => {
-    if (token) dispatch(fetchCartThunk());
-  }, [token, dispatch]);
 
   return {
     cart,

@@ -2,22 +2,20 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import {
-  Users, Clock, BarChart2, Calendar, CheckCircle, XCircle,
-  RefreshCw, LogIn, LogOut, AlertTriangle, ChevronDown,
+  Clock, BarChart2, Calendar, CheckCircle, XCircle,
+  RefreshCw, LogIn, LogOut, AlertTriangle,
 } from 'lucide-react';
 import { hrAdminApi } from '@/api/erp.api';
 import { analyticsApi } from '@/api/analytics.api';
 import { formatPrice } from '@/utils/formatters';
 import toast from 'react-hot-toast';
 
-const GOLD   = '#c9a227';
-const DARK   = '#0a2e1f';
+const GOLD   = '#8b8881';
+const DARK   = '#171614';
 const GREEN  = '#10b981';
 const RED    = '#ef4444';
 const ORANGE = '#f97316';
 const BLUE   = '#3b82f6';
-const PURPLE = '#8b5cf6';
-
 type LeaveStatus = 'pending' | 'approved' | 'rejected' | 'cancelled';
 
 interface StaffMember { staff_id: string; staff_name: string; completed: number; no_shows: number; cancellations: number; revenue_generated: number; pending_commission: number; paid_commission: number }
@@ -72,7 +70,7 @@ function PerformanceTab() {
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
           <thead>
-            <tr style={{ background: '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
+            <tr style={{ background: '#f4f4f2', borderBottom: '1px solid #e9e8e4' }}>
               {['Staff', 'Completed', 'No-shows', 'Cancellations', 'Completion %', 'Revenue', 'Commission (Pending)', 'Commission (Paid)'].map((h) => (
                 <th key={h} className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wide text-neutral-400">{h}</th>
               ))}
@@ -84,7 +82,7 @@ function PerformanceTab() {
               const rate  = Math.round((s.completed / total) * 100);
               return (
                 <tr key={s.staff_id} className="border-b border-neutral-50 hover:bg-neutral-50 transition-colors"
-                  style={i % 2 ? { background: '#fafafa' } : {}}>
+                  style={i % 2 ? { background: '#f4f4f2' } : {}}>
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-2.5">
                       <div className="h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
@@ -124,26 +122,26 @@ function PerformanceTab() {
 
 // ─── Attendance tab ───────────────────────────────────────────────────────────
 function AttendanceTab() {
-  const today   = new Date().toISOString().split('T')[0];
-  const weekAgo = new Date(Date.now() - 14 * 864e5).toISOString().split('T')[0];
-
   const [records, setRecords] = useState<AttRec[]>([]);
   const [loading, setLoading] = useState(true);
-  const [startDate, setStartDate] = useState(weekAgo);
-  const [endDate,   setEndDate]   = useState(today);
+  // Seeded from the clock once, in a lazy initializer, so render stays pure.
+  const [startDate, setStartDate] = useState(
+    () => new Date(Date.now() - 14 * 864e5).toISOString().split('T')[0]);
+  const [endDate,   setEndDate]   = useState(
+    () => new Date().toISOString().split('T')[0]);
   const [page, setPage]           = useState(1);
   const [total, setTotal]         = useState(0);
   const LIMIT = 20;
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const { data } = await hrAdminApi.listAttendance({ startDate, endDate, page, limit: LIMIT });
-      const typed = data as unknown as { data: AttRec[]; meta: { total: number } };
-      setRecords(typed.data ?? []);
-      setTotal(typed.meta?.total ?? 0);
-    } catch { toast.error('Failed to load attendance'); }
-    finally   { setLoading(false); }
+  const load = useCallback(() => {
+    return hrAdminApi.listAttendance({ startDate, endDate, page, limit: LIMIT })
+      .then(({ data }) => {
+        const typed = data as unknown as { data: AttRec[]; meta: { total: number } };
+        setRecords(typed.data ?? []);
+        setTotal(typed.meta?.total ?? 0);
+      })
+      .catch(() => { toast.error('Failed to load attendance'); })
+      .finally(() => setLoading(false));
   }, [startDate, endDate, page]);
 
   useEffect(() => { load(); }, [load]);
@@ -197,7 +195,7 @@ function AttendanceTab() {
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr style={{ background: '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
+                    <tr style={{ background: '#f4f4f2', borderBottom: '1px solid #e9e8e4' }}>
                       {['Staff', 'Date', 'Clock In', 'Clock Out', 'Duration', 'Note', 'Actions'].map((h) => (
                         <th key={h} className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wide text-neutral-400">{h}</th>
                       ))}
@@ -213,7 +211,7 @@ function AttendanceTab() {
 
                       return (
                         <tr key={r.id} className="border-b border-neutral-50 hover:bg-neutral-50"
-                          style={i % 2 ? { background: '#fafafa' } : {}}>
+                          style={i % 2 ? { background: '#f4f4f2' } : {}}>
                           <td className="px-4 py-3.5">
                             <div className="flex items-center gap-2">
                               <div className="h-7 w-7 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0"
@@ -225,10 +223,10 @@ function AttendanceTab() {
                           </td>
                           <td className="px-4 py-3.5 font-medium text-neutral-700">{fmtDate(r.record_date)}</td>
                           <td className="px-4 py-3.5">
-                            <span className="font-mono" style={{ color: r.clock_in ? GREEN : '#9ca3af' }}>{fmt(r.clock_in)}</span>
+                            <span className="font-mono" style={{ color: r.clock_in ? GREEN : '#8b8881' }}>{fmt(r.clock_in)}</span>
                           </td>
                           <td className="px-4 py-3.5">
-                            <span className="font-mono" style={{ color: r.clock_out ? BLUE : r.clock_in ? ORANGE : '#9ca3af' }}>
+                            <span className="font-mono" style={{ color: r.clock_out ? BLUE : r.clock_in ? ORANGE : '#8b8881' }}>
                               {r.clock_out ? fmt(r.clock_out) : r.clock_in ? 'In Progress' : '—'}
                             </span>
                           </td>
@@ -294,14 +292,12 @@ function LeavesTab() {
   const [filter,  setFilter]  = useState<LeaveStatus | 'all'>('pending');
   const [actingId, setActingId] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const params = filter === 'all' ? {} : { status: filter };
-      const { data } = await hrAdminApi.listLeaves(params);
-      setLeaves((data as { data: Leave[] }).data ?? []);
-    } catch { toast.error('Failed to load leaves'); }
-    finally   { setLoading(false); }
+  const load = useCallback(() => {
+    const params = filter === 'all' ? {} : { status: filter };
+    return hrAdminApi.listLeaves(params)
+      .then(({ data }) => setLeaves((data as { data: Leave[] }).data ?? []))
+      .catch(() => { toast.error('Failed to load leaves'); })
+      .finally(() => setLoading(false));
   }, [filter]);
 
   useEffect(() => { load(); }, [load]);
@@ -316,7 +312,7 @@ function LeavesTab() {
     finally  { setActingId(null); }
   }
 
-  const LEAVE_COLOR: Record<string, string> = { pending: ORANGE, approved: GREEN, rejected: RED, cancelled: '#9ca3af' };
+  const LEAVE_COLOR: Record<string, string> = { pending: ORANGE, approved: GREEN, rejected: RED, cancelled: '#8b8881' };
   const LEAVE_TYPE_LABEL: Record<string, string> = { annual: 'Annual', sick: 'Sick', unpaid: 'Unpaid', maternity: 'Maternity', paternity: 'Paternity' };
 
   return (
@@ -328,8 +324,8 @@ function LeavesTab() {
             className="px-3 py-1.5 rounded-xl text-xs font-medium capitalize border transition-all"
             style={{
               background: filter === f ? DARK : '#fff',
-              color: filter === f ? '#fff' : '#374151',
-              borderColor: filter === f ? DARK : '#e5e7eb',
+              color: filter === f ? '#fff' : '#3f3d39',
+              borderColor: filter === f ? DARK : '#dedcd7',
             }}>
             {f}
           </button>
@@ -356,9 +352,9 @@ function LeavesTab() {
                           {LEAVE_TYPE_LABEL[l.leave_type] ?? l.leave_type}
                         </span>
                         <span className="text-xs text-neutral-400">{fmtDate(l.start_date)} → {fmtDate(l.end_date)}</span>
-                        <StatusChip status={l.status} color={LEAVE_COLOR[l.status] ?? '#9ca3af'} />
+                        <StatusChip status={l.status} color={LEAVE_COLOR[l.status] ?? '#8b8881'} />
                       </div>
-                      {l.reason && <p className="text-xs text-neutral-500 mt-1 italic">"{l.reason}"</p>}
+                      {l.reason && <p className="text-xs text-neutral-500 mt-1 italic">&ldquo;{l.reason}&rdquo;</p>}
                     </div>
                   </div>
                   {l.status === 'pending' && (
@@ -419,7 +415,7 @@ export default function AdminStaffPage() {
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
             style={{
               background: tab === id ? '#fff' : 'transparent',
-              color: tab === id ? '#111827' : '#6b7280',
+              color: tab === id ? '#171614' : '#6e6b65',
               boxShadow: tab === id ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
             }}>
             <Icon className="h-4 w-4" />

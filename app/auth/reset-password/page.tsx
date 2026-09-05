@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { authApi } from '@/api/auth.api';
 import { Input } from '@/components/ui/Input';
@@ -38,9 +38,8 @@ function ResetPasswordForm() {
   const [password, setPassword] = useState('');
   const [confirm,  setConfirm]  = useState('');
   const [loading,  setLoading]  = useState(false);
-  const [invalid,  setInvalid]  = useState(false);
-
-  useEffect(() => { if (!email || !token) setInvalid(true); }, [email, token]);
+  // Derived straight from the URL — it never needs to be state.
+  const invalid = !email || !token;
 
   const rules   = validatePassword(password);
   const allGood = Object.values(rules).every(Boolean);

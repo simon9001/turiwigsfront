@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { User, Package, Calendar, Heart, LogOut, Bell } from 'lucide-react';
+import { Package, Calendar, Heart, LogOut, Bell } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { PageSpinner } from '@/components/ui/Spinner';

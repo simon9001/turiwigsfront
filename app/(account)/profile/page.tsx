@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { User, Package, Calendar, Heart, LogOut } from 'lucide-react';
+import { Package, Calendar, Heart, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/ui/Button';
 import { PageSpinner } from '@/components/ui/Spinner';
 
 const MENU = [

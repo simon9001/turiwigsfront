@@ -97,12 +97,12 @@ const cartSlice = createSlice({
         state.error = payload as string;
       })
       .addCase(removeCartItemThunk.fulfilled, (state, { payload: id }) => {
-        if (state.cart) {
+        if (state.cart?.items) {
           state.cart.items = state.cart.items.filter((i) => i.id !== id);
         }
       })
       .addCase(updateCartItemThunk.fulfilled, (state, { payload }: PayloadAction<CartItem>) => {
-        if (state.cart) {
+        if (state.cart?.items) {
           const idx = state.cart.items.findIndex((i) => i.id === payload.id);
           if (idx !== -1) state.cart.items[idx] = { ...state.cart.items[idx], ...payload };
         }
@@ -114,7 +114,7 @@ export const { openCart, closeCart, toggleCart } = cartSlice.actions;
 export default cartSlice.reducer;
 
 export const selectCartCount = (state: { cart: CartState }) =>
-  state.cart.cart?.items.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
+  state.cart.cart?.items?.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
 
 export const selectCartTotal = (state: { cart: CartState }) =>
-  state.cart.cart?.items.reduce((sum, i) => sum + i.unit_price * i.quantity, 0) ?? 0;
+  state.cart.cart?.items?.reduce((sum, i) => sum + i.unit_price * i.quantity, 0) ?? 0;

@@ -10,6 +10,7 @@ import { PageSpinner } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/Button';
 import type { Order } from '@/types';
+import toast from 'react-hot-toast';
 
 const statusVariant: Record<string, 'default' | 'success' | 'warning' | 'danger' | 'info'> = {
   pending: 'warning', paid: 'info', processing: 'info',
@@ -21,7 +22,8 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    ordersApi.list().then(({ data }) => setOrders(data.data)).finally(() => setLoading(false));
+    ordersApi.list().then(({ data }) => setOrders(data.data)).catch(() => toast.error('Could not load your orders'))
+                                                             .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <PageSpinner />;

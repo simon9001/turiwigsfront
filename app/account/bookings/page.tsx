@@ -10,6 +10,7 @@ import { PageSpinner } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/Button';
 import type { Booking } from '@/types';
+import toast from 'react-hot-toast';
 
 const statusVariant: Record<string, 'default' | 'success' | 'warning' | 'danger' | 'info'> = {
   pending: 'warning', confirmed: 'info', in_progress: 'info',
@@ -21,7 +22,8 @@ export default function BookingsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    bookingsApi.list().then(({ data }) => setBookings(data.data)).finally(() => setLoading(false));
+    bookingsApi.list().then(({ data }) => setBookings(data.data)).catch(() => toast.error('Could not load your bookings'))
+                                                                 .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <PageSpinner />;

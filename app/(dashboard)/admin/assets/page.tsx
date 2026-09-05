@@ -1,18 +1,15 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Cpu, Plus, Wrench, AlertTriangle } from 'lucide-react';
+import { Cpu, Plus, AlertTriangle } from 'lucide-react';
 import { useRealtimeRefresh } from '@/hooks/useRealtimeRefresh';
 import { assetsApi } from '@/api/erp.api';
 import { formatPrice, formatDate } from '@/utils/formatters';
-import { cn } from '@/utils/cn';
 import toast from 'react-hot-toast';
 
-const GREEN = '#10b981'; const GOLD = '#c9a227'; const ORANGE = '#f97316'; const RED = '#ef4444'; const BLUE = '#3b82f6';
+const GREEN = '#10b981'; const GOLD = '#8b8881'; const ORANGE = '#f97316'; const RED = '#ef4444'; type Asset = { id: string; name: string; asset_number?: string; category?: string; status: string; purchase_cost?: number; purchase_date?: string; next_service_date?: string; location?: string };
 
-type Asset = { id: string; name: string; asset_number?: string; category?: string; status: string; purchase_cost?: number; purchase_date?: string; next_service_date?: string; location?: string };
-
-const STATUS_COLOR: Record<string, string> = { active: GREEN, maintenance: ORANGE, retired: '#9ca3af', disposed: RED };
+const STATUS_COLOR: Record<string, string> = { active: GREEN, maintenance: ORANGE, retired: '#8b8881', disposed: RED };
 
 export default function AdminAssetsPage() {
   const [assets, setAssets]   = useState<Asset[]>([]);
@@ -21,13 +18,11 @@ export default function AdminAssetsPage() {
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({ name: '', assetNumber: '', category: '', location: '', purchaseCost: '', purchaseDate: '', usefulLifeYears: '', notes: '' });
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await assetsApi.list();
-      setAssets((res.data.data ?? []) as Asset[]);
-    } catch { /* no assets */ }
-    setLoading(false);
+  const load = useCallback(() => {
+    return assetsApi.list()
+      .then((res) => setAssets((res.data.data ?? []) as Asset[]))
+      .catch(() => { /* no assets */ })
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -58,9 +53,13 @@ export default function AdminAssetsPage() {
     finally { setSubmitting(false); }
   };
 
+  // Read the clock once, when the page mounts. Calling Date.now() while
+  // rendering makes the render impure and the output non-reproducible.
+  const [now] = useState(() => Date.now());
+
   const dueSoon = assets.filter((a) => {
     if (!a.next_service_date) return false;
-    const diff = new Date(a.next_service_date).getTime() - Date.now();
+    const diff = new Date(a.next_service_date).getTime() - now;
     return diff > 0 && diff < 7 * 864e5;
   });
 
@@ -110,7 +109,7 @@ export default function AdminAssetsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr style={{ background: '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
+              <tr style={{ background: '#f4f4f2', borderBottom: '1px solid #e9e8e4' }}>
                 {['Asset', 'Category', 'Location', 'Cost', 'Status', 'Next Service'].map((h) => (
                   <th key={h} className="px-4 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-neutral-400">{h}</th>
                 ))}

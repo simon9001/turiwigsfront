@@ -32,8 +32,8 @@ function DeliveryTimeline({ status }: { status: OrderStatus }) {
   if (currentIdx === -1) return null;
 
   return (
-    <div className="rounded-2xl border p-5 space-y-4" style={{ borderColor: '#e0d0b0', background: '#fff' }}>
-      <h2 className="text-sm font-semibold" style={{ color: '#0a2e1f' }}>Delivery Progress</h2>
+    <div className="rounded-2xl border p-5 space-y-4" style={{ borderColor: '#dedcd7', background: '#fff' }}>
+      <h2 className="text-sm font-semibold" style={{ color: '#171614' }}>Delivery Progress</h2>
 
       <div className="space-y-0">
         {STAGES.map((stage, i) => {
@@ -48,21 +48,21 @@ function DeliveryTimeline({ status }: { status: OrderStatus }) {
                   className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all"
                   style={
                     done
-                      ? { background: '#0a2e1f' }
+                      ? { background: '#171614' }
                       : current
-                      ? { background: 'linear-gradient(135deg,#c9a227,#f0d878)', boxShadow: '0 0 0 3px rgba(201,162,39,0.2)' }
-                      : { background: '#f3f4f6', border: '1px solid #e5e7eb' }
+                      ? { background: '#171614', boxShadow: '0 0 0 3px rgba(23,22,20,0.2)' }
+                      : { background: '#e9e8e4', border: '1px solid #dedcd7' }
                   }
                 >
                   <stage.icon
                     className="h-3.5 w-3.5"
-                    style={{ color: done ? '#f0d878' : current ? '#0a2e1f' : '#d1d5db' }}
+                    style={{ color: done ? '#ffffff' : current ? '#171614' : '#c9c6bf' }}
                   />
                 </div>
                 {i < STAGES.length - 1 && (
                   <div
                     className="w-0.5 flex-1 my-1"
-                    style={{ background: done ? '#0a2e1f' : '#e5e7eb', minHeight: 20 }}
+                    style={{ background: done ? '#171614' : '#dedcd7', minHeight: 20 }}
                   />
                 )}
               </div>
@@ -71,17 +71,17 @@ function DeliveryTimeline({ status }: { status: OrderStatus }) {
               <div className="pb-4 pt-1 min-w-0">
                 <p
                   className="text-sm font-semibold leading-none"
-                  style={{ color: done || current ? '#0a2e1f' : '#9ca3af' }}
+                  style={{ color: done || current ? '#171614' : '#8b8881' }}
                 >
                   {stage.label}
                   {current && (
                     <span className="ml-2 text-[10px] font-bold uppercase tracking-wider rounded-full px-2 py-0.5"
-                      style={{ background: 'rgba(201,162,39,0.15)', color: '#c9a227' }}>
+                      style={{ background: 'rgba(23,22,20,0.15)', color: '#8b8881' }}>
                       Current
                     </span>
                   )}
                 </p>
-                <p className="mt-0.5 text-xs" style={{ color: pending ? '#d1d5db' : '#6b7280' }}>
+                <p className="mt-0.5 text-xs" style={{ color: pending ? '#c9c6bf' : '#6e6b65' }}>
                   {stage.desc}
                 </p>
               </div>
@@ -110,7 +110,8 @@ export default function OrderDetailPage() {
   const [cancelling, setCancelling] = useState(false);
 
   useEffect(() => {
-    ordersApi.get(id).then(({ data }) => setOrder(data.data)).finally(() => setLoading(false));
+    ordersApi.get(id).then(({ data }) => setOrder(data.data)).catch(() => toast.error('Could not load this order'))
+                                                             .finally(() => setLoading(false));
   }, [id]);
 
   const handleCancel = async () => {
@@ -130,23 +131,23 @@ export default function OrderDetailPage() {
   const showTimeline = ['processing', 'packed', 'shipped', 'delivered'].includes(order.order_status);
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6" style={{ minHeight: '100vh', background: '#faf6ed' }}>
+    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6" style={{ minHeight: '100vh', background: '#f4f4f2' }}>
       <Link href="/account/orders"
         className="mb-6 inline-flex items-center gap-2 text-sm transition-colors"
-        style={{ color: '#9a8060' }}>
+        style={{ color: '#8b8881' }}>
         <ArrowLeft className="h-4 w-4" /> Back to Orders
       </Link>
 
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-start justify-between rounded-2xl border p-5"
-          style={{ borderColor: '#e0d0b0', background: '#fff' }}>
+          style={{ borderColor: '#dedcd7', background: '#fff' }}>
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Package className="h-4 w-4" style={{ color: '#c9a227' }} />
-              <h1 className="text-lg font-bold" style={{ color: '#0a2e1f' }}>{order.order_number}</h1>
+              <Package className="h-4 w-4" style={{ color: '#8b8881' }} />
+              <h1 className="text-lg font-bold" style={{ color: '#171614' }}>{order.order_number}</h1>
             </div>
-            <p className="text-xs" style={{ color: '#9a8060' }}>{formatDate(order.created_at)}</p>
+            <p className="text-xs" style={{ color: '#8b8881' }}>{formatDate(order.created_at)}</p>
           </div>
           <Badge variant={statusVariant[order.order_status] ?? 'default'}>
             {order.order_status === 'shipped' ? 'In Transit' : order.order_status}
@@ -157,27 +158,27 @@ export default function OrderDetailPage() {
         {showTimeline && <DeliveryTimeline status={order.order_status} />}
 
         {/* Items */}
-        <div className="rounded-2xl border p-5 space-y-3" style={{ borderColor: '#e0d0b0', background: '#fff' }}>
-          <h2 className="text-sm font-semibold" style={{ color: '#0a2e1f' }}>Items</h2>
+        <div className="rounded-2xl border p-5 space-y-3" style={{ borderColor: '#dedcd7', background: '#fff' }}>
+          <h2 className="text-sm font-semibold" style={{ color: '#171614' }}>Items</h2>
           {(order.order_items ?? []).map((item) => (
             <div key={item.id} className="flex items-center justify-between text-sm">
               <div>
-                <p className="font-medium" style={{ color: '#0a2e1f' }}>{item.product_snapshot.name}</p>
+                <p className="font-medium" style={{ color: '#171614' }}>{item.product_snapshot.name}</p>
                 {item.product_snapshot.sku && (
-                  <p className="text-xs font-mono" style={{ color: '#9a8060' }}>SKU: {item.product_snapshot.sku}</p>
+                  <p className="text-xs font-mono" style={{ color: '#8b8881' }}>SKU: {item.product_snapshot.sku}</p>
                 )}
               </div>
               <div className="text-right">
-                <p className="font-semibold" style={{ color: '#0a2e1f' }}>{formatPrice(item.total_price)}</p>
-                <p className="text-xs" style={{ color: '#9a8060' }}>×{item.quantity} @ {formatPrice(item.unit_price)}</p>
+                <p className="font-semibold" style={{ color: '#171614' }}>{formatPrice(item.total_price)}</p>
+                <p className="text-xs" style={{ color: '#8b8881' }}>×{item.quantity} @ {formatPrice(item.unit_price)}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* Totals */}
-        <div className="rounded-2xl border p-5 space-y-2 text-sm" style={{ borderColor: '#e0d0b0', background: '#fff' }}>
-          <div className="flex justify-between" style={{ color: '#6b7280' }}>
+        <div className="rounded-2xl border p-5 space-y-2 text-sm" style={{ borderColor: '#dedcd7', background: '#fff' }}>
+          <div className="flex justify-between" style={{ color: '#6e6b65' }}>
             <span>Subtotal</span><span>{formatPrice(order.subtotal)}</span>
           </div>
           {order.discount_amount > 0 && (
@@ -185,10 +186,10 @@ export default function OrderDetailPage() {
               <span>Discount</span><span>-{formatPrice(order.discount_amount)}</span>
             </div>
           )}
-          <div className="flex justify-between" style={{ color: '#6b7280' }}>
+          <div className="flex justify-between" style={{ color: '#6e6b65' }}>
             <span>Shipping</span><span>{formatPrice(order.shipping_amount)}</span>
           </div>
-          <div className="flex justify-between font-bold text-base pt-2 border-t" style={{ color: '#0a2e1f', borderColor: '#f0e8d0' }}>
+          <div className="flex justify-between font-bold text-base pt-2 border-t" style={{ color: '#171614', borderColor: '#e9e8e4' }}>
             <span>Total</span><span>{formatPrice(order.total_amount)}</span>
           </div>
         </div>

@@ -8,6 +8,7 @@ import { PageSpinner } from '@/components/ui/Spinner';
 import { Button } from '@/components/ui/Button';
 import type { Order, OrderStatus } from '@/types';
 import { useRealtimeRefresh } from '@/hooks/useRealtimeRefresh';
+import toast from 'react-hot-toast';
 
 const STATUS_FILTERS: { label: string; value: OrderStatus | '' }[] = [
   { label: 'All', value: '' },
@@ -26,33 +27,42 @@ export default function AdminOrdersPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<OrderStatus | ''>('');
   const limit = 15;
-  const pageRef = useRef(page);
-  const filterRef = useRef(statusFilter);
-  const searchRef = useRef(search);
-  pageRef.current = page;
-  filterRef.current = statusFilter;
-  searchRef.current = search;
+  // `search` is what is typed; `query` is what has been submitted. Only the
+  // submitted value drives a request, so typing does not refetch.
+  const [query, setQuery] = useState('');
 
-  const fetch = useCallback((p = pageRef.current) => {
-    setLoading(true);
-    adminApi.listOrders({
-      page: p, limit,
-      search: searchRef.current || undefined,
-      status: filterRef.current || undefined,
+  // Rapid paging can leave two requests in flight; only the newest one is
+  // allowed to write its results.
+  const reqId = useRef(0);
+
+  const fetch = useCallback(() => {
+    const id = ++reqId.current;
+    return adminApi.listOrders({
+      page, limit,
+      search: query || undefined,
+      status: statusFilter || undefined,
     })
-      .then(({ data }) => { setOrders(data.data); setTotal(data.meta.total); })
-      .finally(() => setLoading(false));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+      .then(({ data }) => {
+        if (id !== reqId.current) return;   // superseded
+        setOrders(data.data);
+        setTotal(data.meta.total);
+      })
+      .catch(() => { if (id === reqId.current) toast.error('Could not load orders'); })
+      .finally(() => { if (id === reqId.current) setLoading(false); });
+  }, [page, query, statusFilter]);
 
-  useEffect(() => { fetch(1); setPage(1); }, [statusFilter, fetch]);
-  useEffect(() => { fetch(page); }, [page, fetch]);
+  useEffect(() => { fetch(); }, [fetch]);
 
-  useRealtimeRefresh(['orders'], () => fetch(pageRef.current));
+  useRealtimeRefresh(['orders'], fetch);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    fetch(1);
+    // Nothing to fetch if the term and the page are both unchanged — without
+    // this the spinner would be switched on with no request to switch it off.
+    if (search === query && page === 1) return;
+    setQuery(search);
     setPage(1);
+    setLoading(true);
   };
 
   const totalPages = Math.ceil(total / limit);
@@ -68,13 +78,18 @@ export default function AdminOrdersPage() {
           {STATUS_FILTERS.map((f) => (
             <button
               key={f.value}
-              onClick={() => setStatusFilter(f.value)}
+              onClick={() => {
+              // Re-clicking the active filter changes nothing, so there would
+              // be no refetch to turn the spinner back off.
+              if (f.value === statusFilter) return;
+              setStatusFilter(f.value); setPage(1); setLoading(true);
+            }}
               className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                 statusFilter === f.value
                   ? 'text-white shadow-sm'
                   : 'bg-white border border-neutral-200 text-neutral-500 hover:border-neutral-400'
               }`}
-              style={statusFilter === f.value ? { background: '#0a2e1f' } : undefined}
+              style={statusFilter === f.value ? { background: '#171614' } : undefined}
             >
               {f.label}
             </button>
@@ -89,7 +104,7 @@ export default function AdminOrdersPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search order #…"
-              className="w-full rounded-xl border border-neutral-200 bg-white py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/30"
+              className="w-full rounded-xl border border-neutral-200 bg-white py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-ink/25"
             />
           </div>
           <Button type="submit" variant="secondary" size="sm">Go</Button>
@@ -108,11 +123,11 @@ export default function AdminOrdersPage() {
           />
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-3 pt-2">
-              <Button variant="secondary" size="sm" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+              <Button variant="secondary" size="sm" disabled={page === 1} onClick={() => { setLoading(true); setPage((p) => p - 1); }}>
                 Previous
               </Button>
               <span className="text-sm text-neutral-400">Page {page} of {totalPages}</span>
-              <Button variant="secondary" size="sm" disabled={page === totalPages} onClick={() => setPage((p) => p + 1)}>
+              <Button variant="secondary" size="sm" disabled={page === totalPages} onClick={() => { setLoading(true); setPage((p) => p + 1); }}>
                 Next
               </Button>
             </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { X, Loader2, ImagePlus } from 'lucide-react';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
@@ -22,37 +22,27 @@ interface Props {
 const EMPTY = { title: '', slug: '', excerpt: '', content: '', coverImage: '', isPublished: true };
 
 const fieldStyle = {
-  background: '#faf6ed',
-  border: '1px solid #e0d0b0',
+  background: '#f4f4f2',
+  border: '1px solid #dedcd7',
   boxShadow: 'inset 0 2px 5px rgba(0,0,0,0.10), inset 0 1px 2px rgba(0,0,0,0.07)',
 };
 
+// Keyed by post id in the parent, so a fresh instance mounts per post and
+// the starting values are plain initial state, not a props-sync effect.
 export function BlogFormModal({ open, onClose, post, onSaved }: Props) {
-  const [form, setForm] = useState(EMPTY);
-  const [slugLocked, setSlugLocked] = useState(false);
+  const [form, setForm] = useState(() => (post ? {
+    title: post.title,
+    slug: post.slug,
+    excerpt: post.excerpt ?? '',
+    content: post.content,
+    coverImage: post.cover_image ?? '',
+    isPublished: post.is_published,
+  } : EMPTY));
+  const [slugLocked, setSlugLocked] = useState(!!post);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const isEditing = !!post;
-
-  useEffect(() => {
-    if (open) {
-      if (post) {
-        setForm({
-          title: post.title,
-          slug: post.slug,
-          excerpt: post.excerpt ?? '',
-          content: post.content,
-          coverImage: post.cover_image ?? '',
-          isPublished: post.is_published,
-        });
-        setSlugLocked(true);
-      } else {
-        setForm(EMPTY);
-        setSlugLocked(false);
-      }
-    }
-  }, [open, post]);
 
   const set = (key: string, value: string | boolean) =>
     setForm((f) => ({ ...f, [key]: value }));
@@ -116,11 +106,11 @@ export function BlogFormModal({ open, onClose, post, onSaved }: Props) {
 
         {/* Cover image */}
         <div>
-          <p className="mb-2 text-sm font-medium" style={{ color: '#143d2a' }}>Cover Image</p>
+          <p className="mb-2 text-sm font-medium" style={{ color: '#55534e' }}>Cover Image</p>
           <div className="flex items-center gap-3">
             {form.coverImage ? (
               <div className="relative h-20 w-32 flex-shrink-0 overflow-hidden rounded-xl border"
-                style={{ borderColor: '#e0d0b0' }}>
+                style={{ borderColor: '#dedcd7' }}>
                 <Image src={form.coverImage} alt="Cover" fill className="object-cover" />
                 <button type="button" onClick={() => set('coverImage', '')}
                   className="absolute right-1 top-1 rounded-full bg-black/55 p-0.5 text-white hover:bg-black/80"
@@ -130,8 +120,8 @@ export function BlogFormModal({ open, onClose, post, onSaved }: Props) {
               </div>
             ) : (
               <button type="button" disabled={uploading} onClick={() => fileRef.current?.click()}
-                className="flex h-20 w-32 flex-shrink-0 flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed transition-colors hover:border-gold/40 hover:bg-gold/5 disabled:opacity-50"
-                style={{ borderColor: '#e0d0b0' }}>
+                className="flex h-20 w-32 flex-shrink-0 flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed transition-colors hover:border-line-2 hover:bg-mist disabled:opacity-50"
+                style={{ borderColor: '#dedcd7' }}>
                 {uploading
                   ? <Loader2 className="h-5 w-5 animate-spin text-neutral-400" />
                   : <ImagePlus className="h-5 w-5 text-neutral-400" />}
@@ -148,7 +138,7 @@ export function BlogFormModal({ open, onClose, post, onSaved }: Props) {
 
         {/* Slug */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: '#143d2a' }}>
+          <label className="text-sm font-medium" style={{ color: '#55534e' }}>
             Slug *{' '}
             {!slugLocked && <span className="font-normal text-neutral-400">(auto-generated)</span>}
           </label>
@@ -168,7 +158,7 @@ export function BlogFormModal({ open, onClose, post, onSaved }: Props) {
               <button type="button"
                 onClick={() => { setSlugLocked(false); set('slug', slugify(form.title)); }}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-sans hover:underline"
-                style={{ color: '#c9a227' }}>
+                style={{ color: '#8b8881' }}>
                 Reset
               </button>
             )}
@@ -177,7 +167,7 @@ export function BlogFormModal({ open, onClose, post, onSaved }: Props) {
 
         {/* Excerpt */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: '#143d2a' }}>
+          <label className="text-sm font-medium" style={{ color: '#55534e' }}>
             Excerpt <span className="font-normal text-neutral-400">(shown in listing)</span>
           </label>
           <textarea value={form.excerpt} onChange={(e) => set('excerpt', e.target.value)}
@@ -188,7 +178,7 @@ export function BlogFormModal({ open, onClose, post, onSaved }: Props) {
 
         {/* Content */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: '#143d2a' }}>Content *</label>
+          <label className="text-sm font-medium" style={{ color: '#55534e' }}>Content *</label>
           <textarea value={form.content} onChange={(e) => set('content', e.target.value)}
             rows={10} placeholder="Write your post here… (Markdown supported)"
             required

@@ -15,7 +15,7 @@ export function ProgressRow({
   value,
   max,
   displayValue,
-  color = '#c9a227',
+  color = '#8b8881',
   subLabel,
   className,
 }: ProgressRowProps) {

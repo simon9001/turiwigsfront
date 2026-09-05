@@ -24,6 +24,10 @@ function PaymentSuccessContent() {
     const savedBookingId = sessionStorage.getItem('pg_booking_id');
 
     if (!reference) {
+      // sessionStorage is browser-only, so this has to be read after mount.
+      // Seeding it with a lazy initialiser instead would make the server and
+      // client first render disagree and produce a hydration mismatch.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBookingId(savedBookingId);
       setStatus('done');
       return;
@@ -57,7 +61,7 @@ function PaymentSuccessContent() {
         {status === 'loading' ? (
           <>
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-amber-50">
-              <Loader2 className="h-10 w-10 animate-spin" style={{ color: '#c9a227' }} />
+              <Loader2 className="h-10 w-10 animate-spin" style={{ color: '#8b8881' }} />
             </div>
             <p className="text-neutral-500 text-sm">Confirming your payment…</p>
           </>
@@ -65,16 +69,16 @@ function PaymentSuccessContent() {
           <>
             <div
               className="mx-auto flex h-20 w-20 items-center justify-center rounded-full"
-              style={{ background: '#e8f5ee' }}
+              style={{ background: 'rgba(47,111,79,0.12)' }}
             >
-              <CheckCircle className="h-10 w-10" style={{ color: '#1e5038' }} />
+              <CheckCircle className="h-10 w-10" style={{ color: '#2f6f4f' }} />
             </div>
 
             <div>
-              <h1 className="text-2xl font-bold" style={{ color: '#0a2e1f' }}>
+              <h1 className="text-2xl font-bold" style={{ color: '#171614' }}>
                 {isBooking ? 'Booking Confirmed!' : 'Payment Successful!'}
               </h1>
-              <p className="mt-2 text-sm" style={{ color: '#6b7280' }}>
+              <p className="mt-2 text-sm" style={{ color: '#6e6b65' }}>
                 {isBooking
                   ? 'Your deposit has been received. We look forward to seeing you!'
                   : "Your payment has been confirmed. We're processing your order."}
@@ -90,7 +94,7 @@ function PaymentSuccessContent() {
                   <Link href={`/account/bookings/${bookingId}`}>
                     <Button
                       fullWidth
-                      style={{ background: '#0a2e1f', color: '#fff', border: 'none' }}
+                      style={{ background: '#171614', color: '#fff', border: 'none' }}
                     >
                       View My Booking
                     </Button>
@@ -101,8 +105,8 @@ function PaymentSuccessContent() {
                     rel="noopener noreferrer"
                     className="w-full inline-flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold transition-opacity hover:opacity-90"
                     style={{
-                      background: 'linear-gradient(135deg,#f0d878,#c9a227)',
-                      color: '#0a2e1f',
+                      background: '#171614',
+                      color: '#ffffff',
                     }}
                   >
                     <Navigation className="h-4 w-4" />
@@ -124,8 +128,8 @@ function PaymentSuccessContent() {
                     rel="noopener noreferrer"
                     className="w-full inline-flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold transition-opacity hover:opacity-90"
                     style={{
-                      background: 'linear-gradient(135deg,#f0d878,#c9a227)',
-                      color: '#0a2e1f',
+                      background: '#171614',
+                      color: '#ffffff',
                     }}
                   >
                     <Navigation className="h-4 w-4" />

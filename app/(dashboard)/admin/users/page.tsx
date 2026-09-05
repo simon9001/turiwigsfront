@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Search, UserCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { adminApi, type AdminUser } from '@/api/admin.api';
@@ -25,20 +25,35 @@ export default function AdminUsersPage() {
   const [updating, setUpdating] = useState<string | null>(null);
   const limit = 20;
 
-  const fetch = (p = page) => {
-    setLoading(true);
-    adminApi.listUsers({ page: p, limit, search: search || undefined })
-      .then(({ data }) => { setUsers(data.data); setTotal(data.meta.total); })
-      .finally(() => setLoading(false));
-  };
+  // `search` is what is typed; `query` is what has been submitted.
+  const [query, setQuery] = useState('');
 
-  useEffect(() => { fetch(1); setPage(1); }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { fetch(page); }, [page]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Rapid paging can leave two requests in flight; only the newest one is
+  // allowed to write its results.
+  const reqId = useRef(0);
+
+  const fetch = useCallback(() => {
+    const id = ++reqId.current;
+    return adminApi.listUsers({ page, limit, search: query || undefined })
+      .then(({ data }) => {
+        if (id !== reqId.current) return;   // superseded
+        setUsers(data.data);
+        setTotal(data.meta.total);
+      })
+      .catch(() => { if (id === reqId.current) toast.error('Could not load users'); })
+      .finally(() => { if (id === reqId.current) setLoading(false); });
+  }, [page, query]);
+
+  useEffect(() => { fetch(); }, [fetch]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    fetch(1);
+    // Nothing to fetch if the term and the page are both unchanged — without
+    // this the spinner would be switched on with no request to switch it off.
+    if (search === query && page === 1) return;
+    setQuery(search);
     setPage(1);
+    setLoading(true);
   };
 
   const handleRoleChange = async (id: string, role: Extract<UserRole, 'customer' | 'staff'>) => {
@@ -71,7 +86,7 @@ export default function AdminUsersPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or email…"
-            className="w-full rounded-xl border border-neutral-200 bg-white py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/30"
+            className="w-full rounded-xl border border-neutral-200 bg-white py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-ink/25"
           />
         </div>
         <Button type="submit" variant="secondary" size="sm">Search</Button>
@@ -106,7 +121,7 @@ export default function AdminUsersPage() {
                         <div className="flex items-center gap-3">
                           <div
                             className="h-8 w-8 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-bold"
-                            style={{ background: 'rgba(201,162,39,0.12)', color: '#0a2e1f' }}
+                            style={{ background: 'rgba(23,22,20,0.12)', color: '#171614' }}
                           >
                             {user.name[0]?.toUpperCase()}
                           </div>
@@ -133,7 +148,7 @@ export default function AdminUsersPage() {
                             onChange={(e) =>
                               handleRoleChange(user.id, e.target.value as Extract<UserRole, 'customer' | 'staff'>)
                             }
-                            className="rounded-xl border border-neutral-200 bg-white px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-gold/30 cursor-pointer"
+                            className="rounded-xl border border-neutral-200 bg-white px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-ink/25 cursor-pointer"
                           >
                             <option value="customer">customer</option>
                             <option value="staff">staff</option>
@@ -149,9 +164,9 @@ export default function AdminUsersPage() {
 
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-3 pt-2">
-              <Button variant="secondary" size="sm" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>Previous</Button>
+              <Button variant="secondary" size="sm" disabled={page === 1} onClick={() => { setLoading(true); setPage((p) => p - 1); }}>Previous</Button>
               <span className="text-sm text-neutral-400">Page {page} of {totalPages}</span>
-              <Button variant="secondary" size="sm" disabled={page === totalPages} onClick={() => setPage((p) => p + 1)}>Next</Button>
+              <Button variant="secondary" size="sm" disabled={page === totalPages} onClick={() => { setLoading(true); setPage((p) => p + 1); }}>Next</Button>
             </div>
           )}
         </>

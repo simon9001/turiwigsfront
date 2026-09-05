@@ -12,19 +12,34 @@ export const storage = {
     }
   },
 
+  // Writes can throw even on the client: Safari private mode rejects them and
+  // any browser throws once the quota is full. Losing a cached value is fine;
+  // taking down sign-in or the cart with it is not.
   set<T>(key: string, value: T): void {
     if (!isClient) return;
-    localStorage.setItem(key, JSON.stringify(value));
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+      /* storage unavailable or full */
+    }
   },
 
   remove(key: string): void {
     if (!isClient) return;
-    localStorage.removeItem(key);
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      /* storage unavailable */
+    }
   },
 
   clear(): void {
     if (!isClient) return;
-    localStorage.clear();
+    try {
+      localStorage.clear();
+    } catch {
+      /* storage unavailable */
+    }
   },
 };
 

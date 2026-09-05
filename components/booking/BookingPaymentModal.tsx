@@ -63,7 +63,7 @@ function Field({
 }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-bold mb-1.5" style={{ color: '#0a2e1f' }}>
+      <label className="block text-xs font-bold mb-1.5" style={{ color: '#171614' }}>
         {label}
       </label>
       {children}
@@ -73,7 +73,7 @@ function Field({
 
 const inputCls =
   'w-full rounded-xl border text-sm px-4 py-3 outline-none transition-all focus:ring-2 focus:ring-yellow-300';
-const inputStyle = { background: '#fff', borderColor: '#e0d0b0', color: '#0a2e1f' };
+const inputStyle = { background: '#fff', borderColor: '#dedcd7', color: '#171614' };
 
 // ─── Modal ────────────────────────────────────────────────────────────────────
 
@@ -253,18 +253,18 @@ export function BookingPaymentModal({
       {/* Sheet */}
       <div
         className="relative w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden"
-        style={{ background: '#faf6ed' }}
+        style={{ background: '#f4f4f2' }}
       >
         {/* Header */}
         <div
           className="flex items-center justify-between px-5 pt-5 pb-4 border-b"
-          style={{ borderColor: '#f0e8d4' }}
+          style={{ borderColor: '#e9e8e4' }}
         >
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: '#c9a227' }}>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: '#8b8881' }}>
               {stepTitle[step]}
             </p>
-            <p className="text-sm font-bold mt-0.5" style={{ color: '#0a2e1f' }}>
+            <p className="text-sm font-bold mt-0.5" style={{ color: '#171614' }}>
               Booking #{bookingNumber}
             </p>
           </div>
@@ -290,28 +290,28 @@ export function BookingPaymentModal({
         <div className="px-5 py-5 space-y-4 max-h-[82vh] overflow-y-auto">
 
           {/* Price summary — always shown */}
-          <div className="rounded-2xl p-4 space-y-3" style={{ background: '#f0e8d4' }}>
+          <div className="rounded-2xl p-4 space-y-3" style={{ background: '#e9e8e4' }}>
             <div>
-              <p className="font-bold text-sm" style={{ color: '#0a2e1f' }}>{serviceName}</p>
-              <p className="text-xs mt-0.5" style={{ color: '#9a8060' }}>
+              <p className="font-bold text-sm" style={{ color: '#171614' }}>{serviceName}</p>
+              <p className="text-xs mt-0.5" style={{ color: '#8b8881' }}>
                 {fmtDate(scheduledDate)} &middot; {fmtTime(scheduledTime)}
               </p>
             </div>
-            <div className="border-t pt-3 space-y-1.5" style={{ borderColor: '#e0d0b0' }}>
-              <div className="flex justify-between text-xs" style={{ color: '#9a8060' }}>
+            <div className="border-t pt-3 space-y-1.5" style={{ borderColor: '#dedcd7' }}>
+              <div className="flex justify-between text-xs" style={{ color: '#8b8881' }}>
                 <span>Service total</span>
                 <span>{formatPrice(totalPrice)}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-bold" style={{ color: '#0a2e1f' }}>
+                <span className="text-sm font-bold" style={{ color: '#171614' }}>
                   Deposit due now{' '}
-                  <span className="text-xs font-normal" style={{ color: '#9a8060' }}>(30%)</span>
+                  <span className="text-xs font-normal" style={{ color: '#8b8881' }}>(30%)</span>
                 </span>
-                <span className="text-lg font-bold" style={{ color: '#c9a227' }}>
+                <span className="text-lg font-bold" style={{ color: '#8b8881' }}>
                   {formatPrice(depositAmount)}
                 </span>
               </div>
-              <div className="flex justify-between text-xs" style={{ color: '#9a8060' }}>
+              <div className="flex justify-between text-xs" style={{ color: '#8b8881' }}>
                 <span>Balance payable at salon</span>
                 <span>{formatPrice(balanceAmount)}</span>
               </div>
@@ -324,7 +324,7 @@ export function BookingPaymentModal({
               {/* Method tabs */}
               <div
                 className="grid grid-cols-2 rounded-2xl p-1 gap-1"
-                style={{ background: '#f0e8d4' }}
+                style={{ background: '#e9e8e4' }}
               >
                 {(['mpesa', 'card'] as const).map((m) => (
                   <button
@@ -333,8 +333,8 @@ export function BookingPaymentModal({
                     className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-bold transition-all"
                     style={
                       payMethod === m
-                        ? { background: '#0a2e1f', color: '#fff' }
-                        : { color: '#9a8060' }
+                        ? { background: '#171614', color: '#fff' }
+                        : { color: '#8b8881' }
                     }
                   >
                     {m === 'mpesa'
@@ -350,7 +350,7 @@ export function BookingPaymentModal({
                   <div className="relative">
                     <span
                       className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm select-none"
-                      style={{ color: '#9a8060' }}
+                      style={{ color: '#8b8881' }}
                     >
                       🇰🇪 +254
                     </span>
@@ -363,7 +363,7 @@ export function BookingPaymentModal({
                       style={{ ...inputStyle, paddingLeft: '84px' }}
                     />
                   </div>
-                  <p className="text-xs mt-1.5" style={{ color: '#9a8060' }}>
+                  <p className="text-xs mt-1.5" style={{ color: '#8b8881' }}>
                     You&apos;ll receive an STK push — enter your M-Pesa PIN on your phone
                   </p>
                 </Field>
@@ -426,7 +426,7 @@ export function BookingPaymentModal({
                 loading={busy}
                 disabled={payMethod === 'mpesa' ? !canPayMpesa : !canPayCard}
                 onClick={payMethod === 'mpesa' ? payMpesa : payCard}
-                style={{ background: '#0a2e1f', color: '#fff', border: 'none' }}
+                style={{ background: '#171614', color: '#fff', border: 'none' }}
               >
                 {busy
                   ? 'Processing…'
@@ -434,8 +434,8 @@ export function BookingPaymentModal({
               </Button>
 
               <div className="flex items-center justify-center gap-1.5">
-                <Lock className="h-3 w-3" style={{ color: '#9ca3af' }} />
-                <p className="text-xs" style={{ color: '#9ca3af' }}>
+                <Lock className="h-3 w-3" style={{ color: '#8b8881' }} />
+                <p className="text-xs" style={{ color: '#8b8881' }}>
                   Secured by Paystack · 256-bit encryption
                 </p>
               </div>
@@ -447,27 +447,27 @@ export function BookingPaymentModal({
             <div className="text-center space-y-5 py-4">
               <div
                 className="mx-auto h-16 w-16 rounded-full flex items-center justify-center text-3xl"
-                style={{ background: '#f0e8d4' }}
+                style={{ background: '#e9e8e4' }}
               >
                 📱
               </div>
               <div className="space-y-1">
-                <p className="font-bold text-base" style={{ color: '#0a2e1f' }}>
+                <p className="font-bold text-base" style={{ color: '#171614' }}>
                   Check your phone
                 </p>
-                <p className="text-sm" style={{ color: '#6b7280' }}>
+                <p className="text-sm" style={{ color: '#6e6b65' }}>
                   An M-Pesa prompt has been sent to{' '}
                   <span className="font-semibold text-neutral-800">{phone}</span>.
                   Enter your M-Pesa PIN to complete the payment.
                 </p>
               </div>
-              <div className="flex items-center justify-center gap-2 text-sm" style={{ color: '#9a8060' }}>
+              <div className="flex items-center justify-center gap-2 text-sm" style={{ color: '#8b8881' }}>
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Waiting for confirmation…
               </div>
               <button
                 className="text-xs underline"
-                style={{ color: '#9a8060' }}
+                style={{ color: '#8b8881' }}
                 onClick={() => {
                   if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
                   setStep('form');
@@ -482,7 +482,7 @@ export function BookingPaymentModal({
           {/* ── CARD PIN ─────────────────────────────────────────────────── */}
           {step === 'card_pin' && (
             <div className="space-y-4">
-              <p className="text-sm text-center" style={{ color: '#6b7280' }}>
+              <p className="text-sm text-center" style={{ color: '#6e6b65' }}>
                 Your bank requires your card PIN to authorise this payment.
               </p>
               <input
@@ -504,7 +504,7 @@ export function BookingPaymentModal({
                 loading={busy}
                 disabled={pinValue.length < 4 || busy}
                 onClick={submitPin}
-                style={{ background: '#0a2e1f', color: '#fff', border: 'none' }}
+                style={{ background: '#171614', color: '#fff', border: 'none' }}
               >
                 {busy ? 'Verifying…' : 'Confirm PIN'}
               </Button>
@@ -514,7 +514,7 @@ export function BookingPaymentModal({
           {/* ── CARD OTP ─────────────────────────────────────────────────── */}
           {step === 'card_otp' && (
             <div className="space-y-4">
-              <p className="text-sm text-center" style={{ color: '#6b7280' }}>
+              <p className="text-sm text-center" style={{ color: '#6e6b65' }}>
                 An OTP has been sent to your phone or email. Enter it below.
               </p>
               <input
@@ -536,7 +536,7 @@ export function BookingPaymentModal({
                 loading={busy}
                 disabled={otpValue.length < 4 || busy}
                 onClick={submitOtp}
-                style={{ background: '#0a2e1f', color: '#fff', border: 'none' }}
+                style={{ background: '#171614', color: '#fff', border: 'none' }}
               >
                 {busy ? 'Verifying…' : 'Confirm OTP'}
               </Button>
@@ -547,10 +547,10 @@ export function BookingPaymentModal({
           {step === 'success' && (
             <div className="text-center space-y-4 py-6">
               <div className="flex justify-center">
-                <CheckCircle2 className="h-14 w-14" style={{ color: '#1e5038' }} />
+                <CheckCircle2 className="h-14 w-14" style={{ color: '#55534e' }} />
               </div>
-              <p className="font-bold text-xl" style={{ color: '#0a2e1f' }}>Booking Confirmed!</p>
-              <p className="text-sm" style={{ color: '#6b7280' }}>
+              <p className="font-bold text-xl" style={{ color: '#171614' }}>Booking Confirmed!</p>
+              <p className="text-sm" style={{ color: '#6e6b65' }}>
                 Deposit of {formatPrice(depositAmount)} received. Redirecting…
               </p>
             </div>

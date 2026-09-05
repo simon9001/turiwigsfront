@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { ShoppingCart, Heart, User, Search, Menu, X } from 'lucide-react';
+import { Heart, Menu, Search, ShoppingBag, User, X } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useRole } from '@/hooks/useRole';
@@ -13,39 +12,47 @@ import { toggleMobileMenu } from '@/store/slices/ui.slice';
 import { cn } from '@/utils/cn';
 
 const NAV = [
-  { label: 'Shop Wigs', href: '/products' },
+  { label: 'Wigs', href: '/products' },
   { label: 'Services', href: '/services' },
-  { label: 'Collections', href: '/products?featured=true' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ];
 
-function IconBtn({ onClick, href, label, count, children }: {
-  onClick?: () => void; href?: string; label: string;
-  count?: number; children: React.ReactNode;
+function IconButton({
+  onClick,
+  href,
+  label,
+  count,
+  children,
+}: {
+  onClick?: () => void;
+  href?: string;
+  label: string;
+  count?: number;
+  children: React.ReactNode;
 }) {
-  const cls = cn(
-    'relative flex h-9 w-9 items-center justify-center rounded-full transition-all duration-150',
-    'bg-white/10 border border-white/20 backdrop-blur-sm',
-    'hover:bg-white/20 hover:border-gold/40',
-    'active:bg-white/30'
-  );
-  if (href) return (
-    <Link href={href} className={cls} aria-label={label}>
-      {children}
-      {count != null && count > 0 && (
-        <span className="absolute -right-0.5 -top-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-gold text-[10px] font-bold text-salon-dark shadow-md">
-          {count > 9 ? '9+' : count}
-        </span>
-      )}
-    </Link>
-  );
+  const cls =
+    'relative flex h-9 w-9 items-center justify-center rounded-full text-slate transition-colors hover:bg-mist hover:text-ink';
+
+  const badge =
+    count != null && count > 0 ? (
+      <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-ink px-1 text-[10px] font-semibold tabular-nums text-white">
+        {count > 9 ? '9+' : count}
+      </span>
+    ) : null;
+
+  if (href) {
+    return (
+      <Link href={href} className={cls} aria-label={label}>
+        {children}
+        {badge}
+      </Link>
+    );
+  }
   return (
-    <button onClick={onClick} className={cls} aria-label={label}>
+    <button type="button" onClick={onClick} className={cls} aria-label={label}>
       {children}
-      {count != null && count > 0 && (
-        <span className="absolute -right-0.5 -top-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-gold text-[10px] font-bold text-salon-dark shadow-md">
-          {count > 9 ? '9+' : count}
-        </span>
-      )}
+      {badge}
     </button>
   );
 }
@@ -56,157 +63,166 @@ export function Header() {
   const { isAdmin, isStaff } = useRole();
   const dispatch = useAppDispatch();
   const pathname = usePathname();
-
-  const [scrolled, setScrolled] = useState(false);
-  const isOnHome = pathname === '/';
-
-  useEffect(() => {
-    function onScroll() { setScrolled(window.scrollY > 50); }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  const transparent = isOnHome && !scrolled;
-
-  const isOnProducts = pathname.startsWith('/products');
-  const dashboardHref = isAdmin ? '/admin' : isStaff ? '/staff' : null;
   const mobileOpen = useAppSelector((s) => s.ui.mobileMenuOpen);
+
+  const dashboardHref = isAdmin ? '/admin' : isStaff ? '/staff' : null;
 
   return (
     <>
-      <header
-        className="sticky top-0 z-40 w-full transition-all duration-300"
-        style={transparent ? {
-          background: 'transparent',
-          borderBottom: '1px solid transparent',
-          boxShadow: 'none',
-        } : {
-          background: 'linear-gradient(180deg, #000000 0%, #030705 100%)',
-          borderBottom: '1px solid rgba(201,162,39,0.25)',
-          boxShadow: '0 2px 20px rgba(0,0,0,0.4)',
-        }}
-      >
-        {/* Gold accent bar — only visible when scrolled */}
-        <div
-          className="h-0.5 w-full transition-opacity duration-300"
-          style={{
-            background: 'linear-gradient(90deg, transparent, #c9a227 30%, #f0d878 50%, #c9a227 70%, transparent)',
-            opacity: transparent ? 0 : 1,
-          }}
-        />
-
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-          {/* Logo */}
+      <header className="sticky top-0 z-40 w-full border-b border-line bg-paper">
+        <div className="mx-auto flex h-16 max-w-[100rem] items-center justify-between gap-4 px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="relative h-10 w-10 overflow-hidden rounded-xl"
-              style={{ boxShadow: '0 2px 8px rgba(201,162,39,0.4), 0 1px 0 rgba(255,255,255,0.15) inset' }}>
-              <Image src="/logo.jpeg" alt="Tiuri Logo" fill className="object-cover" priority />
+            <div className="relative h-9 w-9 overflow-hidden rounded-md border border-line">
+              <Image src="/logo.jpeg" alt="" fill className="object-cover" priority />
             </div>
-            <div className="hidden sm:block leading-none">
-              <span className="block text-base font-bold tracking-tight text-white"
-                style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
-                Tiuri
+            <span className="display-sm text-lg leading-none">
+              Tiuri
+              <span className="ml-2 hidden font-sans text-[11px] font-medium tracking-wide text-mute sm:inline">
+                Nails &amp; Wigs
               </span>
-              <span className="block text-[10px] font-medium tracking-widest uppercase"
-                style={{ color: '#c9a227' }}>
-                Nails & Wigs Parlour
-              </span>
-            </div>
+            </span>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            {NAV.map((item) => (
-              <Link key={item.href} href={item.href}
-                className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-150 text-white/90 hover:text-gold"
-                style={{ textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLElement).style.color = '#c9a227';
-                  (e.target as HTMLElement).style.background = 'rgba(201,162,39,0.12)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLElement).style.color = 'rgba(255,255,255,0.9)';
-                  (e.target as HTMLElement).style.background = 'transparent';
-                }}
-              >
-                {item.label}
-              </Link>
-            ))}
+          <nav className="hidden items-center gap-1 md:flex">
+            {NAV.map((item) => {
+              const active = pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'rounded-full px-3.5 py-2 text-sm transition-colors',
+                    active ? 'font-semibold text-ink' : 'text-slate hover:bg-mist hover:text-ink',
+                  )}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
             {dashboardHref && (
-              <Link href={dashboardHref}
-                className="ml-1 flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-150"
-                style={{
-                  background: 'linear-gradient(180deg,#1e5038 0%,#0a2e1f 100%)',
-                  color: '#f0d878',
-                  boxShadow: '0 1px 0 rgba(255,255,255,0.1) inset,0 2px 6px rgba(10,46,31,0.3)',
-                }}
+              <Link
+                href={dashboardHref}
+                className="ml-1 rounded-full border border-line-2 px-3.5 py-2 text-sm font-semibold text-ink transition-colors hover:bg-mist"
               >
-                {isAdmin ? '⚙ Admin' : '⚙ Staff'}
+                {isAdmin ? 'Admin' : 'Staff'}
               </Link>
             )}
           </nav>
 
-          {/* Actions */}
-          <div className="flex items-center gap-1.5">
-            <div className="hidden sm:flex items-center gap-1.5">
-              <IconBtn href="/products" label="Search">
-                <Search className="h-4 w-4 text-white/80" />
-              </IconBtn>
-              <IconBtn href="/account/wishlist" label="Wishlist">
-                <Heart className="h-4 w-4 text-white/80" />
-              </IconBtn>
-              <IconBtn href={user ? '/account/profile' : '/auth/login'} label="Account">
-                <User className="h-4 w-4 text-white/80" />
-              </IconBtn>
+          <div className="flex items-center gap-1">
+            <div className="hidden items-center gap-1 sm:flex">
+              <IconButton href="/products" label="Search wigs">
+                <Search className="h-[18px] w-[18px]" />
+              </IconButton>
+              <IconButton href="/account/wishlist" label="Saved items">
+                <Heart className="h-[18px] w-[18px]" />
+              </IconButton>
+              <IconButton
+                href={user ? '/account/profile' : '/auth/login'}
+                label={user ? 'Your account' : 'Sign in'}
+              >
+                <User className="h-[18px] w-[18px]" />
+              </IconButton>
             </div>
 
-            {/* Cart — only shown after user navigates to Shop Wigs */}
-            {isOnProducts && (
-              <IconBtn onClick={toggleCart} label="Cart" count={count}>
-                <ShoppingCart className="h-4 w-4 text-white/80" />
-              </IconBtn>
-            )}
+            {/* Always reachable. People add wigs to the cart from the
+                homepage, not only from the shop. */}
+            <IconButton onClick={toggleCart} label="Cart" count={count}>
+              <ShoppingBag className="h-[18px] w-[18px]" />
+            </IconButton>
 
-            <button onClick={() => dispatch(toggleMobileMenu())}
-              className="md:hidden flex h-9 w-9 items-center justify-center rounded-full transition-all"
-              style={{
-                background: transparent ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                backdropFilter: 'blur(4px)',
-              }}>
-              {mobileOpen ? <X className="h-5 w-5 text-white" /> : <Menu className="h-5 w-5 text-white" />}
+            <Link href="/bookings" className="btn btn-primary btn-sm ml-1">
+              Book
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => dispatch(toggleMobileMenu())}
+              aria-label="Open menu"
+              aria-expanded={mobileOpen}
+              className="ml-0.5 flex h-9 w-9 items-center justify-center rounded-full text-ink transition-colors hover:bg-mist md:hidden"
+            >
+              <Menu className="h-5 w-5" />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile nav */}
-      <div className={cn(
-        'fixed inset-x-0 top-[66px] z-30 md:hidden transition-all duration-200',
-        mobileOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
-      )}
-        style={{ background: 'rgba(7,29,19,0.97)', borderBottom: '1px solid rgba(201,162,39,0.25)', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', backdropFilter: 'blur(12px)' }}>
-        <nav className="flex flex-col px-4 py-4 gap-1">
-          {NAV.map((item) => (
-            <Link key={item.href} href={item.href} onClick={() => dispatch(toggleMobileMenu())}
-              className="rounded-xl px-4 py-3 text-sm font-medium text-white/80 hover:text-gold hover:bg-white/5 transition-colors">
-              {item.label}
-            </Link>
-          ))}
-          <div className="mt-2 border-t pt-2 space-y-0.5" style={{ borderColor: 'rgba(201,162,39,0.2)' }}>
-            <Link href={user ? '/account/profile' : '/auth/login'} onClick={() => dispatch(toggleMobileMenu())}
-              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-white/80 hover:text-gold transition-colors">
-              <User className="h-4 w-4" />
-              {user ? user.name : 'Sign In'}
-            </Link>
-            {dashboardHref && (
-              <Link href={dashboardHref} onClick={() => dispatch(toggleMobileMenu())}
-                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-colors"
-                style={{ color: '#f0d878', background: 'rgba(10,46,31,0.08)' }}>
-                <span>⚙</span>
-                {isAdmin ? 'Admin Dashboard' : 'Staff Dashboard'}
+      {/* Mobile menu */}
+      <div
+        className={cn('fixed inset-0 z-50 md:hidden', mobileOpen ? 'pointer-events-auto' : 'pointer-events-none')}
+        aria-hidden={!mobileOpen}
+      >
+        <div
+          className={cn(
+            'absolute inset-0 bg-ink/40 transition-opacity duration-200',
+            mobileOpen ? 'opacity-100' : 'opacity-0',
+          )}
+          onClick={() => dispatch(toggleMobileMenu())}
+        />
+
+        <nav
+          className={cn(
+            'absolute inset-x-0 top-0 bg-paper transition-transform duration-200',
+            mobileOpen ? 'translate-y-0' : '-translate-y-full',
+          )}
+        >
+          <div className="flex h-16 items-center justify-between border-b border-line px-4">
+            <span className="display-sm text-lg">Menu</span>
+            <button
+              type="button"
+              onClick={() => dispatch(toggleMobileMenu())}
+              aria-label="Close menu"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-ink hover:bg-mist"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <div className="flex flex-col p-3">
+            {NAV.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => dispatch(toggleMobileMenu())}
+                className="rounded-lg px-4 py-3.5 text-[15px] text-ink transition-colors hover:bg-mist"
+              >
+                {item.label}
               </Link>
-            )}
+            ))}
+
+            <div className="mt-2 flex flex-col gap-1 border-t border-line pt-3">
+              <Link
+                href={user ? '/account/profile' : '/auth/login'}
+                onClick={() => dispatch(toggleMobileMenu())}
+                className="rounded-lg px-4 py-3.5 text-[15px] text-slate transition-colors hover:bg-mist"
+              >
+                {user ? user.name : 'Sign in'}
+              </Link>
+              <Link
+                href="/account/wishlist"
+                onClick={() => dispatch(toggleMobileMenu())}
+                className="rounded-lg px-4 py-3.5 text-[15px] text-slate transition-colors hover:bg-mist"
+              >
+                Saved items
+              </Link>
+              {dashboardHref && (
+                <Link
+                  href={dashboardHref}
+                  onClick={() => dispatch(toggleMobileMenu())}
+                  className="rounded-lg px-4 py-3.5 text-[15px] font-semibold text-ink transition-colors hover:bg-mist"
+                >
+                  {isAdmin ? 'Admin dashboard' : 'Staff dashboard'}
+                </Link>
+              )}
+              <Link
+                href="/bookings"
+                onClick={() => dispatch(toggleMobileMenu())}
+                className="btn btn-primary mx-1 mt-2"
+              >
+                Book an appointment
+              </Link>
+            </div>
           </div>
         </nav>
       </div>

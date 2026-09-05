@@ -71,7 +71,7 @@ export function UpcomingCard() {
   if (!booking) {
     return (
       <div className="card-sku p-6">
-        <h3 className="font-semibold text-base mb-4" style={{ color: '#0a2e1f' }}>
+        <h3 className="font-semibold text-base mb-4" style={{ color: '#171614' }}>
           Upcoming Appointment
         </h3>
         <EmptyState
@@ -81,7 +81,7 @@ export function UpcomingCard() {
           action={
             <Link
               href="/bookings/services"
-              className="btn-gold inline-flex items-center justify-center rounded-xl px-5 font-semibold text-sm"
+              className="btn-ink inline-flex items-center justify-center rounded-xl px-5 font-semibold text-sm"
               style={{ height: '40px' }}
             >
               Book Now
@@ -95,7 +95,7 @@ export function UpcomingCard() {
   return (
     <div className="card-sku p-5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="font-semibold text-base" style={{ color: '#0a2e1f' }}>
+        <h3 className="font-semibold text-base" style={{ color: '#171614' }}>
           Upcoming Appointment
         </h3>
         <Badge variant={statusVariant(booking.status)}>
@@ -105,24 +105,24 @@ export function UpcomingCard() {
 
       <div className="space-y-2.5 mb-4">
         {/* Service name */}
-        <p className="font-semibold text-base" style={{ color: '#0a2e1f' }}>
+        <p className="font-semibold text-base" style={{ color: '#171614' }}>
           {booking.services?.name ?? 'Appointment'}
         </p>
 
         {/* Technician */}
-        <div className="flex items-center gap-2 text-sm" style={{ color: '#5a6872' }}>
+        <div className="flex items-center gap-2 text-sm" style={{ color: '#55534e' }}>
           <User className="h-4 w-4 flex-shrink-0" />
           <span>Your Technician</span>
         </div>
 
         {/* Date */}
-        <div className="flex items-center gap-2 text-sm" style={{ color: '#5a6872' }}>
+        <div className="flex items-center gap-2 text-sm" style={{ color: '#55534e' }}>
           <Calendar className="h-4 w-4 flex-shrink-0" />
           <span>{formatDate(booking.scheduled_date)}</span>
         </div>
 
         {/* Time */}
-        <div className="flex items-center gap-2 text-sm" style={{ color: '#5a6872' }}>
+        <div className="flex items-center gap-2 text-sm" style={{ color: '#55534e' }}>
           <Clock className="h-4 w-4 flex-shrink-0" />
           <span>{booking.scheduled_time}</span>
         </div>
@@ -131,7 +131,7 @@ export function UpcomingCard() {
       <div
         className="h-px mb-4"
         style={{
-          background: 'linear-gradient(90deg, transparent, #c9a227, transparent)',
+          background: 'linear-gradient(90deg, transparent, #8b8881, transparent)',
           opacity: 0.3,
         }}
       />

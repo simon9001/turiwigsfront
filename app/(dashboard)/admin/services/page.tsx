@@ -15,18 +15,19 @@ import type { Service } from '@/types';
 export default function AdminServicesPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modal, setModal] = useState<{ open: boolean; service?: Service }>({ open: false });
+  const [modal, setModal] = useState<{ open: boolean; service?: Service; nonce: number }>({ open: false, nonce: 0 });
   const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
     adminApi.listAdminServices()
       .then(({ data }) => setServices(data.data))
+      .catch(() => toast.error('Could not load services'))
       .finally(() => setLoading(false));
   }, []);
 
-  const openCreate = () => setModal({ open: true, service: undefined });
-  const openEdit = (service: Service) => setModal({ open: true, service });
-  const closeModal = () => setModal({ open: false });
+  const openCreate = () => setModal((m) => ({ open: true, service: undefined, nonce: m.nonce + 1 }));
+  const openEdit = (service: Service) => setModal((m) => ({ open: true, service, nonce: m.nonce + 1 }));
+  const closeModal = () => setModal((m) => ({ ...m, open: false }));
 
   const handleSaved = (saved: Service) => {
     setServices((prev) => {
@@ -145,6 +146,7 @@ export default function AdminServicesPage() {
       </div>
 
       <ServiceFormModal
+        key={modal.nonce}
         open={modal.open}
         onClose={closeModal}
         service={modal.service}

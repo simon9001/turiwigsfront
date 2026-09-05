@@ -15,18 +15,19 @@ import type { BlogPost } from '@/types';
 export default function AdminBlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modal, setModal] = useState<{ open: boolean; post?: BlogPost }>({ open: false });
+  const [modal, setModal] = useState<{ open: boolean; post?: BlogPost; nonce: number }>({ open: false, nonce: 0 });
   const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
     blogApi.adminList()
       .then(({ data }) => setPosts(data.data))
+      .catch(() => toast.error('Could not load posts'))
       .finally(() => setLoading(false));
   }, []);
 
-  const openCreate = () => setModal({ open: true, post: undefined });
-  const openEdit = (post: BlogPost) => setModal({ open: true, post });
-  const closeModal = () => setModal({ open: false });
+  const openCreate = () => setModal((m) => ({ open: true, post: undefined, nonce: m.nonce + 1 }));
+  const openEdit = (post: BlogPost) => setModal((m) => ({ open: true, post, nonce: m.nonce + 1 }));
+  const closeModal = () => setModal((m) => ({ ...m, open: false }));
 
   const handleSaved = (saved: BlogPost) => {
     setPosts((prev) => {
@@ -142,6 +143,7 @@ export default function AdminBlogPage() {
       </div>
 
       <BlogFormModal
+        key={modal.nonce}
         open={modal.open}
         onClose={closeModal}
         post={modal.post}

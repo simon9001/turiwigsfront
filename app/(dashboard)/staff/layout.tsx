@@ -6,7 +6,7 @@ import { useRole } from '@/hooks/useRole';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import { PageSpinner } from '@/components/ui/Spinner';
 import {
-  LayoutDashboard, ShoppingBag, BookOpen, DollarSign,
+  LayoutDashboard, ShoppingBag, DollarSign,
   Calendar, UserCircle, MessageSquare,
 } from 'lucide-react';
 import { schedulingApi } from '@/api/scheduling.api';

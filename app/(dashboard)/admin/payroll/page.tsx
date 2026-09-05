@@ -5,11 +5,10 @@ import { CreditCard, Plus, Calculator, CheckCircle, DollarSign } from 'lucide-re
 import { useRealtimeRefresh } from '@/hooks/useRealtimeRefresh';
 import { payrollApi } from '@/api/erp.api';
 import { formatPrice, formatDate } from '@/utils/formatters';
-import { cn } from '@/utils/cn';
 import toast from 'react-hot-toast';
 
-const GREEN = '#10b981'; const GOLD = '#c9a227'; const ORANGE = '#f97316';
-const BLUE = '#3b82f6'; const RED = '#ef4444'; const PURPLE = '#8b5cf6';
+const GREEN = '#10b981'; const GOLD = '#8b8881'; const ORANGE = '#f97316';
+const BLUE = '#3b82f6'; const PURPLE = '#8b5cf6';
 
 type Run = { id: string; period_start: string; period_end: string; status: string; total_amount: number; approved_at?: string; paid_at?: string };
 
@@ -27,13 +26,11 @@ export default function AdminPayrollPage() {
     notes: '',
   });
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await payrollApi.listRuns();
-      setRuns((res.data.data ?? []) as Run[]);
-    } catch { /* no runs yet */ }
-    setLoading(false);
+  const load = useCallback(() => {
+    return payrollApi.listRuns()
+      .then((res) => setRuns((res.data.data ?? []) as Run[]))
+      .catch(() => { /* no runs yet */ })
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => { load(); }, [load]);

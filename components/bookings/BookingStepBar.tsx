@@ -19,22 +19,22 @@ export function BookingStepBar({ currentStep }: BookingStepBarProps) {
     <div className="w-full">
       {/* Mobile: step x of 5 + label */}
       <div className="flex items-center justify-between sm:hidden mb-1">
-        <span className="text-xs font-medium" style={{ color: '#143d2a' }}>
+        <span className="text-xs font-medium" style={{ color: '#55534e' }}>
           Step {currentStep} of {STEPS.length}
         </span>
-        <span className="text-xs font-semibold" style={{ color: '#c9a227' }}>
+        <span className="text-xs font-semibold" style={{ color: '#8b8881' }}>
           {STEPS.find((s) => s.number === currentStep)?.label}
         </span>
       </div>
       {/* Mobile progress bar */}
       <div
         className="h-1.5 rounded-full overflow-hidden sm:hidden mb-4"
-        style={{ background: '#e0d8c8' }}
+        style={{ background: '#dedcd7' }}
       >
         <div
           className="h-full rounded-full transition-all duration-300"
           style={{
-            background: 'linear-gradient(90deg, #c9a227, #f0d878)',
+            background: '#171614',
             width: `${(currentStep / STEPS.length) * 100}%`,
           }}
         />
@@ -45,7 +45,6 @@ export function BookingStepBar({ currentStep }: BookingStepBarProps) {
         {STEPS.map((step, idx) => {
           const isCompleted = step.number < currentStep;
           const isActive = step.number === currentStep;
-          const isUpcoming = step.number > currentStep;
 
           return (
             <div key={step.number} className="flex items-center flex-1">
@@ -56,21 +55,21 @@ export function BookingStepBar({ currentStep }: BookingStepBarProps) {
                   style={
                     isCompleted
                       ? {
-                          background: '#143d2a',
-                          border: '2px solid #143d2a',
+                          background: '#2e2c28',
+                          border: '2px solid #2e2c28',
                           color: '#fff',
                         }
                       : isActive
                       ? {
-                          background: 'linear-gradient(135deg, #c9a227, #f0d878)',
-                          border: '2px solid #c9a227',
-                          color: '#1a0e00',
-                          boxShadow: '0 0 0 3px rgba(201,162,39,0.2)',
+                          background: '#171614',
+                          border: '2px solid #8b8881',
+                          color: '#ffffff',
+                          boxShadow: '0 0 0 3px rgba(23,22,20,0.2)',
                         }
                       : {
                           background: '#fff',
-                          border: '2px solid #d1d5db',
-                          color: '#9ca3af',
+                          border: '2px solid #c9c6bf',
+                          color: '#8b8881',
                         }
                   }
                 >
@@ -84,10 +83,10 @@ export function BookingStepBar({ currentStep }: BookingStepBarProps) {
                   className="text-xs font-medium whitespace-nowrap"
                   style={{
                     color: isActive
-                      ? '#c9a227'
+                      ? '#8b8881'
                       : isCompleted
-                      ? '#143d2a'
-                      : '#9ca3af',
+                      ? '#2e2c28'
+                      : '#8b8881',
                   }}
                 >
                   {step.label}
@@ -99,7 +98,7 @@ export function BookingStepBar({ currentStep }: BookingStepBarProps) {
                 <div
                   className="flex-1 h-0.5 mx-2 mt-[-18px]"
                   style={{
-                    background: isCompleted ? '#143d2a' : '#e5e7eb',
+                    background: isCompleted ? '#2e2c28' : '#dedcd7',
                     transition: 'background 0.3s',
                   }}
                 />

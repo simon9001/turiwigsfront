@@ -11,8 +11,12 @@ import { supabase } from '@/lib/supabase';
  *   useRealtimeRefresh(['orders', 'service_bookings'], () => loadData());
  */
 export function useRealtimeRefresh(tables: string[], onRefresh: () => void) {
+  // Keep the latest callback without making it a subscription dependency.
+  // Assigning in an effect keeps the write out of render.
   const cbRef = useRef(onRefresh);
-  cbRef.current = onRefresh;
+  useEffect(() => {
+    cbRef.current = onRefresh;
+  });
 
   const key = tables.slice().sort().join(',');
 

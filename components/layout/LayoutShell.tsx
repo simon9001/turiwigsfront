@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { CartDrawer } from '@/components/cart/CartDrawer';
+import { useCartSync } from '@/hooks/useCart';
 
 // Dashboard routes get their own full-screen shell with no public Header/Footer.
 const DASHBOARD_PREFIXES = ['/admin', '/staff'];
@@ -16,6 +17,10 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isDashboard = DASHBOARD_PREFIXES.some((p) => pathname.startsWith(p));
   const isAuth = AUTH_PREFIXES.some((p) => pathname.startsWith(p));
+
+  // Single owner of the cart fetch for the whole public app. Admin and staff
+  // screens have no cart, so they skip it.
+  useCartSync(!isDashboard);
 
   if (isDashboard) return <>{children}</>;
 

@@ -7,8 +7,8 @@ import toast from 'react-hot-toast';
 import type { BusinessSettings } from '@/types';
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const GOLD = '#c9a227';
-const DARK = '#0a2e1f';
+const GOLD = '#8b8881';
+const DARK = '#171614';
 
 interface StaffProfile { id: string; name: string; avatar_url?: string; is_active: boolean }
 interface ScheduleEntry { dayOfWeek: number; startTime: string; endTime: string }
@@ -84,8 +84,8 @@ function BusinessHoursTab() {
                 className="w-12 h-10 rounded-xl text-sm font-semibold border transition-all"
                 style={{
                   background: active ? DARK : '#fff',
-                  color: active ? '#fff' : '#374151',
-                  borderColor: active ? DARK : '#e5e7eb',
+                  color: active ? '#fff' : '#3f3d39',
+                  borderColor: active ? DARK : '#dedcd7',
                 }}>
                 {label}
               </button>
@@ -167,14 +167,13 @@ function StaffScheduleRow({ staff }: { staff: StaffProfile }) {
   const [saving, setSaving] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const load = useCallback(async () => {
-    try {
-      const { data } = await schedulingApi.listSchedules(staff.id);
-      setSchedule((data.data ?? []).map((s) => ({
+  const load = useCallback(() => {
+    return schedulingApi.listSchedules(staff.id)
+      .then(({ data }) => setSchedule((data.data ?? []).map((s) => ({
         dayOfWeek: s.day_of_week, startTime: s.start_time, endTime: s.end_time,
-      })));
-    } catch { /* ignore */ }
-    setLoaded(true);
+      }))))
+      .catch(() => { /* ignore */ })
+      .finally(() => setLoaded(true));
   }, [staff.id]);
 
   useEffect(() => { if (open && !loaded) load(); }, [open, loaded, load]);
@@ -225,7 +224,7 @@ function StaffScheduleRow({ staff }: { staff: StaffProfile }) {
         <div className="flex items-center gap-1.5">
           {DAY_LABELS.map((label, idx) => (
             <span key={idx} className="w-7 h-7 rounded-full text-[10px] font-semibold flex items-center justify-center hidden sm:flex"
-              style={{ background: activeDays.has(idx) ? `${GOLD}20` : '#f3f4f6', color: activeDays.has(idx) ? GOLD : '#9ca3af' }}>
+              style={{ background: activeDays.has(idx) ? `${GOLD}20` : '#e9e8e4', color: activeDays.has(idx) ? GOLD : '#8b8881' }}>
               {label[0]}
             </span>
           ))}
@@ -250,8 +249,8 @@ function StaffScheduleRow({ staff }: { staff: StaffProfile }) {
                       <button key={idx} onClick={() => toggleDay(idx)}
                         className="w-12 h-9 rounded-xl text-sm font-semibold border transition-all"
                         style={{
-                          background: active ? DARK : '#fff', color: active ? '#fff' : '#374151',
-                          borderColor: active ? DARK : '#e5e7eb',
+                          background: active ? DARK : '#fff', color: active ? '#fff' : '#3f3d39',
+                          borderColor: active ? DARK : '#dedcd7',
                         }}>
                         {label}
                       </button>
@@ -307,7 +306,6 @@ export default function AdminSchedulingPage() {
 
   useEffect(() => {
     if (tab !== 'staff') return;
-    setLoadingStaff(true);
     schedulingApi.listStaff()
       .then(({ data }) => setStaff((data.data as StaffProfile[]) ?? []))
       .catch(() => toast.error('Could not load staff'))
@@ -338,11 +336,15 @@ export default function AdminSchedulingPage() {
       {/* Tabs */}
       <div className="flex gap-1 p-1 rounded-xl w-fit bg-neutral-100">
         {tabs.map(({ id, label, icon: Icon }) => (
-          <button key={id} onClick={() => setTab(id)}
+          <button key={id} onClick={() => {
+            if (id === tab) return;
+            if (id === 'staff') setLoadingStaff(true);
+            setTab(id);
+          }}
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
             style={{
               background: tab === id ? '#fff' : 'transparent',
-              color: tab === id ? '#111827' : '#6b7280',
+              color: tab === id ? '#171614' : '#6e6b65',
               boxShadow: tab === id ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
             }}>
             <Icon className="h-4 w-4" />

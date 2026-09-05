@@ -142,7 +142,7 @@ export function OrdersTable({ orders, basePath, canManagePayments, onOrderUpdate
 
               <td className="px-4 py-3 text-right">
                 <Link href={`${basePath}/${order.id}`}
-                  className="text-xs font-medium text-gold hover:underline whitespace-nowrap">
+                  className="text-xs font-medium text-ink hover:underline whitespace-nowrap">
                   View →
                 </Link>
               </td>

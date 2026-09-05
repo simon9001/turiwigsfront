@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
-import { Clock, Users, ArrowLeft, CalendarDays, Volume2, VolumeX, Play, Pause } from 'lucide-react';
+import { Clock, Users, ArrowLeft, CalendarDays, Volume2, VolumeX, Play } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { servicesApi } from '@/api/services.api';
@@ -38,7 +38,7 @@ export default function ServiceDetailPage() {
   const [slots, setSlots] = useState<ServiceSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [slotsLoading, setSlotsLoading] = useState(false);
+  const [slotsLoading, setSlotsLoading] = useState(true);
   const [booking, setBooking] = useState(false);
   const [paymentModal, setPaymentModal] = useState<{
     bookingId: string;
@@ -56,14 +56,13 @@ export default function ServiceDetailPage() {
   useEffect(() => {
     servicesApi.getBySlug(slug)
       .then(({ data }) => setService(data.data))
+      .catch(() => toast.error('Could not load this service'))
       .finally(() => setLoading(false));
   }, [slug]);
 
   // Reload slots whenever service or date changes
   useEffect(() => {
     if (!service) return;
-    setSlotsLoading(true);
-    setSelectedSlot(null);
     servicesApi.getSlots(service.id, selectedDate)
       .then(({ data }) => setSlots(data.data))
       .catch(() => setSlots([]))
@@ -124,7 +123,7 @@ export default function ServiceDetailPage() {
   const mainImageUrl = service.images?.[0]?.url ?? '/images/nails-1.jpeg';
 
   return (
-    <div style={{ background: '#faf6ed', minHeight: '100vh' }}>
+    <div style={{ background: '#f4f4f2', minHeight: '100vh' }}>
       {paymentModal && (
         <BookingPaymentModal
           bookingId={paymentModal.bookingId}
@@ -140,14 +139,14 @@ export default function ServiceDetailPage() {
       )}
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-16">
-        <Link href="/services" className="mb-6 inline-flex items-center gap-2 text-sm font-medium transition-colors" style={{ color: '#0a2e1f' }}>
-          <ArrowLeft className="h-4 w-4" style={{ color: '#c9a227' }} /> Back to All Services
+        <Link href="/services" className="mb-6 inline-flex items-center gap-2 text-sm font-medium transition-colors" style={{ color: '#171614' }}>
+          <ArrowLeft className="h-4 w-4" style={{ color: '#8b8881' }} /> Back to All Services
         </Link>
 
         {/* Instagram-inspired Main Split Card */}
         <div 
           className="rounded-3xl border overflow-hidden shadow-2xl grid grid-cols-1 lg:grid-cols-12"
-          style={{ borderColor: '#e0d0b0', background: '#ffffff' }}
+          style={{ borderColor: '#dedcd7', background: '#ffffff' }}
         >
           {/* LEFT / TOP: Media Container (Video or Image) */}
           <div className="lg:col-span-6 xl:col-span-7 bg-black relative flex items-center justify-center min-h-[420px] lg:min-h-[600px] overflow-hidden">
@@ -169,7 +168,7 @@ export default function ServiceDetailPage() {
 
                 {/* Top brand badge */}
                 <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full text-white text-xs font-semibold border border-white/20">
-                  <div className="w-6 h-6 rounded-full bg-amber-500 text-black font-extrabold flex items-center justify-center text-[10px]">
+                  <div className="w-6 h-6 rounded-full bg-white text-ink font-extrabold flex items-center justify-center text-[10px]">
                     T
                   </div>
                   <span>tiurinailspalour</span>
@@ -207,7 +206,7 @@ export default function ServiceDetailPage() {
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
                 <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full text-white text-xs font-semibold border border-white/20">
-                  <div className="w-6 h-6 rounded-full bg-amber-500 text-black font-extrabold flex items-center justify-center text-[10px]">
+                  <div className="w-6 h-6 rounded-full bg-white text-ink font-extrabold flex items-center justify-center text-[10px]">
                     T
                   </div>
                   <span>tiurinailspalour</span>
@@ -222,31 +221,31 @@ export default function ServiceDetailPage() {
               {/* Category & Badge */}
               <div className="flex items-center gap-2 mb-3">
                 {service.category && (
-                  <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full text-amber-900 bg-amber-100 border border-amber-200">
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full text-slate bg-mist border border-line">
                     {service.category.replace('-', ' ')}
                   </span>
                 )}
                 {service.is_featured && (
-                  <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full text-emerald-900 bg-emerald-100 border border-emerald-200">
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full text-ink bg-mist border border-line-2">
                     Popular
                   </span>
                 )}
               </div>
 
               {/* Service Title & Price */}
-              <h1 className="text-2xl sm:text-3xl font-extrabold leading-tight mb-2" style={{ color: '#0a2e1f' }}>
+              <h1 className="text-2xl sm:text-3xl font-extrabold leading-tight mb-2" style={{ color: '#171614' }}>
                 {service.name}
               </h1>
 
               <div className="flex items-baseline gap-3 mb-6">
-                <span className="text-2xl font-black" style={{ color: '#0a2e1f' }}>
+                <span className="text-2xl font-black" style={{ color: '#171614' }}>
                   {formatPrice(service.price)}
                 </span>
-                <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: '#9a8060' }}>
+                <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: '#8b8881' }}>
                   <Clock className="h-3.5 w-3.5" />
                   {service.duration_minutes} minutes
                 </span>
-                <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: '#9a8060' }}>
+                <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: '#8b8881' }}>
                   <Users className="h-3.5 w-3.5" />
                   Max {service.capacity}
                 </span>
@@ -254,7 +253,7 @@ export default function ServiceDetailPage() {
 
               {/* Description */}
               {service.description && (
-                <div className="mb-6 p-4 rounded-xl text-sm leading-relaxed" style={{ background: '#faf6ed', color: '#4b5563', borderLeft: '3px solid #c9a227' }}>
+                <div className="mb-6 p-4 rounded-xl text-sm leading-relaxed" style={{ background: '#f4f4f2', color: '#55534e', borderLeft: '3px solid #8b8881' }}>
                   {service.description}
                 </div>
               )}
@@ -262,28 +261,34 @@ export default function ServiceDetailPage() {
               {/* Date & Slot Picker */}
               <div className="space-y-4 mb-6">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5" style={{ color: '#0a2e1f' }}>
-                    <CalendarDays className="h-4 w-4" style={{ color: '#c9a227' }} />
+                  <label className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5" style={{ color: '#171614' }}>
+                    <CalendarDays className="h-4 w-4" style={{ color: '#8b8881' }} />
                     Select Date
                   </label>
                   <input
                     type="date"
                     value={selectedDate}
                     min={todayIso()}
-                    onChange={(e) => { if (e.target.value) setSelectedDate(e.target.value); }}
+                    onChange={(e) => {
+                      if (!e.target.value) return;
+                      // Clear the old pick with the change that invalidates it.
+                      setSlotsLoading(true);
+                      setSelectedSlot(null);
+                      setSelectedDate(e.target.value);
+                    }}
                     className="rounded-xl border px-3 py-1.5 text-xs font-semibold text-neutral-800 outline-none focus:ring-2"
-                    style={{ borderColor: '#e0d0b0', background: '#faf6ed' }}
+                    style={{ borderColor: '#dedcd7', background: '#f4f4f2' }}
                   />
                 </div>
 
-                <div className="border-t pt-4" style={{ borderColor: '#f0e8d0' }}>
-                  <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#0a2e1f' }}>
+                <div className="border-t pt-4" style={{ borderColor: '#e9e8e4' }}>
+                  <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#171614' }}>
                     Available Slots
                   </h3>
 
                   {slotsLoading ? (
                     <div className="flex justify-center py-6">
-                      <div className="h-6 w-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#c9a227', borderTopColor: 'transparent' }} />
+                      <div className="h-6 w-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#c9c6bf', borderTopColor: 'transparent' }} />
                     </div>
                   ) : !slots.length ? (
                     <p className="text-xs text-neutral-500 py-2">No slots available on this day. Please select another date.</p>
@@ -298,10 +303,10 @@ export default function ServiceDetailPage() {
                             onClick={() => setSelectedSlot(isSelected ? null : key)}
                             className="rounded-xl p-2.5 text-center text-xs transition-all font-medium border"
                             style={{
-                              background: isSelected ? '#0a2e1f' : '#faf6ed',
-                              borderColor: isSelected ? '#0a2e1f' : '#e0d0b0',
-                              color: isSelected ? '#f0d878' : '#374151',
-                              boxShadow: isSelected ? '0 2px 8px rgba(10,46,31,0.2)' : 'none',
+                              background: isSelected ? '#171614' : '#f4f4f2',
+                              borderColor: isSelected ? '#171614' : '#dedcd7',
+                              color: isSelected ? '#ffffff' : '#3f3d39',
+                              boxShadow: isSelected ? '0 2px 8px rgba(23,22,20,0.2)' : 'none',
                             }}
                           >
                             <p className="font-bold">{formatSlotTime(slot.start_time)}</p>
@@ -315,14 +320,14 @@ export default function ServiceDetailPage() {
             </div>
 
             {/* Bottom Booking Button */}
-            <div className="pt-4 border-t" style={{ borderColor: '#f0e8d0' }}>
+            <div className="pt-4 border-t" style={{ borderColor: '#e9e8e4' }}>
               <Button 
                 fullWidth 
                 size="lg" 
                 onClick={handleBook} 
                 loading={booking} 
                 disabled={!selectedSlot || slotsLoading}
-                className="btn-gold shadow-lg py-3.5 text-base"
+                className="btn-ink shadow-lg py-3.5 text-base"
               >
                 {isAuthenticated ? `Book Appointment · ${formatPrice(service.price)}` : 'Sign in to Book'}
               </Button>

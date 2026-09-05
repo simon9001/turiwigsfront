@@ -38,22 +38,22 @@ export default function ServicesPage() {
   });
 
   return (
-    <div className="min-h-screen" style={{ background: '#faf6ed' }}>
+    <div className="min-h-screen" style={{ background: '#f4f4f2' }}>
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center gap-3 mb-5">
           <Link
             href="/bookings"
             className="w-9 h-9 flex items-center justify-center rounded-full"
-            style={{ background: '#fff', border: '1px solid #e0d8c8' }}
+            style={{ background: '#fff', border: '1px solid #dedcd7' }}
           >
-            <ArrowLeft className="h-4 w-4" style={{ color: '#143d2a' }} />
+            <ArrowLeft className="h-4 w-4" style={{ color: '#55534e' }} />
           </Link>
           <div>
-            <h1 className="text-xl font-bold" style={{ color: '#0a2e1f' }}>
+            <h1 className="text-xl font-bold" style={{ color: '#171614' }}>
               Choose a Service
             </h1>
-            <p className="text-sm" style={{ color: '#7a8694' }}>
+            <p className="text-sm" style={{ color: '#8b8881' }}>
               Select the service you&apos;d like to book
             </p>
           </div>
@@ -66,7 +66,7 @@ export default function ServicesPage() {
         <div className="relative mb-4">
           <Search
             className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4"
-            style={{ color: '#9ca3af' }}
+            style={{ color: '#8b8881' }}
           />
           <input
             type="text"
@@ -74,7 +74,7 @@ export default function ServicesPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="input-sku w-full rounded-xl text-sm pl-10 pr-4 h-11 focus:outline-none"
-            style={{ color: '#0a2e1f' }}
+            style={{ color: '#171614' }}
           />
         </div>
 
@@ -88,14 +88,14 @@ export default function ServicesPage() {
               style={
                 activeCategory === cat
                   ? {
-                      background: 'linear-gradient(135deg, #0a2e1f, #1e5038)',
-                      color: '#f0d878',
-                      border: '1px solid #143d2a',
+                      background: '#171614',
+                      color: '#ffffff',
+                      border: '1px solid #2e2c28',
                     }
                   : {
                       background: '#fff',
-                      color: '#143d2a',
-                      border: '1px solid #e0d8c8',
+                      color: '#55534e',
+                      border: '1px solid #dedcd7',
                     }
               }
             >
@@ -111,7 +111,7 @@ export default function ServicesPage() {
               <div
                 key={i}
                 className="rounded-2xl animate-pulse"
-                style={{ aspectRatio: '3/4', background: '#e0d8c8' }}
+                style={{ aspectRatio: '3/4', background: '#dedcd7' }}
               />
             ))}
           </div>
@@ -129,10 +129,10 @@ export default function ServicesPage() {
         {/* No results */}
         {!loading && filtered.length === 0 && (
           <div className="text-center py-16">
-            <p className="font-semibold text-base mb-1" style={{ color: '#0a2e1f' }}>
+            <p className="font-semibold text-base mb-1" style={{ color: '#171614' }}>
               No services found
             </p>
-            <p className="text-sm" style={{ color: '#7a8694' }}>
+            <p className="text-sm" style={{ color: '#8b8881' }}>
               Try a different search term or category.
             </p>
           </div>

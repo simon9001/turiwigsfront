@@ -40,21 +40,21 @@ const STATS = [
 
 export default function AboutPage() {
   return (
-    <div style={{ background: '#faf6ed' }}>
+    <div style={{ background: '#f4f4f2' }}>
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden py-24 sm:py-32"
-        style={{ background: 'linear-gradient(135deg, #0a2e1f 0%, #143d2a 60%, #1e5038 100%)' }}>
+        style={{ background: '#171614' }}>
         <div className="absolute inset-0 opacity-5"
-          style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #c9a227 0%, transparent 60%)' }} />
+          style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #8b8881 0%, transparent 60%)' }} />
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6 text-center">
           <p className="text-[11px] font-semibold uppercase tracking-[0.4em] mb-5"
-            style={{ color: '#c9a227' }}>
+            style={{ color: 'rgba(255,255,255,0.72)' }}>
             Our Story
           </p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
             Beauty is our craft.<br />
-            <span style={{ color: '#f0d878' }}>You are our canvas.</span>
+            <span style={{ color: '#ffffff' }}>You are our canvas.</span>
           </h1>
           <p className="mt-6 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto"
             style={{ color: 'rgba(255,255,255,0.65)' }}>
@@ -64,12 +64,12 @@ export default function AboutPage() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link href="/services"
               className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition-opacity hover:opacity-90"
-              style={{ background: 'linear-gradient(135deg,#f0d878,#c9a227)', color: '#0a2e1f' }}>
+              style={{ background: '#ffffff', color: '#171614' }}>
               Explore Services <ArrowRight className="h-4 w-4" />
             </Link>
             <Link href="/contact"
               className="inline-flex items-center gap-2 rounded-full border px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-white/10"
-              style={{ borderColor: 'rgba(201,162,39,0.5)' }}>
+              style={{ borderColor: 'rgba(255,255,255,0.45)' }}>
               Get in Touch
             </Link>
           </div>
@@ -77,14 +77,14 @@ export default function AboutPage() {
       </section>
 
       {/* ── Stats strip ───────────────────────────────────────────────── */}
-      <div style={{ background: '#0a2e1f' }}>
+      <div style={{ background: '#171614' }}>
         <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             {STATS.map((s) => (
               <div key={s.label}>
-                <p className="text-3xl sm:text-4xl font-black" style={{ color: '#f0d878' }}>{s.value}</p>
+                <p className="text-3xl sm:text-4xl font-black" style={{ color: '#ffffff' }}>{s.value}</p>
                 <p className="mt-1 text-xs font-medium uppercase tracking-widest"
-                  style={{ color: 'rgba(201,162,39,0.6)' }}>{s.label}</p>
+                  style={{ color: 'rgba(255,255,255,0.6)' }}>{s.label}</p>
               </div>
             ))}
           </div>
@@ -96,14 +96,14 @@ export default function AboutPage() {
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.35em] mb-4"
-              style={{ color: '#c9a227' }}>
+              style={{ color: '#8b8881' }}>
               Who We Are
             </p>
             <h2 className="text-3xl sm:text-4xl font-bold leading-snug mb-6"
-              style={{ color: '#0a2e1f' }}>
+              style={{ color: '#171614' }}>
               Nairobi&apos;s home for premium wigs &amp; nails
             </h2>
-            <div className="space-y-4 text-sm leading-relaxed" style={{ color: '#4b5563' }}>
+            <div className="space-y-4 text-sm leading-relaxed" style={{ color: '#55534e' }}>
               <p>
                 Founded in Nairobi, Kenya, Tiuri Nails &amp; Wigs Parlour was born from a passion for authentic,
                 high-quality beauty services that celebrate African women. What started as a small studio has
@@ -138,10 +138,10 @@ export default function AboutPage() {
             </div>
             {/* Gold badge */}
             <div className="absolute -bottom-4 -left-4 rounded-2xl px-5 py-4 shadow-xl"
-              style={{ background: 'linear-gradient(135deg,#f0d878,#c9a227)' }}>
-              <p className="text-xs font-black uppercase tracking-widest text-black">Est.</p>
-              <p className="text-2xl font-black text-black leading-none">Nairobi</p>
-              <p className="text-xs font-bold text-black/70">Kenya</p>
+              style={{ background: '#171614' }}>
+              <p className="text-xs font-black uppercase tracking-widest text-white">Est.</p>
+              <p className="text-2xl font-black text-white leading-none">Nairobi</p>
+              <p className="text-xs font-bold text-white/70">Kenya</p>
             </div>
           </div>
         </div>
@@ -152,10 +152,10 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="text-center mb-14">
             <p className="text-[11px] font-semibold uppercase tracking-[0.35em] mb-3"
-              style={{ color: '#c9a227' }}>
+              style={{ color: '#8b8881' }}>
               What Drives Us
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: '#0a2e1f' }}>
+            <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: '#171614' }}>
               Our Values
             </h2>
           </div>
@@ -163,13 +163,13 @@ export default function AboutPage() {
             {VALUES.map(({ icon: Icon, title, body }) => (
               <div key={title}
                 className="rounded-2xl border p-6"
-                style={{ borderColor: '#e0d0b0', background: '#faf6ed' }}>
+                style={{ borderColor: '#dedcd7', background: '#f4f4f2' }}>
                 <div className="mb-4 inline-flex rounded-xl p-3"
-                  style={{ background: 'rgba(201,162,39,0.12)' }}>
-                  <Icon className="h-5 w-5" style={{ color: '#c9a227' }} />
+                  style={{ background: 'rgba(23,22,20,0.12)' }}>
+                  <Icon className="h-5 w-5" style={{ color: '#8b8881' }} />
                 </div>
-                <h3 className="text-base font-bold mb-2" style={{ color: '#0a2e1f' }}>{title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#6b7280' }}>{body}</p>
+                <h3 className="text-base font-bold mb-2" style={{ color: '#171614' }}>{title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: '#6e6b65' }}>{body}</p>
               </div>
             ))}
           </div>
@@ -177,7 +177,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── Services teaser ───────────────────────────────────────────── */}
-      <section className="py-20 sm:py-24" style={{ background: '#faf6ed' }}>
+      <section className="py-20 sm:py-24" style={{ background: '#f4f4f2' }}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="grid gap-5 sm:grid-cols-3">
             {[
@@ -192,12 +192,12 @@ export default function AboutPage() {
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 640px) 100vw, 33vw" />
                 <div className="absolute inset-0"
-                  style={{ background: 'linear-gradient(to top, rgba(10,46,31,0.88) 0%, rgba(10,46,31,0.1) 60%, transparent 100%)' }} />
+                  style={{ background: 'linear-gradient(to top, rgba(23,22,20,0.88) 0%, rgba(23,22,20,0.1) 60%, transparent 100%)' }} />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <h3 className="text-white font-bold text-lg mb-1">{item.title}</h3>
                   <p className="text-white/60 text-sm leading-snug mb-4">{item.desc}</p>
                   <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest"
-                    style={{ color: '#f0d878' }}>
+                    style={{ color: '#ffffff' }}>
                     Learn More <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>
@@ -208,7 +208,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-20" style={{ background: '#0a2e1f' }}>
+      <section className="py-20" style={{ background: '#171614' }}>
         <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             Ready to transform your look?
@@ -219,12 +219,12 @@ export default function AboutPage() {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/bookings"
               className="inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-bold transition-opacity hover:opacity-90"
-              style={{ background: 'linear-gradient(135deg,#f0d878,#c9a227)', color: '#0a2e1f' }}>
+              style={{ background: '#ffffff', color: '#171614' }}>
               Book Now <ArrowRight className="h-4 w-4" />
             </Link>
             <Link href="/products"
               className="inline-flex items-center gap-2 rounded-full border px-8 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/10"
-              style={{ borderColor: 'rgba(201,162,39,0.4)' }}>
+              style={{ borderColor: 'rgba(255,255,255,0.45)' }}>
               Shop Wigs
             </Link>
           </div>

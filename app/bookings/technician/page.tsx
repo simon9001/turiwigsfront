@@ -53,23 +53,23 @@ export default function TechnicianPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: '#faf6ed' }}>
+    <div className="min-h-screen" style={{ background: '#f4f4f2' }}>
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center gap-3 mb-2">
           <Link
             href="/bookings/services"
             className="w-9 h-9 flex items-center justify-center rounded-full"
-            style={{ background: '#fff', border: '1px solid #e0d8c8' }}
+            style={{ background: '#fff', border: '1px solid #dedcd7' }}
           >
-            <ArrowLeft className="h-4 w-4" style={{ color: '#143d2a' }} />
+            <ArrowLeft className="h-4 w-4" style={{ color: '#55534e' }} />
           </Link>
           <div>
-            <h1 className="text-xl font-bold" style={{ color: '#0a2e1f' }}>
+            <h1 className="text-xl font-bold" style={{ color: '#171614' }}>
               Choose Your Technician
             </h1>
             {wizard.service && (
-              <p className="text-sm" style={{ color: '#7a8694' }}>
+              <p className="text-sm" style={{ color: '#8b8881' }}>
                 for {wizard.service.name}
               </p>
             )}
@@ -84,36 +84,36 @@ export default function TechnicianPage() {
         {/* Any available card */}
         <button
           onClick={handleAnyAvailable}
-          className="w-full card-sku p-4 flex items-center gap-4 mb-4 text-left transition-all duration-200 hover:border-[#c9a227]"
+          className="w-full card-sku p-4 flex items-center gap-4 mb-4 text-left transition-all duration-200 hover:border-[#8b8881]"
           style={
             wizard.technician === null
               ? {
-                  borderColor: '#c9a227',
-                  boxShadow: '0 0 0 2px #c9a227, 0 4px 16px rgba(201,162,39,0.2)',
+                  borderColor: '#c9c6bf',
+                  boxShadow: '0 0 0 2px #8b8881, 0 4px 16px rgba(23,22,20,0.2)',
                 }
               : {}
           }
         >
           <div
             className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
-            style={{ background: '#f0e8d0', border: '2px dashed #c9a227' }}
+            style={{ background: '#e9e8e4', border: '2px dashed #8b8881' }}
           >
-            <Users className="h-7 w-7" style={{ color: '#c9a227' }} />
+            <Users className="h-7 w-7" style={{ color: '#55534e' }} />
           </div>
           <div>
-            <p className="font-semibold text-base" style={{ color: '#0a2e1f' }}>
+            <p className="font-semibold text-base" style={{ color: '#171614' }}>
               Any Available
             </p>
-            <p className="text-sm" style={{ color: '#7a8694' }}>
+            <p className="text-sm" style={{ color: '#8b8881' }}>
               We&apos;ll assign the best available technician for your appointment
             </p>
           </div>
         </button>
 
         {/* Divider */}
-        <div className="gold-divider mb-4" />
+        <div className="rule mb-4" />
 
-        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9a8060' }}>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#8b8881' }}>
           Or choose a specific technician
         </p>
 
@@ -133,7 +133,7 @@ export default function TechnicianPage() {
             ))}
           </div>
         ) : staff.length === 0 ? (
-          <p className="text-sm text-center py-6" style={{ color: '#7a8694' }}>
+          <p className="text-sm text-center py-6" style={{ color: '#8b8881' }}>
             No technicians available at the moment.
           </p>
         ) : (

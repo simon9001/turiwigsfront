@@ -55,9 +55,9 @@ export function LoginForm() {
             onClick={() => setShowPwd((v) => !v)}
             aria-label={showPwd ? 'Hide password' : 'Show password'}
             className="flex items-center justify-center transition-colors"
-            style={{ color: '#9a8060' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#0a2e1f'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#9a8060'; }}
+            style={{ color: '#8b8881' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#171614'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#8b8881'; }}
           >
             {showPwd ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
@@ -67,20 +67,20 @@ export function LoginForm() {
       {/* Unverified email — special prompt */}
       {isUnverified && (
         <div className="rounded-xl border p-4 space-y-2"
-          style={{ background: 'rgba(201,162,39,0.08)', borderColor: 'rgba(201,162,39,0.3)' }}>
+          style={{ background: 'rgba(23,22,20,0.08)', borderColor: 'rgba(23,22,20,0.3)' }}>
           <div className="flex items-center gap-2">
-            <MailCheck className="h-4 w-4 flex-shrink-0" style={{ color: '#c9a227' }} />
-            <p className="text-sm font-semibold" style={{ color: '#0a2e1f' }}>
+            <MailCheck className="h-4 w-4 flex-shrink-0" style={{ color: '#8b8881' }} />
+            <p className="text-sm font-semibold" style={{ color: '#171614' }}>
               Email not verified
             </p>
           </div>
-          <p className="text-sm" style={{ color: '#6b7280' }}>
+          <p className="text-sm" style={{ color: '#6e6b65' }}>
             Please verify your email before signing in.
           </p>
           <Link
             href={`/auth/verify-email${form.email ? `?email=${encodeURIComponent(form.email)}` : ''}`}
             className="inline-flex items-center gap-1.5 text-sm font-semibold underline underline-offset-2 transition-opacity hover:opacity-70"
-            style={{ color: '#0a2e1f' }}
+            style={{ color: '#171614' }}
           >
             Enter verification code →
           </Link>
@@ -98,14 +98,7 @@ export function LoginForm() {
         </Link>
       </div>
 
-      <Button type="submit" fullWidth size="lg" loading={loading} variant="secondary"
-        style={{
-          background: 'linear-gradient(180deg,#1e5038 0%,#0a2e1f 100%)',
-          border: '1px solid rgba(10,46,31,0.6)',
-          color: '#ffffff',
-          boxShadow: '0 1px 0 rgba(255,255,255,0.08) inset,0 4px 12px rgba(10,46,31,0.35)',
-        }}
-      >
+      <Button type="submit" fullWidth size="lg" loading={loading}>
         Sign In
       </Button>
 

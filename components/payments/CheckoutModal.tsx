@@ -3,7 +3,6 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { X, CheckCircle, XCircle, ArrowLeft, CreditCard, Smartphone } from 'lucide-react';
-import Link from 'next/link';
 import { CardForm } from './CardForm';
 import { MpesaForm } from './MpesaForm';
 import { PinStep } from './PinStep';
@@ -125,7 +124,7 @@ export function CheckoutModal({
                         <span className="text-sm text-neutral-500">Amount to pay</span>
                         <span className="text-base font-bold text-neutral-900">{amount}</span>
                       </div>
-                      <p className="text-sm text-neutral-500 text-center">Select how you'd like to pay</p>
+                      <p className="text-sm text-neutral-500 text-center">Select how you&rsquo;d like to pay</p>
                       <div className="grid grid-cols-2 gap-3">
                         <button
                           onClick={() => selectMethod('mpesa')}

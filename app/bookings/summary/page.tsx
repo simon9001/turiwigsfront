@@ -69,12 +69,12 @@ export default function SummaryPage() {
 
   if (!wizard.service) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#faf6ed' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#f4f4f2' }}>
         <div className="text-center">
-          <p className="mb-4" style={{ color: '#7a8694' }}>
+          <p className="mb-4" style={{ color: '#8b8881' }}>
             No service selected.
           </p>
-          <Link href="/bookings/services" className="btn-gold rounded-xl px-5 inline-flex items-center h-11 font-semibold text-sm">
+          <Link href="/bookings/services" className="btn-ink rounded-xl px-5 inline-flex items-center h-11 font-semibold text-sm">
             Start Over
           </Link>
         </div>
@@ -83,18 +83,18 @@ export default function SummaryPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: '#faf6ed' }}>
+    <div className="min-h-screen" style={{ background: '#f4f4f2' }}>
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center gap-3 mb-2">
           <Link
             href="/bookings/schedule"
             className="w-9 h-9 flex items-center justify-center rounded-full"
-            style={{ background: '#fff', border: '1px solid #e0d8c8' }}
+            style={{ background: '#fff', border: '1px solid #dedcd7' }}
           >
-            <ArrowLeft className="h-4 w-4" style={{ color: '#143d2a' }} />
+            <ArrowLeft className="h-4 w-4" style={{ color: '#55534e' }} />
           </Link>
-          <h1 className="text-xl font-bold" style={{ color: '#0a2e1f' }}>
+          <h1 className="text-xl font-bold" style={{ color: '#171614' }}>
             Booking Summary
           </h1>
         </div>
@@ -116,42 +116,42 @@ export default function SummaryPage() {
               />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-base" style={{ color: '#0a2e1f' }}>
+              <h3 className="font-semibold text-base" style={{ color: '#171614' }}>
                 {wizard.service.name}
               </h3>
-              <p className="text-sm" style={{ color: '#7a8694' }}>
+              <p className="text-sm" style={{ color: '#8b8881' }}>
                 {wizard.service.duration_minutes} min session
               </p>
             </div>
           </div>
 
-          <div className="gold-divider my-3" />
+          <div className="rule my-3" />
 
           {/* Details */}
           <div className="space-y-2">
             {wizard.technician && (
-              <div className="flex items-center gap-2 text-sm" style={{ color: '#5a6872' }}>
-                <User className="h-4 w-4 flex-shrink-0" style={{ color: '#c9a227' }} />
+              <div className="flex items-center gap-2 text-sm" style={{ color: '#55534e' }}>
+                <User className="h-4 w-4 flex-shrink-0" style={{ color: '#8b8881' }} />
                 <span>{wizard.technician.name} · {wizard.technician.title}</span>
               </div>
             )}
             {!wizard.technician && (
-              <div className="flex items-center gap-2 text-sm" style={{ color: '#5a6872' }}>
-                <User className="h-4 w-4 flex-shrink-0" style={{ color: '#c9a227' }} />
+              <div className="flex items-center gap-2 text-sm" style={{ color: '#55534e' }}>
+                <User className="h-4 w-4 flex-shrink-0" style={{ color: '#8b8881' }} />
                 <span>Any Available Technician</span>
               </div>
             )}
 
             {wizard.date && (
-              <div className="flex items-center gap-2 text-sm" style={{ color: '#5a6872' }}>
-                <Calendar className="h-4 w-4 flex-shrink-0" style={{ color: '#c9a227' }} />
+              <div className="flex items-center gap-2 text-sm" style={{ color: '#55534e' }}>
+                <Calendar className="h-4 w-4 flex-shrink-0" style={{ color: '#8b8881' }} />
                 <span>{formatDate(wizard.date)}</span>
               </div>
             )}
 
             {wizard.time && (
-              <div className="flex items-center gap-2 text-sm" style={{ color: '#5a6872' }}>
-                <Clock className="h-4 w-4 flex-shrink-0" style={{ color: '#c9a227' }} />
+              <div className="flex items-center gap-2 text-sm" style={{ color: '#55534e' }}>
+                <Clock className="h-4 w-4 flex-shrink-0" style={{ color: '#8b8881' }} />
                 <span>{wizard.time}</span>
               </div>
             )}
@@ -161,11 +161,11 @@ export default function SummaryPage() {
         {/* Notes */}
         <div className="card-sku p-4 mb-4">
           <div className="flex items-center gap-2 mb-2">
-            <FileText className="h-4 w-4" style={{ color: '#c9a227' }} />
+            <FileText className="h-4 w-4" style={{ color: '#8b8881' }} />
             <label
               htmlFor="notes"
               className="font-semibold text-sm"
-              style={{ color: '#0a2e1f' }}
+              style={{ color: '#171614' }}
             >
               Special Requests / Notes
             </label>
@@ -177,32 +177,32 @@ export default function SummaryPage() {
             value={localNotes}
             onChange={(e) => setLocalNotes(e.target.value)}
             className="input-sku w-full rounded-xl text-sm p-3 resize-none focus:outline-none"
-            style={{ color: '#0a2e1f' }}
+            style={{ color: '#171614' }}
           />
         </div>
 
         {/* Price breakdown */}
         <div className="card-sku p-4 mb-4">
-          <h3 className="font-semibold text-sm mb-3" style={{ color: '#0a2e1f' }}>
+          <h3 className="font-semibold text-sm mb-3" style={{ color: '#171614' }}>
             Price Breakdown
           </h3>
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span style={{ color: '#7a8694' }}>Service Price</span>
-              <span className="font-medium" style={{ color: '#0a2e1f' }}>
+              <span style={{ color: '#8b8881' }}>Service Price</span>
+              <span className="font-medium" style={{ color: '#171614' }}>
                 {formatPrice(wizard.service.price)}
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span style={{ color: '#7a8694' }}>Deposit (30%)</span>
-              <span className="font-semibold" style={{ color: '#c9a227' }}>
+              <span style={{ color: '#8b8881' }}>Deposit (30%)</span>
+              <span className="font-semibold" style={{ color: '#8b8881' }}>
                 {formatPrice(depositAmount)}
               </span>
             </div>
-            <div className="gold-divider my-1" />
+            <div className="rule my-1" />
             <div className="flex justify-between text-sm">
-              <span style={{ color: '#7a8694' }}>Remaining Balance</span>
-              <span className="font-medium" style={{ color: '#0a2e1f' }}>
+              <span style={{ color: '#8b8881' }}>Remaining Balance</span>
+              <span className="font-medium" style={{ color: '#171614' }}>
                 {formatPrice(remaining)}
               </span>
             </div>
@@ -213,18 +213,18 @@ export default function SummaryPage() {
         <div
           className="flex items-start gap-2 rounded-xl px-4 py-3 mb-5"
           style={{
-            background: 'rgba(10,46,31,0.06)',
-            border: '1px solid rgba(10,46,31,0.12)',
+            background: 'rgba(23,22,20,0.06)',
+            border: '1px solid rgba(23,22,20,0.12)',
           }}
         >
-          <Shield className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: '#143d2a' }} />
+          <Shield className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: '#55534e' }} />
           <div>
-            <p className="text-xs font-semibold mb-0.5" style={{ color: '#143d2a' }}>
+            <p className="text-xs font-semibold mb-0.5" style={{ color: '#55534e' }}>
               Free Cancellation
             </p>
-            <p className="text-xs" style={{ color: '#5a6872' }}>
+            <p className="text-xs" style={{ color: '#55534e' }}>
               Cancel at least 24 hours before your appointment for a full refund.{' '}
-              <Link href="/terms" className="underline" style={{ color: '#c9a227' }}>
+              <Link href="/terms" className="underline" style={{ color: '#8b8881' }}>
                 View terms
               </Link>
             </p>
@@ -235,7 +235,7 @@ export default function SummaryPage() {
         <button
           onClick={handleConfirm}
           disabled={loading || !wizard.date || !wizard.time}
-          className="btn-gold w-full rounded-xl font-semibold text-base disabled:opacity-40 disabled:cursor-not-allowed"
+          className="btn-ink w-full rounded-xl font-semibold text-base disabled:opacity-40 disabled:cursor-not-allowed"
           style={{ height: '52px' }}
         >
           {loading ? 'Confirming...' : `Confirm & Pay Deposit · ${formatPrice(depositAmount)}`}

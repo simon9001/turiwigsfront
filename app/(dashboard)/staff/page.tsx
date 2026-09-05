@@ -17,8 +17,8 @@ import toast from 'react-hot-toast';
 import { useRealtimeRefresh } from '@/hooks/useRealtimeRefresh';
 
 // ─── Colour tokens ────────────────────────────────────────────────────────────
-const GOLD   = '#c9a227';
-const DARK   = '#0a2e1f';
+const GOLD   = '#8b8881';
+const DARK   = '#171614';
 const GREEN  = '#10b981';
 const RED    = '#ef4444';
 const BLUE   = '#3b82f6';
@@ -31,13 +31,13 @@ const STATUS_CONFIG: Record<string, { color: string; label: string; bg: string }
   in_progress:{ color: PURPLE,    label: 'In Progress', bg: `${PURPLE}18` },
   completed:  { color: GREEN,     label: 'Completed',   bg: `${GREEN}18` },
   cancelled:  { color: RED,       label: 'Cancelled',   bg: `${RED}18` },
-  no_show:    { color: '#9ca3af', label: 'No-show',     bg: '#f3f4f6' },
+  no_show:    { color: '#8b8881', label: 'No-show',     bg: '#e9e8e4' },
 };
 
 // ─── Skeuomorphic tokens ──────────────────────────────────────────────────────
 
 const CARD_LIGHT: React.CSSProperties = {
-  background: 'linear-gradient(160deg, #ffffff 0%, #faf7f1 100%)',
+  background: 'linear-gradient(160deg, #ffffff 0%, #f4f4f2 100%)',
   boxShadow: [
     'inset 0 1px 0 rgba(255,255,255,0.92)',
     'inset 0 -1px 0 rgba(0,0,0,0.04)',
@@ -51,7 +51,7 @@ const CARD_LIGHT: React.CSSProperties = {
 const CARD_DARK: React.CSSProperties = {
   background: [
     'repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px)',
-    'linear-gradient(145deg, #0c3020 0%, #143d2a 55%, #0a2618 100%)',
+    '#171614',
   ].join(', '),
   boxShadow: [
     'inset 0 1px 0 rgba(255,255,255,0.07)',
@@ -59,11 +59,11 @@ const CARD_DARK: React.CSSProperties = {
     '0 4px 14px rgba(0,0,0,0.25)',
     '0 16px 40px rgba(0,0,0,0.14)',
   ].join(', '),
-  border: '1px solid rgba(201,162,39,0.18)',
+  border: '1px solid rgba(23,22,20,0.18)',
 };
 
 const SECTION_HEADER: React.CSSProperties = {
-  background: 'linear-gradient(180deg, #faf7f2 0%, #f4efe5 100%)',
+  background: 'linear-gradient(180deg, #f4f4f2 0%, #e9e8e4 100%)',
   borderBottom: '1px solid rgba(0,0,0,0.07)',
   boxShadow: 'inset 0 -1px 0 rgba(255,255,255,0.45)',
 };
@@ -138,24 +138,24 @@ export default function StaffOverviewPage() {
 
   const today = new Date().toISOString().split('T')[0];
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    const results = await Promise.allSettled([
+  const load = useCallback(() => {
+    return Promise.allSettled([
       staffDashboardApi.getSchedule({ date: today }),
       staffDashboardApi.getCommissionSummary(),
       staffDashboardApi.getOwnPerformance(),
       staffDashboardApi.getOwnProfile(),
       hrApi.getMyAttendance({ startDate: today, endDate: today, limit: 1 }),
-    ]);
-    if (results[0].status === 'fulfilled') setSchedule(results[0].value.data.data as ScheduleEntry[]);
-    if (results[1].status === 'fulfilled') setCommissions(results[1].value.data.data);
-    if (results[2].status === 'fulfilled') setPerformance(results[2].value.data.data);
-    if (results[3].status === 'fulfilled') setProfile(results[3].value.data.data);
-    if (results[4].status === 'fulfilled') {
-      const records = results[4].value.data.data as AttendanceRecord[];
-      setAttendance(records[0] ?? null);
-    }
-    setLoading(false);
+    ]).then((results) => {
+      if (results[0].status === 'fulfilled') setSchedule(results[0].value.data.data as ScheduleEntry[]);
+      if (results[1].status === 'fulfilled') setCommissions(results[1].value.data.data);
+      if (results[2].status === 'fulfilled') setPerformance(results[2].value.data.data);
+      if (results[3].status === 'fulfilled') setProfile(results[3].value.data.data);
+      if (results[4].status === 'fulfilled') {
+        const records = results[4].value.data.data as AttendanceRecord[];
+        setAttendance(records[0] ?? null);
+      }
+      setLoading(false);
+    });
   }, [today]);
 
   useEffect(() => { load(); }, [load]);
@@ -243,13 +243,13 @@ export default function StaffOverviewPage() {
           <div className="relative h-14 w-14">
             <div className="absolute inset-0 rounded-full"
               style={{
-                background: 'linear-gradient(135deg, rgba(201,162,39,0.18) 0%, rgba(201,162,39,0.05) 100%)',
+                background: 'linear-gradient(135deg, rgba(23,22,20,0.18) 0%, rgba(23,22,20,0.05) 100%)',
                 boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.12)',
-                border: '1px solid rgba(201,162,39,0.2)',
+                border: '1px solid rgba(23,22,20,0.2)',
               }} />
             <Loader2 className="absolute inset-0 m-auto h-6 w-6 animate-spin" style={{ color: GOLD }} />
           </div>
-          <p className="text-sm font-medium" style={{ color: '#9ca3af' }}>Loading your workspace…</p>
+          <p className="text-sm font-medium" style={{ color: '#8b8881' }}>Loading your workspace…</p>
         </div>
       </div>
     );
@@ -274,8 +274,8 @@ export default function StaffOverviewPage() {
                 <Coffee className="h-5 w-5" style={{ color: ORANGE }} />
               </div>
               <div>
-                <p className="text-sm font-bold" style={{ color: '#111827' }}>Clock Out</p>
-                <p className="text-xs mt-0.5" style={{ color: '#9ca3af' }}>
+                <p className="text-sm font-bold" style={{ color: '#171614' }}>Clock Out</p>
+                <p className="text-xs mt-0.5" style={{ color: '#8b8881' }}>
                   Leaving before closing time? A note is required.
                 </p>
               </div>
@@ -287,17 +287,17 @@ export default function StaffOverviewPage() {
               placeholder="Reason for early departure (required if before closing time)…"
               className="w-full rounded-xl px-3 py-2.5 text-sm resize-none outline-none"
               style={{
-                background: '#faf6ed',
-                border: '1px solid #e0d0b0',
+                background: '#f4f4f2',
+                border: '1px solid #dedcd7',
                 boxShadow: 'inset 0 2px 5px rgba(0,0,0,0.10)',
-                color: '#111827',
+                color: '#171614',
               }}
             />
             <div className="flex gap-2">
               <button
                 onClick={() => setShowClockOutModal(false)}
                 className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-98"
-                style={{ ...CARD_LIGHT, color: '#4b5563' }}>
+                style={{ ...CARD_LIGHT, color: '#55534e' }}>
                 Cancel
               </button>
               <button
@@ -329,7 +329,7 @@ export default function StaffOverviewPage() {
             {dayName} · {dateStr}
           </p>
           <h1 className="mt-1 text-xl font-bold"
-            style={{ color: '#f0f0f0', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+            style={{ color: '#e9e8e4', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
             {greeting()}, {profile?.name?.split(' ')[0] ?? 'there'} 👋
           </h1>
           <p className="mt-0.5 text-sm" style={{ color: 'rgba(255,255,255,0.42)' }}>
@@ -371,9 +371,9 @@ export default function StaffOverviewPage() {
                   color: '#fff',
                 }
               : {
-                  background: `linear-gradient(180deg, #ddb830 0%, ${GOLD} 45%, #b08b1a 100%)`,
+                  background: `#171614`,
                   boxShadow: [
-                    `0 6px 16px rgba(201,162,39,0.4)`,
+                    `0 6px 16px rgba(23,22,20,0.4)`,
                     '0 3px 6px rgba(0,0,0,0.22)',
                     'inset 0 1px 0 rgba(255,255,255,0.32)',
                     'inset 0 -2px 0 rgba(0,0,0,0.2)',
@@ -404,14 +404,14 @@ export default function StaffOverviewPage() {
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
                 <p className="text-[10px] font-bold uppercase tracking-widest"
-                  style={{ color: '#9ca3af', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
+                  style={{ color: '#8b8881', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
                   {k.label}
                 </p>
                 <p className="mt-1 text-xl font-bold truncate"
-                  style={{ color: '#111827', textShadow: '0 1px 0 rgba(255,255,255,0.8)' }}>
+                  style={{ color: '#171614', textShadow: '0 1px 0 rgba(255,255,255,0.8)' }}>
                   {k.value}
                 </p>
-                <p className="text-[11px] mt-0.5" style={{ color: '#9ca3af' }}>{k.sub}</p>
+                <p className="text-[11px] mt-0.5" style={{ color: '#8b8881' }}>{k.sub}</p>
               </div>
               <div className="rounded-xl p-2.5 flex-shrink-0"
                 style={{
@@ -449,8 +449,8 @@ export default function StaffOverviewPage() {
             </div>
             <div>
               <p className="text-xs font-bold" style={{ color: PURPLE }}>In Progress Now</p>
-              <p className="text-sm font-bold" style={{ color: '#111827' }}>{inProgress.service_name}</p>
-              <p className="text-[11px]" style={{ color: '#6b7280' }}>{inProgress.customer_name} · {inProgress.scheduled_time}</p>
+              <p className="text-sm font-bold" style={{ color: '#171614' }}>{inProgress.service_name}</p>
+              <p className="text-[11px]" style={{ color: '#6e6b65' }}>{inProgress.customer_name} · {inProgress.scheduled_time}</p>
             </div>
           </div>
           <button
@@ -481,15 +481,15 @@ export default function StaffOverviewPage() {
         <div className={cn('rounded-2xl overflow-hidden lg:col-span-7')} style={CARD_LIGHT}>
           <div className="flex items-center justify-between px-5 py-3.5" style={SECTION_HEADER}>
             <h3 className="text-sm font-semibold"
-              style={{ color: '#1f2937', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
+              style={{ color: '#2e2c28', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
               Today&apos;s Schedule
               {todayBookings.length > 0 && (
-                <span className="ml-2 text-xs font-normal" style={{ color: '#9ca3af' }}>
+                <span className="ml-2 text-xs font-normal" style={{ color: '#8b8881' }}>
                   {todayBookings.length} appointment{todayBookings.length !== 1 ? 's' : ''}
                 </span>
               )}
             </h3>
-            <span className="text-xs" style={{ color: '#9ca3af' }}>{dateStr}</span>
+            <span className="text-xs" style={{ color: '#8b8881' }}>{dateStr}</span>
           </div>
 
           <div style={{ borderTop: '1px solid rgba(255,255,255,0.5)' }}>
@@ -503,11 +503,11 @@ export default function StaffOverviewPage() {
                   className="px-5 py-4 flex items-start gap-4 transition-colors"
                   style={{
                     borderBottom: '1px solid rgba(0,0,0,0.05)',
-                    background: idx % 2 === 0 ? '#ffffff' : 'linear-gradient(90deg, #faf7f2 0%, #f8f5ef 100%)',
+                    background: idx % 2 === 0 ? '#ffffff' : 'linear-gradient(90deg, #f4f4f2 0%, #f4f4f2 100%)',
                   }}>
                   {/* Time column */}
                   <div className="flex flex-col items-center gap-1 flex-shrink-0 pt-0.5">
-                    <span className="text-xs font-bold" style={{ color: '#1f2937' }}>{b.scheduled_time}</span>
+                    <span className="text-xs font-bold" style={{ color: '#2e2c28' }}>{b.scheduled_time}</span>
                     <div className="w-px h-6" style={{ background: 'rgba(0,0,0,0.08)' }} />
                     <div className="h-2 w-2 rounded-full"
                       style={{ background: cfg.color, boxShadow: `0 0 4px ${cfg.color}60` }} />
@@ -517,8 +517,8 @@ export default function StaffOverviewPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <p className="text-sm font-semibold" style={{ color: '#1f2937' }}>{b.service_name}</p>
-                        <p className="text-xs mt-0.5" style={{ color: '#6b7280' }}>
+                        <p className="text-sm font-semibold" style={{ color: '#2e2c28' }}>{b.service_name}</p>
+                        <p className="text-xs mt-0.5" style={{ color: '#6e6b65' }}>
                           {b.customer_name}
                           {b.is_walkin && (
                             <span className="ml-1.5 text-[9px] rounded px-1 py-0.5 font-bold"
@@ -527,7 +527,7 @@ export default function StaffOverviewPage() {
                             </span>
                           )}
                         </p>
-                        <div className="flex items-center gap-3 mt-1.5 text-[10px]" style={{ color: '#9ca3af' }}>
+                        <div className="flex items-center gap-3 mt-1.5 text-[10px]" style={{ color: '#8b8881' }}>
                           <span>{b.duration_minutes} min</span>
                           <span>{formatPrice(b.price)}</span>
                           {b.deposit_amount > 0 && (
@@ -550,7 +550,7 @@ export default function StaffOverviewPage() {
                           <StatusButton status="no_show" onClick={() => handleStatusUpdate(b.id, 'no_show')} disabled={updatingId === b.id} />
                         )}
                         {updatingId === b.id && (
-                          <Loader2 className="h-3.5 w-3.5 animate-spin" style={{ color: '#9ca3af' }} />
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" style={{ color: '#8b8881' }} />
                         )}
                       </div>
                     )}
@@ -559,9 +559,9 @@ export default function StaffOverviewPage() {
               );
             }) : (
               <div className="px-5 py-12 text-center">
-                <Calendar className="h-8 w-8 mx-auto mb-2" style={{ color: '#d1d5db' }} />
-                <p className="text-sm font-semibold" style={{ color: '#9ca3af' }}>No appointments today</p>
-                <p className="text-xs mt-1" style={{ color: '#d1d5db' }}>Enjoy your free time or check for walk-ins</p>
+                <Calendar className="h-8 w-8 mx-auto mb-2" style={{ color: '#c9c6bf' }} />
+                <p className="text-sm font-semibold" style={{ color: '#8b8881' }}>No appointments today</p>
+                <p className="text-xs mt-1" style={{ color: '#c9c6bf' }}>Enjoy your free time or check for walk-ins</p>
               </div>
             )}
           </div>
@@ -573,7 +573,7 @@ export default function StaffOverviewPage() {
           {/* Commission */}
           <div className="rounded-2xl overflow-hidden" style={CARD_LIGHT}>
             <div className="px-5 py-3.5" style={SECTION_HEADER}>
-              <h3 className="text-sm font-semibold" style={{ color: '#1f2937' }}>My Commission</h3>
+              <h3 className="text-sm font-semibold" style={{ color: '#2e2c28' }}>My Commission</h3>
             </div>
             <div className="p-5 space-y-4">
               {commissions ? (
@@ -590,7 +590,7 @@ export default function StaffOverviewPage() {
                           boxShadow: `inset 0 1px 3px rgba(0,0,0,0.07), 0 1px 0 rgba(255,255,255,0.6)`,
                           border: `1px solid ${m.color}18`,
                         }}>
-                        <p className="text-[10px] font-semibold" style={{ color: '#6b7280' }}>{m.label}</p>
+                        <p className="text-[10px] font-semibold" style={{ color: '#6e6b65' }}>{m.label}</p>
                         <p className="text-sm font-bold mt-0.5" style={{ color: m.color }}>
                           {formatPrice(m.value)}
                         </p>
@@ -608,7 +608,7 @@ export default function StaffOverviewPage() {
                   )}
                 </>
               ) : (
-                <p className="text-sm text-center py-3" style={{ color: '#9ca3af' }}>No commission data</p>
+                <p className="text-sm text-center py-3" style={{ color: '#8b8881' }}>No commission data</p>
               )}
             </div>
           </div>
@@ -616,7 +616,7 @@ export default function StaffOverviewPage() {
           {/* Performance */}
           <div className="rounded-2xl overflow-hidden" style={CARD_LIGHT}>
             <div className="px-5 py-3.5" style={SECTION_HEADER}>
-              <h3 className="text-sm font-semibold" style={{ color: '#1f2937' }}>My Performance</h3>
+              <h3 className="text-sm font-semibold" style={{ color: '#2e2c28' }}>My Performance</h3>
             </div>
             <div className="p-5 space-y-3">
               {performance ? (
@@ -625,7 +625,7 @@ export default function StaffOverviewPage() {
                     {[
                       { label: 'Completed', value: performance.completed,    color: GREEN },
                       { label: 'No-shows',  value: performance.no_shows,     color: RED   },
-                      { label: 'Cancelled', value: performance.cancellations, color: '#9ca3af' },
+                      { label: 'Cancelled', value: performance.cancellations, color: '#8b8881' },
                     ].map((m) => (
                       <div key={m.label} className="rounded-xl py-2.5 px-1"
                         style={{
@@ -633,7 +633,7 @@ export default function StaffOverviewPage() {
                           boxShadow: `inset 0 1px 3px rgba(0,0,0,0.07), 0 1px 0 rgba(255,255,255,0.6)`,
                           border: `1px solid ${m.color}18`,
                         }}>
-                        <p className="text-[10px] font-semibold" style={{ color: '#6b7280' }}>{m.label}</p>
+                        <p className="text-[10px] font-semibold" style={{ color: '#6e6b65' }}>{m.label}</p>
                         <p className="text-lg font-bold" style={{ color: m.color }}>{m.value}</p>
                       </div>
                     ))}
@@ -648,7 +648,7 @@ export default function StaffOverviewPage() {
                     />
                   )}
                   <div className="pt-1" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
-                    <p className="text-[10px] font-semibold" style={{ color: '#9ca3af' }}>Revenue Generated</p>
+                    <p className="text-[10px] font-semibold" style={{ color: '#8b8881' }}>Revenue Generated</p>
                     <p className="text-base font-bold mt-0.5"
                       style={{ color: GOLD, textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
                       {formatPrice(performance.revenue_generated || 0)}
@@ -656,7 +656,7 @@ export default function StaffOverviewPage() {
                   </div>
                 </>
               ) : (
-                <p className="text-sm text-center py-3" style={{ color: '#9ca3af' }}>No performance data yet</p>
+                <p className="text-sm text-center py-3" style={{ color: '#8b8881' }}>No performance data yet</p>
               )}
             </div>
           </div>
@@ -664,22 +664,22 @@ export default function StaffOverviewPage() {
           {/* Attendance today */}
           <div className="rounded-2xl p-5" style={CARD_LIGHT}>
             <p className="text-[10px] font-bold uppercase tracking-widest mb-3"
-              style={{ color: '#9ca3af', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
+              style={{ color: '#8b8881', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
               Today&apos;s Attendance
             </p>
             <div className="flex items-center justify-between">
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2 text-sm">
-                  <span className="text-[10px] font-semibold w-16" style={{ color: '#9ca3af' }}>Clock In</span>
-                  <span className="font-bold" style={{ color: '#1f2937' }}>
+                  <span className="text-[10px] font-semibold w-16" style={{ color: '#8b8881' }}>Clock In</span>
+                  <span className="font-bold" style={{ color: '#2e2c28' }}>
                     {attendance?.clock_in
                       ? new Date(attendance.clock_in).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' })
                       : '—'}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <span className="text-[10px] font-semibold w-16" style={{ color: '#9ca3af' }}>Clock Out</span>
-                  <span className="font-bold" style={{ color: '#1f2937' }}>
+                  <span className="text-[10px] font-semibold w-16" style={{ color: '#8b8881' }}>Clock Out</span>
+                  <span className="font-bold" style={{ color: '#2e2c28' }}>
                     {attendance?.clock_out
                       ? new Date(attendance.clock_out).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' })
                       : '—'}
@@ -694,7 +694,7 @@ export default function StaffOverviewPage() {
                 }}>
                 {isClockedIn  && <CheckCircle className="h-6 w-6" style={{ color: GREEN }} />}
                 {isClockedOut && <Star className="h-6 w-6" style={{ color: BLUE }} />}
-                {!attendance  && <AlertCircle className="h-6 w-6" style={{ color: '#d1d5db' }} />}
+                {!attendance  && <AlertCircle className="h-6 w-6" style={{ color: '#c9c6bf' }} />}
               </div>
             </div>
           </div>

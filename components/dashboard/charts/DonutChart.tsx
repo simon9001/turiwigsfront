@@ -25,7 +25,19 @@ export function DonutChart({
   const cx = size / 2;
   const cy = size / 2;
 
-  let cumPct = 0;
+  // Each arc's start is the sum of everything before it. Deriving that per
+  // segment keeps this a pure projection — no running total to mutate.
+  // Segment counts here are single digits, so the repeated sum is free.
+  const arcs = segments.map((seg, i) => {
+    const pct = seg.value / total;
+    const startPct = segments.slice(0, i).reduce((a, b) => a + b.value, 0) / total;
+    return {
+      color: seg.color,
+      dash: pct * circ,
+      gap: circ - pct * circ,
+      offset: circ - startPct * circ,
+    };
+  });
 
   return (
     <div className="relative inline-flex" style={{ width: size, height: size }}>
@@ -34,30 +46,23 @@ export function DonutChart({
         <circle
           cx={cx} cy={cy} r={r}
           fill="none"
-          stroke="#f0f0f0"
+          stroke="#e9e8e4"
           strokeWidth={thickness}
         />
         {/* Segments */}
-        {segments.map((seg, i) => {
-          const pct = seg.value / total;
-          const dash = pct * circ;
-          const gap = circ - dash;
-          const offset = circ - cumPct * circ;
-          cumPct += pct;
-          return (
-            <circle
-              key={i}
-              cx={cx} cy={cy} r={r}
-              fill="none"
-              stroke={seg.color}
-              strokeWidth={thickness}
-              strokeDasharray={`${dash.toFixed(2)} ${gap.toFixed(2)}`}
-              strokeDashoffset={offset.toFixed(2)}
-              transform={`rotate(-90 ${cx} ${cy})`}
-              strokeLinecap="butt"
-            />
-          );
-        })}
+        {arcs.map((arc, i) => (
+          <circle
+            key={i}
+            cx={cx} cy={cy} r={r}
+            fill="none"
+            stroke={arc.color}
+            strokeWidth={thickness}
+            strokeDasharray={`${arc.dash.toFixed(2)} ${arc.gap.toFixed(2)}`}
+            strokeDashoffset={arc.offset.toFixed(2)}
+            transform={`rotate(-90 ${cx} ${cy})`}
+            strokeLinecap="butt"
+          />
+        ))}
       </svg>
       {center && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

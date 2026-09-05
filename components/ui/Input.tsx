@@ -25,20 +25,20 @@ export function Input({ label, error, hint, className, id, suffix, ...props }: I
         className
       )}
       style={{
-        background: '#faf6ed',
-        border: `1px solid ${error ? '#f87171' : '#e0d0b0'}`,
+        background: '#f4f4f2',
+        border: `1px solid ${error ? '#f87171' : '#dedcd7'}`,
         boxShadow: 'inset 0 2px 5px rgba(0,0,0,0.10), inset 0 1px 2px rgba(0,0,0,0.07)',
         ...props.style,
       }}
       onFocus={(e) => {
         e.currentTarget.style.background = '#ffffff';
-        e.currentTarget.style.border = '1px solid #c9a227';
-        e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.08), 0 0 0 3px rgba(201,162,39,0.15)';
+        e.currentTarget.style.border = '1px solid #8b8881';
+        e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.08), 0 0 0 3px rgba(23,22,20,0.15)';
         props.onFocus?.(e);
       }}
       onBlur={(e) => {
-        e.currentTarget.style.background = '#faf6ed';
-        e.currentTarget.style.border = `1px solid ${error ? '#f87171' : '#e0d0b0'}`;
+        e.currentTarget.style.background = '#f4f4f2';
+        e.currentTarget.style.border = `1px solid ${error ? '#f87171' : '#dedcd7'}`;
         e.currentTarget.style.boxShadow = 'inset 0 2px 5px rgba(0,0,0,0.10), inset 0 1px 2px rgba(0,0,0,0.07)';
         props.onBlur?.(e);
       }}
@@ -48,7 +48,7 @@ export function Input({ label, error, hint, className, id, suffix, ...props }: I
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <label htmlFor={inputId} className="text-sm font-medium" style={{ color: '#143d2a' }}>
+        <label htmlFor={inputId} className="text-sm font-medium" style={{ color: '#55534e' }}>
           {label}
         </label>
       )}
@@ -61,7 +61,7 @@ export function Input({ label, error, hint, className, id, suffix, ...props }: I
         </div>
       ) : inputEl}
       {error && <p className="text-xs text-red-500">{error}</p>}
-      {hint && !error && <p className="text-xs" style={{ color: '#6b7280' }}>{hint}</p>}
+      {hint && !error && <p className="text-xs" style={{ color: '#6e6b65' }}>{hint}</p>}
     </div>
   );
 }

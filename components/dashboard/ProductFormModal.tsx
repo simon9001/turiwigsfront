@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { Plus, X, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -25,44 +26,35 @@ const EMPTY = {
 };
 
 const fieldStyle = {
-  background: '#faf6ed',
-  border: '1px solid #e0d0b0',
+  background: '#f4f4f2',
+  border: '1px solid #dedcd7',
   boxShadow: 'inset 0 2px 5px rgba(0,0,0,0.10), inset 0 1px 2px rgba(0,0,0,0.07)',
 };
 
+// The parent keys this component by product id, so it remounts whenever a
+// different product (or "new") is opened. That makes the form's starting
+// values plain initial state instead of an effect that syncs from props.
 export function ProductFormModal({ open, onClose, product, onSaved }: Props) {
-  const [form, setForm] = useState(EMPTY);
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [form, setForm] = useState(() => (product ? {
+    name: product.name,
+    slug: product.slug,
+    description: product.description ?? '',
+    price: String(product.price),
+    compare_at_price: product.compare_at_price ? String(product.compare_at_price) : '',
+    stock: String(product.stock),
+    category_id: '',
+    is_active: true,
+    is_featured: product.is_featured,
+  } : EMPTY));
+  const [imageUrls, setImageUrls] = useState<string[]>(
+    () => product?.images.map((img) => img.url) ?? []);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [slugLocked, setSlugLocked] = useState(false); // true once user edits slug manually
+  // Editing keeps the existing slug; a new product derives it from the name.
+  const [slugLocked, setSlugLocked] = useState(!!product);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const isEditing = !!product;
-
-  useEffect(() => {
-    if (open) {
-      if (product) {
-        setForm({
-          name: product.name,
-          slug: product.slug,
-          description: product.description ?? '',
-          price: String(product.price),
-          compare_at_price: product.compare_at_price ? String(product.compare_at_price) : '',
-          stock: String(product.stock),
-          category_id: '',
-          is_active: true,
-          is_featured: product.is_featured,
-        });
-        setImageUrls(product.images.map((img) => img.url));
-        setSlugLocked(true); // keep existing slug when editing
-      } else {
-        setForm(EMPTY);
-        setImageUrls([]);
-        setSlugLocked(false);
-      }
-    }
-  }, [open, product]);
 
   useEffect(() => {
     if (open && categories.length === 0) {
@@ -161,7 +153,7 @@ export function ProductFormModal({ open, onClose, product, onSaved }: Props) {
 
         {/* ── Multi-image upload ── */}
         <div>
-          <p className="mb-2 text-sm font-medium" style={{ color: '#143d2a' }}>
+          <p className="mb-2 text-sm font-medium" style={{ color: '#55534e' }}>
             Images{' '}
             <span className="font-normal text-neutral-400">(first image = cover)</span>
           </p>
@@ -169,7 +161,7 @@ export function ProductFormModal({ open, onClose, product, onSaved }: Props) {
             {imageUrls.map((url, i) => (
               <div key={url + i}
                 className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
-                <img src={url} alt={`Image ${i + 1}`} className="h-full w-full object-cover" />
+                <Image src={url} alt={`Image ${i + 1}`} fill sizes="64px" className="object-cover" />
                 {i === 0 && (
                   <span className="absolute bottom-0 left-0 right-0 bg-black/50 py-0.5 text-center text-[9px] font-semibold uppercase tracking-wide text-white">
                     Cover
@@ -183,7 +175,7 @@ export function ProductFormModal({ open, onClose, product, onSaved }: Props) {
               </div>
             ))}
             <button type="button" disabled={uploading} onClick={() => fileRef.current?.click()}
-              className="flex h-16 w-16 flex-shrink-0 flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-neutral-200 bg-neutral-50 transition-colors hover:border-gold/40 hover:bg-gold/5 disabled:opacity-50">
+              className="flex h-16 w-16 flex-shrink-0 flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-neutral-200 bg-neutral-50 transition-colors hover:border-line-2 hover:bg-mist disabled:opacity-50">
               {uploading
                 ? <Loader2 className="h-4 w-4 animate-spin text-neutral-400" />
                 : <Plus className="h-4 w-4 text-neutral-400" />}
@@ -205,7 +197,7 @@ export function ProductFormModal({ open, onClose, product, onSaved }: Props) {
 
         {/* Slug — auto-populated, user can override */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: '#143d2a' }}>
+          <label className="text-sm font-medium" style={{ color: '#55534e' }}>
             Slug *{' '}
             {!slugLocked && <span className="font-normal text-neutral-400">(auto-generated from name)</span>}
           </label>
@@ -220,7 +212,7 @@ export function ProductFormModal({ open, onClose, product, onSaved }: Props) {
             />
             {slugLocked && !isEditing && (
               <button type="button" onClick={() => { setSlugLocked(false); set('slug', slugify(form.name)); }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gold hover:underline font-sans">
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-ink hover:underline font-sans">
                 Reset
               </button>
             )}
@@ -229,7 +221,7 @@ export function ProductFormModal({ open, onClose, product, onSaved }: Props) {
 
         {/* Description */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: '#143d2a' }}>Description</label>
+          <label className="text-sm font-medium" style={{ color: '#55534e' }}>Description</label>
           <textarea value={form.description} onChange={(e) => set('description', e.target.value)}
             rows={3} placeholder="Describe the product…"
             className="w-full resize-none rounded-xl px-4 py-3 text-sm text-neutral-900 outline-none transition-all"
@@ -248,7 +240,7 @@ export function ProductFormModal({ open, onClose, product, onSaved }: Props) {
           <Input label="Stock *" type="number" min="0"
             value={form.stock} onChange={(e) => set('stock', e.target.value)} placeholder="0" required />
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium" style={{ color: '#143d2a' }}>Category</label>
+            <label className="text-sm font-medium" style={{ color: '#55534e' }}>Category</label>
             <select value={form.category_id} onChange={(e) => set('category_id', e.target.value)}
               className="h-11 rounded-xl px-4 text-sm text-neutral-900 outline-none transition-all"
               style={fieldStyle}>
@@ -273,7 +265,7 @@ export function ProductFormModal({ open, onClose, product, onSaved }: Props) {
           <label className="flex cursor-pointer select-none items-center gap-2.5">
             <input type="checkbox" checked={form.is_featured}
               onChange={(e) => set('is_featured', e.target.checked)}
-              className="h-4 w-4 rounded border-neutral-300" style={{ accentColor: '#c9a227' }} />
+              className="h-4 w-4 rounded border-neutral-300" style={{ accentColor: '#8b8881' }} />
             <span className="text-sm font-medium text-neutral-700">Mark as Featured</span>
           </label>
         </div>

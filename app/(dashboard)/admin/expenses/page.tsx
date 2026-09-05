@@ -1,14 +1,13 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { DollarSign, Plus, CheckCircle, Trash2 } from 'lucide-react';
+import { Plus, CheckCircle, Trash2 } from 'lucide-react';
 import { useRealtimeRefresh } from '@/hooks/useRealtimeRefresh';
 import { expensesApi } from '@/api/erp.api';
 import { formatPrice, formatDate } from '@/utils/formatters';
-import { cn } from '@/utils/cn';
 import toast from 'react-hot-toast';
 
-const GREEN = '#10b981'; const GOLD = '#c9a227'; const RED = '#ef4444'; const ORANGE = '#f97316';
+const GREEN = '#10b981'; const GOLD = '#8b8881'; const RED = '#ef4444'; const ORANGE = '#f97316';
 
 type Expense = {
   id: string; description: string; amount: number; expense_date: string;
@@ -27,12 +26,12 @@ export default function AdminExpensesPage() {
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({ description: '', amount: '', expenseDate: new Date().toISOString().split('T')[0], categoryId: '', notes: '' });
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    const [e, c] = await Promise.allSettled([expensesApi.list(), expensesApi.listCategories()]);
-    if (e.status === 'fulfilled') setExpenses((e.value.data.data ?? []) as Expense[]);
-    if (c.status === 'fulfilled') setCats((c.value.data.data ?? []) as Category[]);
-    setLoading(false);
+  const load = useCallback(() => {
+    return Promise.allSettled([expensesApi.list(), expensesApi.listCategories()]).then(([e, c]) => {
+      if (e.status === 'fulfilled') setExpenses((e.value.data.data ?? []) as Expense[]);
+      if (c.status === 'fulfilled') setCats((c.value.data.data ?? []) as Category[]);
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -112,7 +111,7 @@ export default function AdminExpensesPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr style={{ background: '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
+              <tr style={{ background: '#f4f4f2', borderBottom: '1px solid #e9e8e4' }}>
                 {['Date', 'Description', 'Category', 'Amount', 'Status', 'Actions'].map((h) => (
                   <th key={h} className="px-4 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-neutral-400">{h}</th>
                 ))}

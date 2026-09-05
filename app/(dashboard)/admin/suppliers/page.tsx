@@ -1,19 +1,19 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Truck, Plus, ChevronRight } from 'lucide-react';
+import { Truck, Plus } from 'lucide-react';
 import { useRealtimeRefresh } from '@/hooks/useRealtimeRefresh';
 import { suppliersApi } from '@/api/erp.api';
 import { formatPrice, formatDate } from '@/utils/formatters';
 import { cn } from '@/utils/cn';
 import toast from 'react-hot-toast';
 
-const GOLD = '#c9a227'; const GREEN = '#10b981'; const ORANGE = '#f97316'; const BLUE = '#3b82f6';
+const GOLD = '#8b8881'; const GREEN = '#10b981'; const ORANGE = '#f97316'; const BLUE = '#3b82f6';
 
 type Supplier = { id: string; name: string; contact_name?: string; email?: string; phone?: string; is_active: boolean };
 type PO = { id: string; po_number: string; status: string; total_amount: number; expected_at?: string; suppliers?: { name: string }[] | null };
 
-const PO_STATUS: Record<string, string> = { draft: ORANGE, sent: BLUE, received: GREEN, cancelled: '#9ca3af' };
+const PO_STATUS: Record<string, string> = { draft: ORANGE, sent: BLUE, received: GREEN, cancelled: '#8b8881' };
 
 export default function AdminSuppliersPage() {
   const [tab, setTab]           = useState<'suppliers' | 'orders'>('suppliers');
@@ -24,12 +24,16 @@ export default function AdminSuppliersPage() {
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({ name: '', contactName: '', email: '', phone: '', address: '' });
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    const [s, p] = await Promise.allSettled([suppliersApi.list(), suppliersApi.listPOs()]);
-    if (s.status === 'fulfilled') setSuppliers((s.value.data.data ?? []) as Supplier[]);
-    if (p.status === 'fulfilled') setPOs((p.value.data.data ?? []) as PO[]);
-    setLoading(false);
+  // No setLoading(true) here: this also runs on realtime pushes and a 30s
+  // interval, and flashing the whole page to a spinner every refresh is worse
+  // than letting the table swap in place. `loading` starts true for the first
+  // paint and is only ever turned off.
+  const load = useCallback(() => {
+    return Promise.allSettled([suppliersApi.list(), suppliersApi.listPOs()]).then(([s, p]) => {
+      if (s.status === 'fulfilled') setSuppliers((s.value.data.data ?? []) as Supplier[]);
+      if (p.status === 'fulfilled') setPOs((p.value.data.data ?? []) as PO[]);
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -102,7 +106,7 @@ export default function AdminSuppliersPage() {
                   </div>
                 </div>
                 <span className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
-                  style={s.is_active ? { background: `${GREEN}15`, color: GREEN } : { background: '#f3f4f6', color: '#9ca3af' }}>
+                  style={s.is_active ? { background: `${GREEN}15`, color: GREEN } : { background: '#e9e8e4', color: '#55534e' }}>
                   {s.is_active ? 'Active' : 'Inactive'}
                 </span>
               </div>
@@ -116,7 +120,7 @@ export default function AdminSuppliersPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
-                <tr style={{ background: '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
+                <tr style={{ background: '#f4f4f2', borderBottom: '1px solid #e9e8e4' }}>
                   {['PO Number', 'Supplier', 'Total', 'Expected', 'Status'].map((h) => (
                     <th key={h} className="px-4 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-neutral-400">{h}</th>
                   ))}

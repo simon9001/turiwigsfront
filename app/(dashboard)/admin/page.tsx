@@ -21,8 +21,8 @@ import { cn } from '@/utils/cn';
 import { useRealtimeRefresh } from '@/hooks/useRealtimeRefresh';
 
 // ─── Colours ──────────────────────────────────────────────────────────────────
-const GOLD    = '#c9a227';
-const DARK    = '#0a2e1f';
+const GOLD    = '#8b8881';
+const DARK    = '#171614';
 const GREEN   = '#10b981';
 const RED     = '#ef4444';
 const BLUE    = '#3b82f6';
@@ -31,14 +31,14 @@ const PURPLE  = '#8b5cf6';
 
 const STATUS_COLOR: Record<string, string> = {
   completed: GREEN, confirmed: BLUE, pending: ORANGE,
-  in_progress: PURPLE, cancelled: RED, no_show: '#9ca3af',
+  in_progress: PURPLE, cancelled: RED, no_show: '#8b8881',
 };
 
 // ─── Skeuomorphic style tokens ────────────────────────────────────────────────
 
 // Light raised card — looks like thick card-stock floating above parchment
 const CARD_LIGHT: React.CSSProperties = {
-  background: 'linear-gradient(160deg, #ffffff 0%, #faf7f1 100%)',
+  background: 'linear-gradient(160deg, #ffffff 0%, #f4f4f2 100%)',
   boxShadow: [
     'inset 0 1px 0 rgba(255,255,255,0.92)',
     'inset 0 -1px 0 rgba(0,0,0,0.04)',
@@ -51,7 +51,7 @@ const CARD_LIGHT: React.CSSProperties = {
 
 // Dark raised card — embossed emerald leather
 const CARD_DARK: React.CSSProperties = {
-  background: 'linear-gradient(145deg, #0c3020 0%, #143d2a 55%, #0a2618 100%)',
+  background: '#171614',
   boxShadow: [
     'inset 0 1px 0 rgba(255,255,255,0.08)',
     'inset 0 -1px 0 rgba(0,0,0,0.35)',
@@ -59,19 +59,19 @@ const CARD_DARK: React.CSSProperties = {
     '0 14px 36px rgba(0,0,0,0.13)',
     '0 1px 3px rgba(0,0,0,0.18)',
   ].join(', '),
-  border: '1px solid rgba(201,162,39,0.18)',
+  border: '1px solid rgba(23,22,20,0.18)',
 };
 
 // Section card header — inked letterhead
 const SECTION_HEADER: React.CSSProperties = {
-  background: 'linear-gradient(180deg, #faf7f2 0%, #f4efe5 100%)',
+  background: 'linear-gradient(180deg, #f4f4f2 0%, #e9e8e4 100%)',
   borderBottom: '1px solid rgba(0,0,0,0.07)',
   boxShadow: 'inset 0 -1px 0 rgba(255,255,255,0.45)',
 };
 
 // Embossed action button
 const ACTION_BTN: React.CSSProperties = {
-  background: 'linear-gradient(160deg, #ffffff 0%, #faf7f1 100%)',
+  background: 'linear-gradient(160deg, #ffffff 0%, #f4f4f2 100%)',
   boxShadow: [
     'inset 0 1px 0 rgba(255,255,255,0.9)',
     'inset 0 -1px 0 rgba(0,0,0,0.04)',
@@ -79,19 +79,6 @@ const ACTION_BTN: React.CSSProperties = {
     '0 1px 2px rgba(0,0,0,0.04)',
   ].join(', '),
   border: '1px solid rgba(0,0,0,0.08)',
-};
-
-// Physical raised primary button (gold)
-const BTN_GOLD: React.CSSProperties = {
-  background: 'linear-gradient(180deg, #ddb830 0%, #c9a227 45%, #b08b1a 100%)',
-  boxShadow: [
-    '0 4px 10px rgba(0,0,0,0.22)',
-    '0 2px 4px rgba(0,0,0,0.14)',
-    'inset 0 1px 0 rgba(255,255,255,0.32)',
-    'inset 0 -2px 0 rgba(0,0,0,0.18)',
-  ].join(', '),
-  border: '1px solid rgba(0,0,0,0.14)',
-  color: DARK,
 };
 
 // Embossed status badge
@@ -112,7 +99,7 @@ function SectionCard({ title, action, actionHref, children, className }: {
     <div className={cn('rounded-2xl overflow-hidden', className)} style={CARD_LIGHT}>
       <div className="flex items-center justify-between px-5 py-3.5" style={SECTION_HEADER}>
         <h3 className="text-sm font-semibold"
-          style={{ color: '#1f2937', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
+          style={{ color: '#2e2c28', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
           {title}
         </h3>
         {action && actionHref && (
@@ -141,14 +128,14 @@ function KpiCard({ label, value, sub, icon: Icon, spark, trend, highlight, color
         <div className="min-w-0">
           <p className="text-[10px] font-bold uppercase tracking-widest"
             style={{
-              color: highlight ? `${GOLD}80` : '#9ca3af',
+              color: highlight ? `${GOLD}80` : '#8b8881',
               textShadow: highlight ? '0 1px 2px rgba(0,0,0,0.4)' : '0 1px 0 rgba(255,255,255,0.7)',
             }}>
             {label}
           </p>
           <p className="mt-1 text-2xl font-bold truncate"
             style={{
-              color: highlight ? '#f5f5f5' : '#111827',
+              color: highlight ? '#ffffff' : '#171614',
               textShadow: highlight
                 ? '0 2px 4px rgba(0,0,0,0.4)'
                 : '0 1px 0 rgba(255,255,255,0.8)',
@@ -157,7 +144,7 @@ function KpiCard({ label, value, sub, icon: Icon, spark, trend, highlight, color
           </p>
           {sub && (
             <p className="mt-0.5 text-[11px]"
-              style={{ color: highlight ? 'rgba(255,255,255,0.4)' : '#9ca3af' }}>
+              style={{ color: highlight ? 'rgba(255,255,255,0.4)' : '#8b8881' }}>
               {sub}
             </p>
           )}
@@ -175,7 +162,7 @@ function KpiCard({ label, value, sub, icon: Icon, spark, trend, highlight, color
               }
           }>
           <Icon className="h-5 w-5"
-            style={{ color: c, filter: highlight ? 'drop-shadow(0 0 4px rgba(201,162,39,0.5))' : 'none' }} />
+            style={{ color: c, filter: highlight ? 'drop-shadow(0 0 4px rgba(23,22,20,0.5))' : 'none' }} />
         </div>
       </div>
 
@@ -200,7 +187,7 @@ function KpiCard({ label, value, sub, icon: Icon, spark, trend, highlight, color
 }
 
 function StatusDot({ status }: { status: string }) {
-  const color = STATUS_COLOR[status] ?? '#9ca3af';
+  const color = STATUS_COLOR[status] ?? '#8b8881';
   return (
     <span className="inline-flex items-center gap-1.5 text-xs font-semibold capitalize px-2.5 py-0.5 rounded-full"
       style={statusBadge(color)}>
@@ -228,9 +215,8 @@ export default function AdminOverviewPage() {
     return () => clearInterval(t);
   }, []);
 
-  const load = useCallback(async (silent = false) => {
-    if (!silent) setLoading(true);
-    const results = await Promise.allSettled([
+  const load = useCallback(() => {
+    return Promise.allSettled([
       analyticsApi.getRevenue('7d'),
       analyticsApi.getPL('3m'),
       analyticsApi.getStaffPerformance(),
@@ -238,22 +224,23 @@ export default function AdminOverviewPage() {
       analyticsApi.getSalonInventory(),
       analyticsApi.getDashboard(),
       adminApi.listOrders({ page: 1, limit: 6 }),
-    ]);
-    if (results[0].status === 'fulfilled') setRevenue(results[0].value.data.data);
-    if (results[1].status === 'fulfilled') setPL(results[1].value.data.data);
-    if (results[2].status === 'fulfilled') setStaff((results[2].value.data.data ?? []) as StaffPerformanceItem[]);
-    if (results[3].status === 'fulfilled') setBookings(results[3].value.data.data);
-    if (results[4].status === 'fulfilled') setInventory(results[4].value.data.data as SalonInventoryAlerts);
-    if (results[5].status === 'fulfilled') setSummary(results[5].value.data.data);
-    if (results[6].status === 'fulfilled') setRecentOrders((results[6].value.data.data ?? []) as Order[]);
-    setLoading(false);
+    ]).then((results) => {
+      if (results[0].status === 'fulfilled') setRevenue(results[0].value.data.data);
+      if (results[1].status === 'fulfilled') setPL(results[1].value.data.data);
+      if (results[2].status === 'fulfilled') setStaff((results[2].value.data.data ?? []) as StaffPerformanceItem[]);
+      if (results[3].status === 'fulfilled') setBookings(results[3].value.data.data);
+      if (results[4].status === 'fulfilled') setInventory(results[4].value.data.data as SalonInventoryAlerts);
+      if (results[5].status === 'fulfilled') setSummary(results[5].value.data.data);
+      if (results[6].status === 'fulfilled') setRecentOrders((results[6].value.data.data ?? []) as Order[]);
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => { load(); }, [load]);
 
   useRealtimeRefresh(
     ['orders', 'service_bookings', 'attendance_records', 'inventory_items', 'staff_leaves'],
-    () => load(true),
+    load,
   );
 
   const dayName = now.toLocaleDateString('en-KE', { weekday: 'long' });
@@ -272,7 +259,7 @@ export default function AdminOverviewPage() {
     { label: 'Confirmed',  value: bookingsByStatus.confirmed  ?? 0, color: BLUE   },
     { label: 'Pending',    value: bookingsByStatus.pending    ?? 0, color: ORANGE },
     { label: 'Cancelled',  value: bookingsByStatus.cancelled  ?? 0, color: RED    },
-    { label: 'No-show',    value: bookingsByStatus.no_show    ?? 0, color: '#d1d5db' },
+    { label: 'No-show',    value: bookingsByStatus.no_show    ?? 0, color: '#c9c6bf' },
   ].filter((s) => s.value > 0);
 
   const revenueDayBars = (revenue?.daily ?? []).slice(-7).map((d) => ({
@@ -288,13 +275,13 @@ export default function AdminOverviewPage() {
           <div className="relative h-14 w-14">
             <div className="absolute inset-0 rounded-full"
               style={{
-                background: 'linear-gradient(135deg, rgba(201,162,39,0.2) 0%, rgba(201,162,39,0.05) 100%)',
+                background: 'linear-gradient(135deg, rgba(23,22,20,0.2) 0%, rgba(23,22,20,0.05) 100%)',
                 boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.12)',
-                border: '1px solid rgba(201,162,39,0.2)',
+                border: '1px solid rgba(23,22,20,0.2)',
               }} />
             <Activity className="absolute inset-0 m-auto h-6 w-6 animate-pulse" style={{ color: GOLD }} />
           </div>
-          <p className="text-sm font-medium" style={{ color: '#9ca3af' }}>Loading dashboard…</p>
+          <p className="text-sm font-medium" style={{ color: '#8b8881' }}>Loading dashboard…</p>
         </div>
       </div>
     );
@@ -306,7 +293,7 @@ export default function AdminOverviewPage() {
       {/* ── Page header ───────────────────────────────────────────────── */}
       <div className="rounded-2xl px-5 py-4 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between"
         style={{
-          background: 'linear-gradient(160deg, #ffffff 0%, #faf7f1 100%)',
+          background: 'linear-gradient(160deg, #ffffff 0%, #f4f4f2 100%)',
           boxShadow: [
             'inset 0 1px 0 rgba(255,255,255,0.95)',
             'inset 0 -1px 0 rgba(0,0,0,0.04)',
@@ -317,10 +304,10 @@ export default function AdminOverviewPage() {
         }}>
         <div>
           <h1 className="text-xl font-bold"
-            style={{ color: '#111827', textShadow: '0 1px 0 rgba(255,255,255,0.8)' }}>
+            style={{ color: '#171614', textShadow: '0 1px 0 rgba(255,255,255,0.8)' }}>
             Admin Dashboard
           </h1>
-          <p className="text-sm mt-0.5" style={{ color: '#9ca3af' }}>
+          <p className="text-sm mt-0.5" style={{ color: '#8b8881' }}>
             {dayName}, {dateStr} · {timeStr}
           </p>
         </div>
@@ -391,9 +378,9 @@ export default function AdminOverviewPage() {
               <>
                 <MiniBarChart bars={revenueDayBars} height={72} showValues />
                 <div className="flex justify-between text-[10px] pt-1 border-t"
-                  style={{ borderColor: 'rgba(0,0,0,0.06)', color: '#9ca3af' }}>
-                  <span>Total: <strong style={{ color: '#374151' }}>{formatPrice(revenue?.total ?? 0)}</strong></span>
-                  <span>Avg/day: <strong style={{ color: '#374151' }}>
+                  style={{ borderColor: 'rgba(0,0,0,0.06)', color: '#8b8881' }}>
+                  <span>Total: <strong style={{ color: '#3f3d39' }}>{formatPrice(revenue?.total ?? 0)}</strong></span>
+                  <span>Avg/day: <strong style={{ color: '#3f3d39' }}>
                     {formatPrice((revenue?.total ?? 0) / Math.max(revenueDayBars.length, 1))}
                   </strong></span>
                 </div>
@@ -415,7 +402,7 @@ export default function AdminOverviewPage() {
                   thickness={13}
                   center={
                     <div className="text-center">
-                      <p className="text-xl font-bold" style={{ color: '#111827' }}>{totalBookingsPeriod}</p>
+                      <p className="text-xl font-bold" style={{ color: '#171614' }}>{totalBookingsPeriod}</p>
                       <p className="text-[10px] text-neutral-400">total</p>
                     </div>
                   }
@@ -425,11 +412,11 @@ export default function AdminOverviewPage() {
                     <div key={seg.label} className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-1.5">
                         <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: seg.color }} />
-                        <span style={{ color: '#4b5563' }}>{seg.label}</span>
+                        <span style={{ color: '#55534e' }}>{seg.label}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold" style={{ color: '#111827' }}>{seg.value}</span>
-                        <span style={{ color: '#9ca3af' }}>{((seg.value / totalBookingsPeriod) * 100).toFixed(0)}%</span>
+                        <span className="font-bold" style={{ color: '#171614' }}>{seg.value}</span>
+                        <span style={{ color: '#8b8881' }}>{((seg.value / totalBookingsPeriod) * 100).toFixed(0)}%</span>
                       </div>
                     </div>
                   ))}
@@ -466,7 +453,7 @@ export default function AdminOverviewPage() {
                   }}>
                   <a.icon className="h-4 w-4" style={{ color: a.color }} />
                 </div>
-                <span className="text-[10px] font-semibold leading-tight" style={{ color: '#374151' }}>{a.label}</span>
+                <span className="text-[10px] font-semibold leading-tight" style={{ color: '#3f3d39' }}>{a.label}</span>
               </Link>
             ))}
           </div>
@@ -493,7 +480,7 @@ export default function AdminOverviewPage() {
                         boxShadow: `inset 0 1px 3px rgba(0,0,0,0.07), 0 1px 0 rgba(255,255,255,0.6)`,
                         border: `1px solid ${m.color}18`,
                       }}>
-                      <p className="text-[10px] font-semibold" style={{ color: '#6b7280' }}>{m.label}</p>
+                      <p className="text-[10px] font-semibold" style={{ color: '#6e6b65' }}>{m.label}</p>
                       <p className="text-sm font-bold mt-0.5" style={{ color: m.color }}>
                         {formatPrice(m.value)}
                       </p>
@@ -503,7 +490,7 @@ export default function AdminOverviewPage() {
                 <div className="space-y-2.5">
                   {pl.monthly.slice(0, 3).map((m) => (
                     <div key={m.month} className="space-y-1">
-                      <div className="flex justify-between text-[10px]" style={{ color: '#6b7280' }}>
+                      <div className="flex justify-between text-[10px]" style={{ color: '#6e6b65' }}>
                         <span>{new Date(m.month).toLocaleDateString('en', { month: 'short', year: 'numeric' })}</span>
                         <span className={cn('font-semibold', Number(m.net_profit) >= 0 ? 'text-emerald-600' : 'text-red-500')}>
                           {formatPrice(Number(m.net_profit))}
@@ -548,7 +535,7 @@ export default function AdminOverviewPage() {
                 </p>
                 <ul className="mt-1.5 space-y-0.5">
                   {inventory!.outOfStock.slice(0, 3).map((i) => (
-                    <li key={i.id} className="text-[11px] truncate" style={{ color: '#374151' }}>• {i.name}</li>
+                    <li key={i.id} className="text-[11px] truncate" style={{ color: '#3f3d39' }}>• {i.name}</li>
                   ))}
                 </ul>
               </div>
@@ -569,7 +556,7 @@ export default function AdminOverviewPage() {
             ) : (
               <div className="flex flex-col items-center py-5 gap-2">
                 <CheckCircle className="h-6 w-6 text-emerald-400" />
-                <p className="text-xs" style={{ color: '#9ca3af' }}>All stock levels healthy</p>
+                <p className="text-xs" style={{ color: '#8b8881' }}>All stock levels healthy</p>
               </div>
             )}
           </div>
@@ -596,8 +583,8 @@ export default function AdminOverviewPage() {
                     <a.icon className="h-3.5 w-3.5" style={{ color: a.color }} />
                   </div>
                   <div>
-                    <p className="text-xs font-semibold" style={{ color: '#374151' }}>{a.label}</p>
-                    <p className="text-[10px]" style={{ color: '#9ca3af' }}>{a.unit}</p>
+                    <p className="text-xs font-semibold" style={{ color: '#3f3d39' }}>{a.label}</p>
+                    <p className="text-[10px]" style={{ color: '#8b8881' }}>{a.unit}</p>
                   </div>
                 </div>
                 <span className="text-lg font-bold"
@@ -616,10 +603,10 @@ export default function AdminOverviewPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
-                <tr style={{ background: 'linear-gradient(180deg, #faf7f2 0%, #f4efe5 100%)', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+                <tr style={{ background: 'linear-gradient(180deg, #f4f4f2 0%, #e9e8e4 100%)', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
                   {['Staff Member', 'Completed', 'No-shows', 'Revenue', 'Commission (Pending)', 'Commission (Paid)', 'Performance'].map((h) => (
                     <th key={h} className="px-4 py-3 text-left text-[10px] font-bold uppercase tracking-wide"
-                      style={{ color: '#6b7280', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
+                      style={{ color: '#6e6b65', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
                       {h}
                     </th>
                   ))}
@@ -634,7 +621,7 @@ export default function AdminOverviewPage() {
                       className="border-b transition-colors"
                       style={{
                         borderColor: 'rgba(0,0,0,0.05)',
-                        background: idx % 2 === 0 ? '#ffffff' : 'linear-gradient(90deg, #faf7f2 0%, #f8f5ef 100%)',
+                        background: idx % 2 === 0 ? '#ffffff' : 'linear-gradient(90deg, #f4f4f2 0%, #f4f4f2 100%)',
                       }}>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
@@ -647,7 +634,7 @@ export default function AdminOverviewPage() {
                             }}>
                             {s.staff_name?.[0]?.toUpperCase() ?? '?'}
                           </div>
-                          <span className="font-semibold" style={{ color: '#1f2937' }}>{s.staff_name}</span>
+                          <span className="font-semibold" style={{ color: '#2e2c28' }}>{s.staff_name}</span>
                         </div>
                       </td>
                       <td className="px-4 py-3">
@@ -656,8 +643,8 @@ export default function AdminOverviewPage() {
                           {s.completed}
                         </span>
                       </td>
-                      <td className="px-4 py-3 font-medium" style={{ color: '#6b7280' }}>{s.no_shows}</td>
-                      <td className="px-4 py-3 font-bold" style={{ color: '#111827' }}>
+                      <td className="px-4 py-3 font-medium" style={{ color: '#6e6b65' }}>{s.no_shows}</td>
+                      <td className="px-4 py-3 font-bold" style={{ color: '#171614' }}>
                         {formatPrice(s.revenue_generated || 0)}
                       </td>
                       <td className="px-4 py-3 font-semibold" style={{ color: ORANGE }}>
@@ -677,7 +664,7 @@ export default function AdminOverviewPage() {
                                 boxShadow: '0 1px 2px rgba(0,0,0,0.12)',
                               }} />
                           </div>
-                          <span className="text-[10px] font-bold" style={{ color: '#6b7280' }}>{rate}%</span>
+                          <span className="text-[10px] font-bold" style={{ color: '#6e6b65' }}>{rate}%</span>
                         </div>
                       </td>
                     </tr>
@@ -695,10 +682,10 @@ export default function AdminOverviewPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
-                <tr style={{ background: 'linear-gradient(180deg, #faf7f2 0%, #f4efe5 100%)', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+                <tr style={{ background: 'linear-gradient(180deg, #f4f4f2 0%, #e9e8e4 100%)', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
                   {['Order', 'Customer', 'Amount', 'Payment', 'Status', 'Date', ''].map((h) => (
                     <th key={h} className="px-4 py-3 text-left text-[10px] font-bold uppercase tracking-wide"
-                      style={{ color: '#6b7280', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
+                      style={{ color: '#6e6b65', textShadow: '0 1px 0 rgba(255,255,255,0.7)' }}>
                       {h}
                     </th>
                   ))}
@@ -709,15 +696,15 @@ export default function AdminOverviewPage() {
                   <tr key={o.id} className="border-b transition-colors"
                     style={{
                       borderColor: 'rgba(0,0,0,0.05)',
-                      background: idx % 2 === 0 ? '#ffffff' : 'linear-gradient(90deg, #faf7f2 0%, #f8f5ef 100%)',
+                      background: idx % 2 === 0 ? '#ffffff' : 'linear-gradient(90deg, #f4f4f2 0%, #f4f4f2 100%)',
                     }}>
-                    <td className="px-4 py-3 font-mono font-bold text-[11px]" style={{ color: '#374151' }}>
+                    <td className="px-4 py-3 font-mono font-bold text-[11px]" style={{ color: '#3f3d39' }}>
                       {o.order_number}
                     </td>
-                    <td className="px-4 py-3 max-w-[120px] truncate" style={{ color: '#4b5563' }}>
+                    <td className="px-4 py-3 max-w-[120px] truncate" style={{ color: '#55534e' }}>
                       {(o as { customer_name?: string }).customer_name ?? '—'}
                     </td>
-                    <td className="px-4 py-3 font-bold" style={{ color: '#111827' }}>
+                    <td className="px-4 py-3 font-bold" style={{ color: '#171614' }}>
                       {formatPrice(o.total_amount)}
                     </td>
                     <td className="px-4 py-3">
@@ -726,7 +713,7 @@ export default function AdminOverviewPage() {
                     <td className="px-4 py-3">
                       <StatusDot status={o.order_status} />
                     </td>
-                    <td className="px-4 py-3" style={{ color: '#9ca3af' }}>
+                    <td className="px-4 py-3" style={{ color: '#8b8881' }}>
                       {formatDate(o.created_at)}
                     </td>
                     <td className="px-4 py-3">
@@ -743,8 +730,8 @@ export default function AdminOverviewPage() {
           </div>
         ) : (
           <div className="px-5 py-8 text-center">
-            <ShoppingBag className="h-8 w-8 mx-auto mb-2" style={{ color: '#d1d5db' }} />
-            <p className="text-sm" style={{ color: '#9ca3af' }}>No orders yet</p>
+            <ShoppingBag className="h-8 w-8 mx-auto mb-2" style={{ color: '#c9c6bf' }} />
+            <p className="text-sm" style={{ color: '#8b8881' }}>No orders yet</p>
           </div>
         )}
       </SectionCard>
@@ -770,7 +757,7 @@ export default function AdminOverviewPage() {
                 );
               })}
             {staff.every((s) => !s.pending_commission) && (
-              <p className="text-sm text-center py-2" style={{ color: '#9ca3af' }}>All commissions paid out</p>
+              <p className="text-sm text-center py-2" style={{ color: '#8b8881' }}>All commissions paid out</p>
             )}
           </div>
         </SectionCard>
