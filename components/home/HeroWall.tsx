@@ -92,11 +92,13 @@ export function HeroWall() {
         className="hidden lg:grid gap-2"
         style={{
           gridTemplateColumns: 'repeat(12, minmax(0, 1fr))',
-          gridTemplateRows: 'repeat(4, minmax(0, 1fr))',
-          // Header is 4rem and this section adds 1.5rem of padding, so the
-          // wall lands exactly on the fold instead of clipping its last row.
-          height: 'min(calc(100svh - 5.5rem), 840px)',
-          minHeight: 600,
+          // `min-content` rather than 0: a row must never be shorter than what
+          // sits in it, or the copy card's text spills out past its border on
+          // a short viewport. Paired with min-height (not height) the wall
+          // still lands on the fold when there is room, and grows when there
+          // is not, instead of clipping.
+          gridTemplateRows: 'repeat(4, minmax(min-content, 1fr))',
+          minHeight: 'min(calc(100svh - 5.5rem), 840px)',
         }}
       >
         {tiles.map(({ slot, shot }, i) =>
